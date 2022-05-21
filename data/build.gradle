@@ -1,0 +1,15 @@
+import altline.foodspo.buildsrc.Libs
+
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+apply from: rootProject.file("android.build.gradle")
+
+dependencies {
+    implementation Libs.AndroidX.coreKtx
+
+    testImplementation Libs.JUnit.junit
+    androidTestImplementation Libs.AndroidX.Test.junit
+    androidTestImplementation Libs.AndroidX.Test.espressoCore
+}
