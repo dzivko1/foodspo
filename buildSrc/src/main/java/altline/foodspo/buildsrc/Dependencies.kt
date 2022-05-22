@@ -14,6 +14,7 @@ object Libs {
             const val uiTestJunit4 = "androidx.compose.ui:ui-test-junit4:$version"
             const val uiTestManifest = "androidx.compose.ui:ui-test-manifest:$version"
             const val material = "androidx.compose.material:material:$version"
+            const val materialIconsExtended = "androidx.compose.material:material-icons-extended:$version"
         }
         
         object Activity {
@@ -22,6 +23,10 @@ object Libs {
         
         object Lifecycle {
             const val lifecycleRuntimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:2.4.1"
+        }
+        
+        object Navigation {
+            const val navigationCompose = "androidx.navigation:navigation-compose:2.4.2"
         }
         
         object Test {
