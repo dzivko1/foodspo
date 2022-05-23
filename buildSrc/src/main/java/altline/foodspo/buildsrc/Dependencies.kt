@@ -35,6 +35,12 @@ object Libs {
         }
     }
     
+    object Accompanist {
+        private const val version = "0.23.1"
+        
+        const val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:$version"
+    }
+    
     object JUnit {
         const val junit = "junit:junit:4.13.2"
     }
