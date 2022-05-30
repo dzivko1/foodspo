@@ -2,6 +2,16 @@ package altline.foodspo.buildsrc
 
 object Libs {
     
+    object Firebase {
+        const val bom = "com.google.firebase:firebase-bom:30.0.1"
+        const val analyticsKtx = "com.google.firebase:firebase-analytics-ktx"
+        const val uiAuth = "com.firebaseui:firebase-ui-auth:7.2.0"
+    }
+    
+    object Android {
+        const val playServicesAuth = "com.google.android.gms:play-services-auth:20.2.0"
+    }
+    
     object AndroidX {
         const val coreKtx = "androidx.core:core-ktx:1.7.0"
         

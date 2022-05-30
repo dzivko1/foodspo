@@ -3,6 +3,7 @@ import altline.foodspo.buildsrc.Libs
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'com.google.gms.google-services'
 }
 apply from: rootProject.file("android.build.gradle")
 
@@ -30,6 +31,11 @@ android {
 dependencies {
     api project(":domain")
 
+    implementation platform(Libs.Firebase.bom)
+
+    implementation Libs.Firebase.analyticsKtx
+    implementation Libs.Firebase.uiAuth
+    implementation Libs.Android.playServicesAuth
     implementation Libs.AndroidX.coreKtx
     implementation Libs.AndroidX.Compose.ui
     implementation Libs.AndroidX.Compose.uiToolingPreview
