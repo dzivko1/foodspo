@@ -14,6 +14,7 @@ import com.firebase.ui.auth.FirebaseUiException
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.firebase.auth.FirebaseAuth
+import timber.log.Timber
 
 class MainActivity : ComponentActivity() {
 
@@ -70,15 +71,11 @@ class MainActivity : ComponentActivity() {
     
     private fun onSignInFail(error: FirebaseUiException?) {
         if (error == null) {
-            Log.i(TAG, "Sign in cancelled by user.")
+            Timber.i("Sign in cancelled by user.")
         } else {
-            Log.e(TAG, "Sign in failed. Error code: ${error.errorCode}. Message: ${error.message}")
+            Timber.e("Sign in failed. Error code: ${error.errorCode}. Message: ${error.message}")
         }
         
         startSignIn()
-    }
-    
-    companion object {
-        private const val TAG = "MainActivity"
     }
 }

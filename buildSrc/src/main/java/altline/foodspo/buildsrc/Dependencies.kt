@@ -2,6 +2,15 @@ package altline.foodspo.buildsrc
 
 object Libs {
     
+    object KotlinX {
+        object Coroutines {
+            private const val version = "1.6.1"
+            
+            const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
+            const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
+        }
+    }
+    
     object Firebase {
         const val bom = "com.google.firebase:firebase-bom:30.0.1"
         const val analyticsKtx = "com.google.firebase:firebase-analytics-ktx"
@@ -49,6 +58,34 @@ object Libs {
         private const val version = "0.23.1"
         
         const val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:$version"
+    }
+    
+    object Koin {
+        const val koinCompose = "io.insert-koin:koin-androidx-compose:3.2.0"
+    }
+    
+    object Timber {
+        const val timber = "com.jakewharton.timber:timber:5.0.1"
+    }
+    
+    object Moshi {
+        private const val version = "1.13.0"
+        const val moshi = "com.squareup.moshi:moshi:$version"
+        const val moshiKotlin = "com.squareup.moshi:moshi-kotlin:$version"
+    }
+    
+    object OkHttp {
+        const val loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:4.10.0"
+    }
+    
+    object Retrofit {
+        private const val version = "2.9.0"
+        const val retrofit = "com.squareup.retrofit2:retrofit:$version"
+        const val moshiConverter = "com.squareup.retrofit2:converter-moshi:$version"
+    }
+    
+    object Coil {
+        const val coilCompose = "io.coil-kt:coil-compose:2.1.0"
     }
     
     object JUnit {

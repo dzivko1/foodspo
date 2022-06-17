@@ -24,6 +24,9 @@ android {
     packagingOptions {
         resources {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
+
+            // KotlinX Coroutines
+            excludes += "DebugProbesKt.bin"
         }
     }
 }
@@ -33,6 +36,8 @@ dependencies {
 
     implementation platform(Libs.Firebase.bom)
 
+    implementation Libs.KotlinX.Coroutines.core
+    implementation Libs.KotlinX.Coroutines.android
     implementation Libs.Firebase.analyticsKtx
     implementation Libs.Firebase.uiAuth
     implementation Libs.Android.playServicesAuth
@@ -45,6 +50,9 @@ dependencies {
     implementation Libs.AndroidX.Lifecycle.lifecycleRuntimeKtx
     implementation Libs.AndroidX.Navigation.navigationCompose
     implementation Libs.Accompanist.systemUiController
+    implementation Libs.Koin.koinCompose
+    implementation Libs.Timber.timber
+    implementation Libs.Coil.coilCompose
 
     testImplementation Libs.JUnit.junit
     androidTestImplementation Libs.AndroidX.Test.junit

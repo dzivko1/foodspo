@@ -2,6 +2,9 @@ package altline.foodspo.ui.core.navigation
 
 import altline.foodspo.R
 import altline.foodspo.ui.explore.ExploreScreen
+import altline.foodspo.ui.mealPlanner.MealPlannerScreen
+import altline.foodspo.ui.recipes.RecipesScreen
+import altline.foodspo.ui.shopping.ShoppingScreen
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Explore
@@ -28,19 +31,19 @@ enum class AppDestination(
         route = "recipes",
         title = R.string.destination_title_recipes,
         icon = Icons.Filled.MenuBook,
-        content = { ExploreScreen() }
+        content = { RecipesScreen() }
     ),
     Shopping(
         route = "shopping",
         title = R.string.destination_title_shopping,
         icon = Icons.Filled.ShoppingCart,
-        content = { ExploreScreen() }
+        content = { ShoppingScreen() }
     ),
     MealPlanner(
         route = "mealPlanner",
         title = R.string.destination_title_meal_planner,
         icon = Icons.Filled.RestaurantMenu,
-        content = { ExploreScreen() }
+        content = { MealPlannerScreen() }
     );
     
     companion object {
