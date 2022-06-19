@@ -1,5 +1,6 @@
 package altline.foodspo.ui.explore
 
+import altline.foodspo.ui.core.LocalNavController
 import altline.foodspo.ui.core.component.RecipeCard
 import altline.foodspo.ui.core.component.RecipeCardUi
 import altline.foodspo.ui.explore.ExploreUiState.*
@@ -29,6 +30,8 @@ fun ExploreScreen(viewModel: ExploreViewModel = koinViewModel()) {
 private fun Content(
     recipes: List<RecipeCardUi>
 ) {
+    val appNavController = LocalNavController.current
+    
     LazyColumn(
         contentPadding = PaddingValues(AppTheme.spaces.xl),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spaces.xl)
@@ -36,9 +39,9 @@ private fun Content(
         items(recipes) { recipe ->
             RecipeCard(
                 recipe = recipe,
-                onOpenRecipe = {},
-                onAddToCart = {},
-                onSave = {}
+                onRecipeClick = { appNavController.navigateToRecipeDetails(recipe.id) },
+                onAddToShoppingList = {},
+                onSaveToggle = {}
             )
         }
     }
@@ -51,12 +54,14 @@ fun PreviewContent() {
         Content(
             listOf(
                 RecipeCardUi(
+                    id = 0,
                     title = "Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs",
                     image = PlaceholderImages.recipe,
                     author = "Maplewood Road",
                     isSaved = false
                 ),
                 RecipeCardUi(
+                    id = 1,
                     title = "Spaghetti with Meatballs",
                     image = PlaceholderImages.recipe,
                     author = "Maplewood Road",

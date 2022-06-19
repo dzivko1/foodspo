@@ -21,6 +21,7 @@ fun NavGraph(
         for (dest in destinations) {
             composable(
                 route = dest.route,
+                arguments = dest.arguments,
                 content = dest.content
             )
         }

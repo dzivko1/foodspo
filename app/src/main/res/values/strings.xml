@@ -5,8 +5,9 @@
     <string name="destination_title_recipes">Recipes</string>
     <string name="destination_title_shopping">Shopping</string>
     <string name="destination_title_meal_planner">Meal planner</string>
+    <string name="destination_title_recipe">Recipe</string>
 
-    <string name="content_desc_add_ingredients_to_cart">Add ingredients to cart</string>
-    <string name="content_desc_add_to_cart">Add to cart</string>
+    <string name="content_desc_add_ingredients_to_shopping_list">Add ingredients to shopping list</string>
+    <string name="content_desc_add_to_shopping_list">Add to shopping list</string>
     <string name="content_desc_save_recipe">Save recipe</string>
 </resources>

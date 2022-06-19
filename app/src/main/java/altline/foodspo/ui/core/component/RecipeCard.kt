@@ -27,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 
 data class RecipeCardUi(
+    val id: Long,
     val title: String,
     val image: ImageSrc,
     val author: String?,
@@ -36,12 +37,12 @@ data class RecipeCardUi(
 @Composable
 fun RecipeCard(
     recipe: RecipeCardUi,
-    onOpenRecipe: () -> Unit,
-    onAddToCart: () -> Unit,
-    onSave: () -> Unit
+    onRecipeClick: () -> Unit,
+    onAddToShoppingList: () -> Unit,
+    onSaveToggle: () -> Unit
 ) {
     Card(
-        Modifier.clickable(onClick = onOpenRecipe)
+        Modifier.clickable(onClick = onRecipeClick)
     ) {
         Column {
             GeneralImage(
@@ -67,14 +68,14 @@ fun RecipeCard(
                 }
             }
             Row(Modifier.align(End)) {
-                IconButton(onClick = onAddToCart) {
+                IconButton(onClick = onAddToShoppingList) {
                     Icon(
                         imageVector = Icons.Default.AddShoppingCart,
-                        contentDescription = stringResource(R.string.content_desc_add_ingredients_to_cart),
+                        contentDescription = stringResource(R.string.content_desc_add_ingredients_to_shopping_list),
                         tint = AppTheme.colors.onSurfaceMedium
                     )
                 }
-                IconButton(onClick = onSave) {
+                IconButton(onClick = onSaveToggle) {
                     Icon(
                         imageVector = if (recipe.isSaved) Icons.Default.Favorite
                         else Icons.Default.FavoriteBorder,
@@ -93,14 +94,15 @@ fun PreviewRecipeCard() {
     AppTheme {
         RecipeCard(
             recipe = RecipeCardUi(
+                id = 0,
                 title = "Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs",
                 image = PlaceholderImages.recipe,
                 author = "Maplewood Road",
                 isSaved = false
             ),
-            onOpenRecipe = {},
-            onAddToCart = {},
-            onSave = {}
+            onRecipeClick = {},
+            onAddToShoppingList = {},
+            onSaveToggle = {}
         )
     }
 }
