@@ -13,15 +13,15 @@ internal class RecipeMapper(
             id = raw.id,
             title = raw.title ?: "",
             image = raw.image?.let { ImageSrc(it) },
-            author = raw.author ?: "",
-            sourceName = raw.sourceName ?: "",
-            sourceUrl = raw.sourceUrl ?: "",
-            creditsText = raw.creditsText ?: "",
+            sourceName = raw.sourceName,
+            sourceUrl = raw.sourceUrl,
+            creditsText = raw.creditsText,
             servings = raw.servings,
             readyInMinutes = raw.readyInMinutes,
             instructions = raw.instructions ?: "",
             summary = raw.summary ?: "",
-            ingredients = mapIngredients(raw.extendedIngredients)
+            ingredients = mapIngredients(raw.extendedIngredients),
+            isSaved = false
         )
     }
     

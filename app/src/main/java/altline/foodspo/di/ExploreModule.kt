@@ -9,7 +9,8 @@ import org.koin.dsl.module
 val exploreModule = module {
     viewModel {
         ExploreViewModel(
-            getRandomRecipes = get()
+            getRandomRecipes = get(),
+            recipeUiMapper = get()
         )
     }
     

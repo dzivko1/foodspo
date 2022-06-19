@@ -11,7 +11,6 @@ internal data class RecipeResponse(
     @Json(name = "id") val id: Long,
     @Json(name = "title") val title: String?,
     @Json(name = "image") val image: String?,
-    @Json(name = "author") val author: String?,
     @Json(name = "sourceName") val sourceName: String?,
     @Json(name = "sourceUrl") val sourceUrl: String?,
     @Json(name = "creditsText") val creditsText: String?,

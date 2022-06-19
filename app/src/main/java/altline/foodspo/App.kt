@@ -1,6 +1,7 @@
 package altline.foodspo
 
 import altline.foodspo.data.di.dataModule
+import altline.foodspo.di.coreModule
 import altline.foodspo.di.exploreModule
 import android.app.Application
 import org.koin.android.ext.koin.androidContext
@@ -21,6 +22,7 @@ class App : Application() {
             androidLogger()
             androidContext(this@App)
             modules(
+                coreModule,
                 dataModule,
                 exploreModule
             )
