@@ -1,5 +1,8 @@
 package altline.foodspo.ui.theme
 
+import androidx.compose.material.Colors
+import androidx.compose.material.darkColors
+import androidx.compose.material.lightColors
 import androidx.compose.ui.graphics.Color
 
 val Yellow50 = Color(0xFFFFFDE7)
@@ -23,3 +26,42 @@ val Orange600 = Color(0xFFFB8C00)
 val Orange700 = Color(0xFFF57C00)
 val Orange800 = Color(0xFFEF6C00)
 val Orange900 = Color(0xFFE65100)
+
+private val LightColorPalette = lightColors(
+    primary = Yellow400,
+    primaryVariant = Yellow600,
+    secondary = Orange300,
+    secondaryVariant = Orange500,
+    onPrimary = Color.Black,
+    onSecondary = Color.Black,
+    onSurface = Color.Black.copy(alpha = 0.87f)
+)
+
+private val DarkColorPalette = darkColors(
+    primary = Yellow500,
+    primaryVariant = Yellow600,
+    secondary = Orange300,
+    secondaryVariant = Orange500,
+    onPrimary = Color.Black,
+    onSecondary = Color.Black
+)
+
+fun themedColors(darkTheme: Boolean): Colors {
+    return if (darkTheme) {
+        DarkColorPalette
+    } else {
+        LightColorPalette
+    }
+}
+
+/**
+ * Less emphasised [Colors.onSurface] color.
+ */
+val Colors.onSurfaceMedium: Color
+    get() = onSurface.copy(alpha = 0.6f)
+
+/**
+ * [Colors.onSurface] color for disabled items.
+ */
+val Colors.onSurfaceDisabled: Color
+    get() = onSurface.copy(alpha = 0.38f)
