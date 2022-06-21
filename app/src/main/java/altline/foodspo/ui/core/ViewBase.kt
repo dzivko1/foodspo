@@ -1,12 +1,14 @@
 package altline.foodspo.ui.core
 
 import altline.foodspo.ui.core.navigation.*
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.currentBackStackEntryAsState
 
@@ -40,11 +42,12 @@ fun ViewBase() {
                     onDestinationSelected = { appNavController.navigateToAppDestination(it) }
                 )
             }
-        ) {
+        ) { paddingValues ->
             NavGraph(
                 navController = appNavController.navHostController,
                 destinations = AppDestination.values().asList(),
-                startDestination = startDestination
+                startDestination = startDestination,
+                modifier = Modifier.padding(paddingValues)
             )
         }
     }
