@@ -16,22 +16,27 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ExploreScreen(viewModel: ExploreViewModel = koinViewModel()) {
+    val appNavController = LocalNavController.current
     
-    val uiState = viewModel.uiState
-    
-    when (uiState) {
-        is Content -> Content(uiState.recipes)
+    when (val uiState = viewModel.uiState) {
         is Loading -> {}
         is Error -> {}
+        is Content -> Content(
+            recipes = uiState.recipes,
+            onRecipeClick = { appNavController.navigateToRecipeDetails(it) },
+            onAddToShoppingList = { viewModel.addIngredientsToShoppingList(it) },
+            onToggleSave = { viewModel.toggleSaveRecipe(it) }
+        )
     }
 }
 
 @Composable
 private fun Content(
-    recipes: List<RecipeCardUi>
+    recipes: List<RecipeCardUi>,
+    onRecipeClick: (recipeId: Long) -> Unit,
+    onAddToShoppingList: (recipeId: Long) -> Unit,
+    onToggleSave: (recipeId: Long) -> Unit
 ) {
-    val appNavController = LocalNavController.current
-    
     LazyColumn(
         contentPadding = PaddingValues(AppTheme.spaces.xl),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spaces.xl)
@@ -39,13 +44,14 @@ private fun Content(
         items(recipes) { recipe ->
             RecipeCard(
                 recipe = recipe,
-                onRecipeClick = { appNavController.navigateToRecipeDetails(recipe.id) },
-                onAddToShoppingList = {},
-                onSaveToggle = {}
+                onRecipeClick = { onRecipeClick(recipe.id) },
+                onAddToShoppingList = { onAddToShoppingList(recipe.id) },
+                onToggleSave = { onToggleSave(recipe.id) }
             )
         }
     }
 }
+
 
 @Preview
 @Composable
@@ -67,7 +73,10 @@ fun PreviewContent() {
                     author = "Maplewood Road",
                     isSaved = true
                 )
-            )
+            ),
+            onRecipeClick = {},
+            onAddToShoppingList = {},
+            onToggleSave = {}
         )
     }
 }

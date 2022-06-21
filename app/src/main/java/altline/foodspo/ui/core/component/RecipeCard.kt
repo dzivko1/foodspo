@@ -34,7 +34,7 @@ fun RecipeCard(
     recipe: RecipeCardUi,
     onRecipeClick: () -> Unit,
     onAddToShoppingList: () -> Unit,
-    onSaveToggle: () -> Unit
+    onToggleSave: () -> Unit
 ) {
     Card(
         Modifier.clickable(onClick = onRecipeClick)
@@ -70,7 +70,7 @@ fun RecipeCard(
                         tint = modifiedColor(alpha = ContentAlpha.medium)
                     )
                 }
-                IconButton(onClick = onSaveToggle) {
+                IconButton(onClick = onToggleSave) {
                     SaveIcon(recipe.isSaved)
                 }
             }
@@ -92,7 +92,7 @@ fun PreviewRecipeCard() {
             ),
             onRecipeClick = {},
             onAddToShoppingList = {},
-            onSaveToggle = {}
+            onToggleSave = {}
         )
     }
 }

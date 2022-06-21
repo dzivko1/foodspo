@@ -20,6 +20,10 @@ class ExploreViewModel(
         private set
     
     init {
+        loadRandomRecipes()
+    }
+    
+    fun loadRandomRecipes() {
         viewModelScope.launch {
             getRandomRecipes().onStart {
                 uiState = ExploreUiState.Loading
@@ -31,5 +35,13 @@ class ExploreViewModel(
                 )
             }
         }
+    }
+    
+    fun toggleSaveRecipe(recipeId: Long) {
+    
+    }
+    
+    fun addIngredientsToShoppingList(recipeId: Long) {
+    
     }
 }
