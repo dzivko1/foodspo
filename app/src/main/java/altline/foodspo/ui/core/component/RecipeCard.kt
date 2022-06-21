@@ -4,16 +4,13 @@ import altline.foodspo.R
 import altline.foodspo.data.util.ImageSrc
 import altline.foodspo.ui.placeholder.PlaceholderImages
 import altline.foodspo.ui.theme.AppTheme
-import altline.foodspo.ui.theme.onSurfaceMedium
+import altline.foodspo.util.modifiedColor
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddShoppingCart
 import androidx.compose.material.icons.filled.Favorite
@@ -63,7 +60,7 @@ fun RecipeCard(
                     Text(
                         text = "by $it",
                         style = AppTheme.typography.caption,
-                        color = AppTheme.colors.onSurfaceMedium
+                        color = modifiedColor(alpha = ContentAlpha.medium)
                     )
                 }
             }
@@ -72,15 +69,14 @@ fun RecipeCard(
                     Icon(
                         imageVector = Icons.Default.AddShoppingCart,
                         contentDescription = stringResource(R.string.content_desc_add_ingredients_to_shopping_list),
-                        tint = AppTheme.colors.onSurfaceMedium
+                        tint = modifiedColor(alpha = ContentAlpha.medium)
                     )
                 }
                 IconButton(onClick = onSaveToggle) {
                     Icon(
                         imageVector = if (recipe.isSaved) Icons.Default.Favorite
                         else Icons.Default.FavoriteBorder,
-                        contentDescription = stringResource(R.string.content_desc_save_recipe),
-                        tint = AppTheme.colors.onSurfaceMedium
+                        contentDescription = stringResource(R.string.content_desc_save_recipe)
                     )
                 }
             }

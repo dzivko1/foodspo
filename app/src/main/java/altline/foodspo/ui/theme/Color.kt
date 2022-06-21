@@ -32,9 +32,9 @@ private val LightColorPalette = lightColors(
     primaryVariant = Yellow600,
     secondary = Orange300,
     secondaryVariant = Orange500,
-    onPrimary = Color.Black,
+    onPrimary = Color(0xFF111111),
     onSecondary = Color.Black,
-    onSurface = Color.Black.copy(alpha = 0.87f)
+    onSurface = Color.Black
 )
 
 private val DarkColorPalette = darkColors(
@@ -53,15 +53,3 @@ fun themedColors(darkTheme: Boolean): Colors {
         LightColorPalette
     }
 }
-
-/**
- * Less emphasised [Colors.onSurface] color.
- */
-val Colors.onSurfaceMedium: Color
-    get() = onSurface.copy(alpha = 0.6f)
-
-/**
- * [Colors.onSurface] color for disabled items.
- */
-val Colors.onSurfaceDisabled: Color
-    get() = onSurface.copy(alpha = 0.38f)
