@@ -32,6 +32,7 @@ class LauncherActivity : ComponentActivity() {
         val signInIntent = AuthUI.getInstance()
             .createSignInIntentBuilder()
             .setAvailableProviders(providers)
+            .setTheme(R.style.Theme_Foodspo_FirebaseUI)
             .build()
         
         signInLauncher.launch(signInIntent)
