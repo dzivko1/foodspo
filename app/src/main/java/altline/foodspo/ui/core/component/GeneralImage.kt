@@ -6,6 +6,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.DefaultAlpha
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -18,7 +20,11 @@ fun GeneralImage(
     modifier: Modifier = Modifier,
     alignment: Alignment = Alignment.Center,
     contentScale: ContentScale = ContentScale.Fit,
-    placeholder: Painter? = null
+    alpha: Float = DefaultAlpha,
+    colorFilter: ColorFilter? = null,
+    placeholder: Painter? = null,
+    error: Painter? = null,
+    fallback: Painter? = null
 ) {
     when (image) {
         is Vector -> {
@@ -27,7 +33,9 @@ fun GeneralImage(
                 contentDescription = contentDescription,
                 modifier = modifier,
                 alignment = alignment,
-                contentScale = contentScale
+                contentScale = contentScale,
+                alpha = alpha,
+                colorFilter = colorFilter
             )
         }
         is Bitmap -> {
@@ -36,7 +44,9 @@ fun GeneralImage(
                 contentDescription = contentDescription,
                 modifier = modifier,
                 alignment = alignment,
-                contentScale = contentScale
+                contentScale = contentScale,
+                alpha = alpha,
+                colorFilter = colorFilter
             )
         }
         is Drawable -> {
@@ -45,7 +55,9 @@ fun GeneralImage(
                 contentDescription = contentDescription,
                 modifier = modifier,
                 alignment = alignment,
-                contentScale = contentScale
+                contentScale = contentScale,
+                alpha = alpha,
+                colorFilter = colorFilter
             )
         }
         is Path -> {
@@ -55,7 +67,11 @@ fun GeneralImage(
                 modifier = modifier,
                 alignment = alignment,
                 contentScale = contentScale,
-                placeholder = placeholder
+                alpha = alpha,
+                colorFilter = colorFilter,
+                placeholder = placeholder,
+                error = error,
+                fallback = fallback
             )
         }
     }
