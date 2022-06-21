@@ -13,8 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddShoppingCart
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.End
 import androidx.compose.ui.Modifier
@@ -73,11 +71,7 @@ fun RecipeCard(
                     )
                 }
                 IconButton(onClick = onSaveToggle) {
-                    Icon(
-                        imageVector = if (recipe.isSaved) Icons.Default.Favorite
-                        else Icons.Default.FavoriteBorder,
-                        contentDescription = stringResource(R.string.content_desc_save_recipe)
-                    )
+                    SaveIcon(recipe.isSaved)
                 }
             }
         }
