@@ -3,7 +3,7 @@ package altline.foodspo.data.recipe.mapper
 import altline.foodspo.data.ingredient.mapper.IngredientMapper
 import altline.foodspo.data.recipe.model.Recipe
 import altline.foodspo.data.recipe.model.network.RecipeResponse
-import altline.foodspo.data.util.ImageSrc
+import altline.foodspo.data.core.model.ImageSrc
 
 internal class RecipeMapper(
     private val mapIngredients: IngredientMapper

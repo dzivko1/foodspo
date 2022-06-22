@@ -1,4 +1,4 @@
-package altline.foodspo.data.util
+package altline.foodspo.data.core.model
 
 import androidx.annotation.DrawableRes
 import androidx.compose.ui.graphics.ImageBitmap

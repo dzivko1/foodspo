@@ -1,7 +1,7 @@
 package altline.foodspo.ui.core.component
 
-import altline.foodspo.data.util.ImageSrc
-import altline.foodspo.data.util.ImageSrc.*
+import altline.foodspo.data.core.model.ImageSrc
+import altline.foodspo.data.core.model.ImageSrc.*
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment

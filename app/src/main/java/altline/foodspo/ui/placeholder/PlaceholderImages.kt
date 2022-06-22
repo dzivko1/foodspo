@@ -1,7 +1,7 @@
 package altline.foodspo.ui.placeholder
 
 import altline.foodspo.R
-import altline.foodspo.data.util.ImageSrc
+import altline.foodspo.data.core.model.ImageSrc
 
 object PlaceholderImages {
     val recipe = ImageSrc(R.drawable.placeholder_recipe)

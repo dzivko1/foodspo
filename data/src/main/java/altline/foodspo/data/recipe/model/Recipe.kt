@@ -1,7 +1,7 @@
 package altline.foodspo.data.recipe.model
 
 import altline.foodspo.data.ingredient.model.Ingredient
-import altline.foodspo.data.util.ImageSrc
+import altline.foodspo.data.core.model.ImageSrc
 
 data class Recipe(
     val id: Long,

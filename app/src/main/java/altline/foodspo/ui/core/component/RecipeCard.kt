@@ -1,7 +1,7 @@
 package altline.foodspo.ui.core.component
 
 import altline.foodspo.R
-import altline.foodspo.data.util.ImageSrc
+import altline.foodspo.data.core.model.ImageSrc
 import altline.foodspo.ui.placeholder.PlaceholderImages
 import altline.foodspo.ui.theme.AppTheme
 import altline.foodspo.util.modifiedColor

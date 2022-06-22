@@ -2,7 +2,7 @@ package altline.foodspo.data.ingredient.mapper
 
 import altline.foodspo.data.ingredient.model.Ingredient
 import altline.foodspo.data.ingredient.model.network.IngredientResponse
-import altline.foodspo.data.util.ImageSrc
+import altline.foodspo.data.core.model.ImageSrc
 
 internal class IngredientMapper(
     private val mapMeasures: MeasureMapper
