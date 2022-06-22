@@ -1,10 +1,11 @@
 package altline.foodspo.ui.core
 
+import altline.foodspo.R
 import altline.foodspo.ui.core.navigation.*
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
@@ -32,15 +33,27 @@ fun ViewBase() {
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text(stringResource(currentDestination.title)) }
+                    title = { Text(stringResource(currentDestination.title)) },
+                    navigationIcon = if (currentDestination !in AppDestination.topDestinations) {
+                        {
+                            IconButton(onClick = appNavController::navigateUp) {
+                                Icon(
+                                    Icons.Default.ArrowBack,
+                                    contentDescription = stringResource(R.string.content_desc_navigate_up)
+                                )
+                            }
+                        }
+                    } else null
                 )
             },
             bottomBar = {
-                AppBottomNavigation(
-                    destinations = AppDestination.topDestinations,
-                    currentDestination = currentDestination,
-                    onDestinationSelected = { appNavController.navigateToAppDestination(it) }
-                )
+                if (currentDestination in AppDestination.topDestinations) {
+                    AppBottomNavigation(
+                        destinations = AppDestination.topDestinations,
+                        currentDestination = currentDestination,
+                        onDestinationSelected = { appNavController.navigateToAppDestination(it) }
+                    )
+                }
             }
         ) { paddingValues ->
             NavGraph(

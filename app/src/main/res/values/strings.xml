@@ -12,6 +12,7 @@
     <string name="error_other_title">Something went wrong.</string>
     <string name="error_other_message">Please try again.</string>
 
+    <string name="content_desc_navigate_up">Go back</string>
     <string name="content_desc_add_ingredients_to_shopping_list">Add ingredients to shopping list</string>
     <string name="content_desc_add_to_shopping_list">Add to shopping list</string>
     <string name="content_desc_save_recipe">Save recipe</string>
