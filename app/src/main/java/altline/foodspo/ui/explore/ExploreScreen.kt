@@ -1,6 +1,8 @@
 package altline.foodspo.ui.explore
 
 import altline.foodspo.ui.core.LocalNavController
+import altline.foodspo.ui.core.component.InfoPanel
+import altline.foodspo.ui.core.component.LoadingSpinner
 import altline.foodspo.ui.core.component.RecipeCard
 import altline.foodspo.ui.core.component.RecipeCardUi
 import altline.foodspo.ui.explore.ExploreUiState.*
@@ -19,8 +21,8 @@ fun ExploreScreen(viewModel: ExploreViewModel = koinViewModel()) {
     val appNavController = LocalNavController.current
     
     when (val uiState = viewModel.uiState) {
-        is Loading -> {}
-        is Error -> {}
+        is Loading -> LoadingSpinner()
+        is Error -> InfoPanel(uiState.error) { viewModel.loadRandomRecipes() }
         is Content -> Content(
             recipes = uiState.recipes,
             onRecipeClick = { appNavController.navigateToRecipeDetails(it) },
