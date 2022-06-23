@@ -1,6 +1,7 @@
 package altline.foodspo
 
 import altline.foodspo.data.di.dataModule
+import altline.foodspo.data.di.networkModule
 import altline.foodspo.di.coreModule
 import altline.foodspo.di.exploreModule
 import android.app.Application
@@ -23,6 +24,7 @@ class App : Application() {
             androidContext(this@App)
             modules(
                 coreModule,
+                networkModule,
                 dataModule,
                 exploreModule
             )
