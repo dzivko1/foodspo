@@ -2,9 +2,11 @@ package altline.foodspo.data.di
 
 import altline.foodspo.data.BuildConfig
 import altline.foodspo.data.SPOONACULAR_BASE_URL
+import altline.foodspo.data.error.ExceptionMapper
 import altline.foodspo.data.ingredient.mapper.IngredientMapper
 import altline.foodspo.data.ingredient.mapper.MeasureMapper
 import altline.foodspo.data.network.AuthInterceptor
+import altline.foodspo.data.network.NetworkUtils
 import altline.foodspo.data.network.RecipeApi
 import altline.foodspo.data.recipe.RecipeApiDataSource
 import altline.foodspo.data.recipe.RecipeFirebaseDataSource
@@ -15,6 +17,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -51,11 +54,15 @@ val dataModule = module {
             .build()
     }
     
+    factory { NetworkUtils(androidContext()) }
+    factory { ExceptionMapper(get()) }
+    
     single<RecipeApi> { get<Retrofit>().create(RecipeApi::class.java) }
     
     factory {
         RecipeApiDataSource(
-            recipeApi = get()
+            recipeApi = get(),
+            mapExceptions = get()
         )
     }
     

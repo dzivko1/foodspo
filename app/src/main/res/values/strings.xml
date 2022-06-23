@@ -9,12 +9,20 @@
 
     <string name="action_retry">Retry</string>
 
-    <string name="error_other_title">Something went wrong.</string>
-    <string name="error_other_message">Please try again.</string>
-
     <string name="content_desc_navigate_up">Go back</string>
     <string name="content_desc_add_ingredients_to_shopping_list">Add ingredients to shopping list</string>
     <string name="content_desc_add_to_shopping_list">Add to shopping list</string>
     <string name="content_desc_save_recipe">Save recipe</string>
     <string name="content_desc_drop_recipe">Drop recipe</string>
+
+    <string name="error_not_connected_title">No internet connection</string>
+    <string name="error_not_connected_message">Please make sure you have a working internet connection</string>
+    <string name="error_service_unavailable_title">The service is currently unavailable</string>
+    <string name="error_service_unavailable_message">Please try again later</string>
+    <string name="error_access_denied_title">Access denied</string>
+    <string name="error_access_denied_message">You don\'t have access to the requested resource</string>
+    <string name="error_not_found_title">Resource not found</string>
+    <string name="error_not_found_message">We could not find the requested resource</string>
+    <string name="error_unknown_title">Something went wrong</string>
+    <string name="error_unknown_message">Please try again</string>
 </resources>
