@@ -49,6 +49,7 @@ dependencies {
     implementation Libs.AndroidX.Activity.activityCompose
     implementation Libs.AndroidX.Lifecycle.lifecycleRuntimeKtx
     implementation Libs.AndroidX.Navigation.navigationCompose
+    implementation Libs.AndroidX.Paging.pagingCompose
     implementation Libs.Accompanist.systemUiController
     implementation Libs.Koin.koinCompose
     implementation Libs.Timber.timber

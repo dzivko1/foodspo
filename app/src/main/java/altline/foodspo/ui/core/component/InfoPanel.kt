@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import java.io.IOException
 
 @Composable
-fun InfoPanel(error: AppException, retryAction: (() -> Unit)) = when (error) {
+fun InfoPanel(error: Throwable, retryAction: (() -> Unit)) = when (error) {
     is NotConnectedException -> InfoPanel(
         title = stringResource(R.string.error_not_connected_title),
         message = stringResource(R.string.error_not_connected_message),
@@ -50,7 +50,7 @@ fun InfoPanel(error: AppException, retryAction: (() -> Unit)) = when (error) {
         actionLabel = stringResource(R.string.action_retry),
         action = retryAction
     )
-    is UnknownException -> InfoPanel(
+    else -> InfoPanel(
         title = stringResource(R.string.error_unknown_title),
         message = stringResource(R.string.error_unknown_message),
         image = rememberVectorPainter(Icons.Default.ErrorOutline),
@@ -109,6 +109,20 @@ fun InfoPanel(
     }
 }
 
+
+@Preview
+@Composable
+fun PreviewInfoPanel() {
+    AppTheme {
+        Surface {
+            InfoPanel(
+                "Title",
+                "Message",
+                rememberVectorPainter(Icons.Default.Error)
+            )
+        }
+    }
+}
 
 @Preview
 @Composable

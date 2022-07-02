@@ -48,6 +48,11 @@ object Libs {
             const val navigationCompose = "androidx.navigation:navigation-compose:2.4.2"
         }
         
+        object Paging {
+            const val pagingRuntime = "androidx.paging:paging-runtime:3.1.1"
+            const val pagingCompose = "androidx.paging:paging-compose:1.0.0-alpha15"
+        }
+        
         object Test {
             const val junit = "androidx.test.ext:junit:1.1.3"
             const val espressoCore = "androidx.test.espresso:espresso-core:3.4.0"

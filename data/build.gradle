@@ -10,6 +10,7 @@ dependencies {
     implementation Libs.KotlinX.Coroutines.core
     implementation Libs.KotlinX.Coroutines.android
     implementation Libs.AndroidX.coreKtx
+    implementation Libs.AndroidX.Paging.pagingRuntime
     implementation Libs.Koin.koinCompose
     implementation Libs.Timber.timber
     implementation Libs.Moshi.moshi
