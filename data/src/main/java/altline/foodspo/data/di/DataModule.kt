@@ -13,8 +13,7 @@ val dataModule = module {
     
     factory {
         RecipeApiDataSource(
-            recipeApi = get(),
-            mapExceptions = get()
+            recipeApi = get()
         )
     }
     
@@ -28,7 +27,8 @@ val dataModule = module {
         RecipeRepositoryImpl(
             apiDataSource = get(),
             firebaseDataSource = get(),
-            mapRecipes = get()
+            mapRecipes = get(),
+            mapExceptions = get()
         )
     }
     
