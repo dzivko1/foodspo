@@ -2,6 +2,12 @@ package altline.foodspo.buildsrc
 
 object Libs {
     
+    object Kotlin {
+        const val version = "1.6.10"
+        
+        const val kotlinAndroidPlugin = "org.jetbrains.kotlin.android:org.jetbrains.kotlin.android.gradle.plugin:$version"
+    }
+    
     object KotlinX {
         object Coroutines {
             private const val version = "1.6.1"
@@ -9,12 +15,6 @@ object Libs {
             const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
             const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
         }
-    }
-    
-    object Firebase {
-        const val bom = "com.google.firebase:firebase-bom:30.0.1"
-        const val analyticsKtx = "com.google.firebase:firebase-analytics-ktx"
-        const val uiAuth = "com.firebaseui:firebase-ui-auth:7.2.0"
     }
     
     object Android {
@@ -57,6 +57,16 @@ object Libs {
             const val junit = "androidx.test.ext:junit:1.1.3"
             const val espressoCore = "androidx.test.espresso:espresso-core:3.4.0"
         }
+    }
+    
+    object Google {
+        const val googleServicesPlugin = "com.google.gms:google-services:4.3.13"
+    }
+    
+    object Firebase {
+        const val bom = "com.google.firebase:firebase-bom:30.0.1"
+        const val analyticsKtx = "com.google.firebase:firebase-analytics-ktx"
+        const val uiAuth = "com.firebaseui:firebase-ui-auth:7.2.0"
     }
     
     object Accompanist {
