@@ -1,4 +1,4 @@
-package altline.foodspo.ui.recipes
+package altline.foodspo.ui.screen.recipes
 
 import androidx.compose.runtime.Composable
 

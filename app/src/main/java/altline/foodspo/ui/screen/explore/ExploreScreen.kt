@@ -1,11 +1,11 @@
-package altline.foodspo.ui.explore
+package altline.foodspo.ui.screen.explore
 
 import altline.foodspo.ui.core.LocalNavController
 import altline.foodspo.ui.core.component.InfoPanel
 import altline.foodspo.ui.core.component.LoadingSpinner
-import altline.foodspo.ui.core.component.RecipeCard
-import altline.foodspo.ui.core.component.RecipeCardUi
 import altline.foodspo.ui.placeholder.PlaceholderImages
+import altline.foodspo.ui.recipe.component.RecipeCard
+import altline.foodspo.ui.recipe.component.RecipeCardUi
 import altline.foodspo.ui.theme.AppTheme
 import altline.foodspo.util.anyError
 import altline.foodspo.util.isAnyLoading

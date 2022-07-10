@@ -1,9 +1,9 @@
-package altline.foodspo.ui.explore
+package altline.foodspo.ui.screen.explore
 
 import altline.foodspo.data.RECIPE_PAGE_SIZE
 import altline.foodspo.data.recipe.RecipePagingSource
 import altline.foodspo.domain.recipe.GetRandomRecipesUseCase
-import altline.foodspo.ui.core.mapper.RecipeUiMapper
+import altline.foodspo.ui.recipe.RecipeUiMapper
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue

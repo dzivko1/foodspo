@@ -1,6 +1,5 @@
-package altline.foodspo.ui.recipeDetails
+package altline.foodspo.ui.screen.recipeDetails
 
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 
 @Composable

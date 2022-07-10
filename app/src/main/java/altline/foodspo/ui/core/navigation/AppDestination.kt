@@ -1,11 +1,11 @@
 package altline.foodspo.ui.core.navigation
 
 import altline.foodspo.R
-import altline.foodspo.ui.explore.ExploreScreen
-import altline.foodspo.ui.mealPlanner.MealPlannerScreen
-import altline.foodspo.ui.recipeDetails.RecipeDetailsScreen
-import altline.foodspo.ui.recipes.RecipesScreen
-import altline.foodspo.ui.shopping.ShoppingScreen
+import altline.foodspo.ui.screen.explore.ExploreScreen
+import altline.foodspo.ui.screen.mealPlanner.MealPlannerScreen
+import altline.foodspo.ui.screen.recipeDetails.RecipeDetailsScreen
+import altline.foodspo.ui.screen.recipes.RecipesScreen
+import altline.foodspo.ui.screen.shopping.ShoppingScreen
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Explore

@@ -1,7 +1,9 @@
-package altline.foodspo.ui.core.component
+package altline.foodspo.ui.recipe.component
 
 import altline.foodspo.R
 import altline.foodspo.data.core.model.ImageSrc
+import altline.foodspo.ui.core.component.GeneralImage
+import altline.foodspo.ui.core.component.SaveIcon
 import altline.foodspo.ui.placeholder.PlaceholderImages
 import altline.foodspo.ui.theme.AppTheme
 import altline.foodspo.util.modifiedColor

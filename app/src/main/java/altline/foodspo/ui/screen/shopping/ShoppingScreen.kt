@@ -1,4 +1,4 @@
-package altline.foodspo.ui.shopping
+package altline.foodspo.ui.screen.shopping
 
 import androidx.compose.runtime.Composable
 

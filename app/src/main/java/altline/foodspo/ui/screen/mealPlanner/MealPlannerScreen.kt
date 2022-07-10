@@ -1,4 +1,4 @@
-package altline.foodspo.ui.mealPlanner
+package altline.foodspo.ui.screen.mealPlanner
 
 import androidx.compose.runtime.Composable
 
