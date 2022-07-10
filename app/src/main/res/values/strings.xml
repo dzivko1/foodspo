@@ -1,20 +1,24 @@
 <resources>
     <string name="app_name">Foodspo</string>
 
+    <!-- Destination titles -->
     <string name="destination_title_explore">Explore</string>
     <string name="destination_title_recipes">Recipes</string>
     <string name="destination_title_shopping">Shopping</string>
     <string name="destination_title_meal_planner">Meal planner</string>
     <string name="destination_title_recipe">Recipe</string>
 
+    <!-- Actions -->
     <string name="action_retry">Retry</string>
 
+    <!-- Content descriptions -->
     <string name="content_desc_navigate_up">Go back</string>
     <string name="content_desc_add_ingredients_to_shopping_list">Add ingredients to shopping list</string>
     <string name="content_desc_add_to_shopping_list">Add to shopping list</string>
     <string name="content_desc_save_recipe">Save recipe</string>
     <string name="content_desc_drop_recipe">Drop recipe</string>
 
+    <!-- Error titles and messages -->
     <string name="error_not_connected_title">No internet connection</string>
     <string name="error_not_connected_message">Please make sure you have a working internet connection</string>
     <string name="error_service_unavailable_title">The service is currently unavailable</string>
