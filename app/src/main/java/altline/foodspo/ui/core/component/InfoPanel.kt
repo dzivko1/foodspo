@@ -112,7 +112,7 @@ fun InfoPanel(
 
 @Preview
 @Composable
-fun PreviewInfoPanel() {
+private fun PreviewInfoPanel() {
     AppTheme {
         Surface {
             InfoPanel(
@@ -126,7 +126,7 @@ fun PreviewInfoPanel() {
 
 @Preview
 @Composable
-fun PreviewInfoPanel_NotConnected() {
+private fun PreviewInfoPanel_NotConnected() {
     AppTheme {
         Surface {
             InfoPanel(NotConnectedException()) {}
@@ -136,7 +136,7 @@ fun PreviewInfoPanel_NotConnected() {
 
 @Preview
 @Composable
-fun PreviewInfoPanel_ServiceUnavailable() {
+private fun PreviewInfoPanel_ServiceUnavailable() {
     AppTheme {
         Surface {
             InfoPanel(ServiceUnavailableException()) {}
@@ -146,7 +146,7 @@ fun PreviewInfoPanel_ServiceUnavailable() {
 
 @Preview
 @Composable
-fun PreviewInfoPanel_AccessDenied() {
+private fun PreviewInfoPanel_AccessDenied() {
     AppTheme {
         Surface {
             InfoPanel(AccessDeniedException()) {}
@@ -156,7 +156,7 @@ fun PreviewInfoPanel_AccessDenied() {
 
 @Preview
 @Composable
-fun PreviewInfoPanel_NotFound() {
+private fun PreviewInfoPanel_NotFound() {
     AppTheme {
         Surface {
             InfoPanel(NotFoundException()) {}
@@ -166,7 +166,7 @@ fun PreviewInfoPanel_NotFound() {
 
 @Preview
 @Composable
-fun PreviewInfoPanel_Unknown() {
+private fun PreviewInfoPanel_Unknown() {
     AppTheme {
         Surface {
             InfoPanel(UnknownException(IOException())) {}

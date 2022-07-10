@@ -71,7 +71,7 @@ private fun Content(
 
 @Preview
 @Composable
-fun PreviewContent() {
+private fun PreviewContent() {
     AppTheme {
         Content(
             flowOf(

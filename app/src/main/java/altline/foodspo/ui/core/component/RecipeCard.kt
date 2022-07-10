@@ -80,7 +80,7 @@ fun RecipeCard(
 
 @Preview
 @Composable
-fun PreviewRecipeCard() {
+private fun PreviewRecipeCard() {
     AppTheme {
         RecipeCard(
             recipe = RecipeCardUi(
