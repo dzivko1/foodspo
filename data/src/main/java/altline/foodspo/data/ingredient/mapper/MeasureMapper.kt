@@ -3,8 +3,9 @@ package altline.foodspo.data.ingredient.mapper
 import altline.foodspo.data.ingredient.model.Measure
 import altline.foodspo.data.ingredient.model.network.MeasureResponse
 import altline.foodspo.data.ingredient.model.network.MeasuresResponse
+import javax.inject.Inject
 
-internal class MeasureMapper {
+internal class MeasureMapper @Inject constructor() {
     
     operator fun invoke(raw: MeasureResponse): Measure {
         return Measure(

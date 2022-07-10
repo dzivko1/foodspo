@@ -1,6 +1,8 @@
 package altline.foodspo.data.recipe
 
-internal class RecipeFirebaseDataSource(
+import javax.inject.Inject
+
+internal class RecipeFirebaseDataSource @Inject constructor(
 
 ) {
 }

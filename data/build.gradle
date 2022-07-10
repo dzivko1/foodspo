@@ -3,6 +3,8 @@ import altline.foodspo.buildsrc.Libs
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 apply from: rootProject.file("android.build.gradle")
 
@@ -11,7 +13,8 @@ dependencies {
     implementation Libs.KotlinX.Coroutines.android
     implementation Libs.AndroidX.coreKtx
     implementation Libs.AndroidX.Paging.pagingRuntime
-    implementation Libs.Koin.koinCompose
+    implementation Libs.Hilt.hiltAndroid
+    kapt Libs.Hilt.hiltCompiler
     implementation Libs.Timber.timber
     implementation Libs.Moshi.moshi
     implementation Libs.Moshi.moshiKotlin

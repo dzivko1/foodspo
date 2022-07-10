@@ -4,8 +4,9 @@ import altline.foodspo.data.ingredient.mapper.IngredientMapper
 import altline.foodspo.data.recipe.model.Recipe
 import altline.foodspo.data.recipe.model.network.RecipeResponse
 import altline.foodspo.data.core.model.ImageSrc
+import javax.inject.Inject
 
-internal class RecipeMapper(
+internal class RecipeMapper @Inject constructor(
     private val mapIngredients: IngredientMapper
 ) {
     operator fun invoke(raw: RecipeResponse): Recipe {

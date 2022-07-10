@@ -4,9 +4,11 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import androidx.core.content.getSystemService
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
-class NetworkUtils(
-    private val context: Context
+class NetworkUtils @Inject constructor(
+    @ApplicationContext private val context: Context
 ) {
     fun hasInternetConnection(): Boolean {
         val connectivityManager = context.getSystemService<ConnectivityManager>()!!

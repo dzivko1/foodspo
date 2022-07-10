@@ -4,9 +4,10 @@ import altline.foodspo.data.network.NetworkUtils
 import retrofit2.HttpException
 import java.io.IOException
 import java.net.HttpURLConnection
+import javax.inject.Inject
 
 
-class ExceptionMapper(
+class ExceptionMapper @Inject constructor(
     private val networkUtils: NetworkUtils
 ) {
     

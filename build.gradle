@@ -6,6 +6,7 @@ buildscript {
     }
     dependencies {
         classpath Libs.Kotlin.kotlinAndroidPlugin
+        classpath Libs.Hilt.hiltPlugin
         classpath Libs.Google.googleServicesPlugin
     }
 }

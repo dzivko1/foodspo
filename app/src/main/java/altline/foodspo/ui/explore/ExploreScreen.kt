@@ -14,15 +14,15 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import kotlinx.coroutines.flow.flowOf
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun ExploreScreen(viewModel: ExploreViewModel = koinViewModel()) {
+fun ExploreScreen(viewModel: ExploreViewModel = hiltViewModel()) {
     val appNavController = LocalNavController.current
     
     Content(

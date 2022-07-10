@@ -3,6 +3,8 @@ import altline.foodspo.buildsrc.Libs
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 apply from: rootProject.file("android.build.gradle")
 
@@ -12,6 +14,8 @@ dependencies {
     implementation Libs.KotlinX.Coroutines.core
     implementation Libs.KotlinX.Coroutines.android
     implementation Libs.AndroidX.coreKtx
+    implementation Libs.Hilt.hiltAndroid
+    kapt Libs.Hilt.hiltCompiler
     implementation Libs.Timber.timber
 
     testImplementation Libs.JUnit.junit

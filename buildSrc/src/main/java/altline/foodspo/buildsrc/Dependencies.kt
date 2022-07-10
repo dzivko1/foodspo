@@ -75,8 +75,14 @@ object Libs {
         const val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:$version"
     }
     
-    object Koin {
-        const val koinCompose = "io.insert-koin:koin-androidx-compose:3.2.0"
+    object Hilt {
+        const val version = "2.42"
+        
+        const val hiltPlugin = "com.google.dagger:hilt-android-gradle-plugin:$version"
+        const val hiltAndroid = "com.google.dagger:hilt-android:$version"
+        const val hiltCompiler = "com.google.dagger:hilt-compiler:$version"
+        
+        const val hiltNavigationCompose = "androidx.hilt:hilt-navigation-compose:1.0.0"
     }
     
     object Timber {
