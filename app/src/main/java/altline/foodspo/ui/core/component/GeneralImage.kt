@@ -1,7 +1,10 @@
 package altline.foodspo.ui.core.component
 
+import altline.foodspo.data.core.model.DrawableImageSrc
 import altline.foodspo.data.core.model.ImageSrc
-import altline.foodspo.data.core.model.ImageSrc.*
+import altline.foodspo.data.core.model.PathImageSrc
+import altline.foodspo.ui.core.model.BitmapImageSrc
+import altline.foodspo.ui.core.model.VectorImageSrc
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,7 +30,7 @@ fun GeneralImage(
     fallback: Painter? = null
 ) {
     when (image) {
-        is Vector -> {
+        is VectorImageSrc -> {
             Image(
                 imageVector = image.imageVector,
                 contentDescription = contentDescription,
@@ -38,7 +41,7 @@ fun GeneralImage(
                 colorFilter = colorFilter
             )
         }
-        is Bitmap -> {
+        is BitmapImageSrc -> {
             Image(
                 bitmap = image.imageBitmap,
                 contentDescription = contentDescription,
@@ -49,7 +52,7 @@ fun GeneralImage(
                 colorFilter = colorFilter
             )
         }
-        is Drawable -> {
+        is DrawableImageSrc -> {
             Image(
                 painter = painterResource(image.drawableRes),
                 contentDescription = contentDescription,
@@ -60,7 +63,7 @@ fun GeneralImage(
                 colorFilter = colorFilter
             )
         }
-        is Path -> {
+        is PathImageSrc -> {
             AsyncImage(
                 model = image.path,
                 contentDescription = contentDescription,
