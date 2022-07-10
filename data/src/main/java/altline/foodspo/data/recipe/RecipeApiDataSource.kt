@@ -10,4 +10,8 @@ internal class RecipeApiDataSource @Inject constructor(
     suspend fun getRandomRecipes(count: Int): List<RecipeResponse> {
         return recipeApi.getRandomRecipes(count).recipes
     }
+    
+    suspend fun getRecipeDetails(recipeId: Long): RecipeResponse {
+        return recipeApi.getRecipeInformation(recipeId)
+    }
 }
