@@ -21,6 +21,8 @@ dependencies {
     implementation Libs.OkHttp.loggingInterceptor
     implementation Libs.Retrofit.retrofit
     implementation Libs.Retrofit.moshiConverter
+    debugImplementation Libs.Chucker.library
+    releaseImplementation Libs.Chucker.noOp
 
     testImplementation Libs.JUnit.junit
     androidTestImplementation Libs.AndroidX.Test.junit

@@ -109,6 +109,13 @@ object Libs {
         const val coilCompose = "io.coil-kt:coil-compose:2.1.0"
     }
     
+    object Chucker {
+        private const val version = "3.5.2"
+        
+        const val library = "com.github.chuckerteam.chucker:library:$version"
+        const val noOp = "com.github.chuckerteam.chucker:library-no-op:$version"
+    }
+    
     object JUnit {
         const val junit = "junit:junit:4.13.2"
     }
