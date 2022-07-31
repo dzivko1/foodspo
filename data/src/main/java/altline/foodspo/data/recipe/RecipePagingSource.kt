@@ -3,6 +3,7 @@ package altline.foodspo.data.recipe
 import altline.foodspo.data.recipe.model.Recipe
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import timber.log.Timber
 
 class RecipePagingSource(
     private val recipeProvider: suspend (page: Int, loadSize: Int) -> List<Recipe>
@@ -19,6 +20,7 @@ class RecipePagingSource(
                 nextKey = nextPageNumber + 1
             )
         } catch (e: Exception) {
+            Timber.e(e, "Exception caught in PagingSource.")
             LoadResult.Error(e)
         }
     }
