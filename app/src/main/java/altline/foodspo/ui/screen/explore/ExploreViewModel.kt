@@ -49,7 +49,7 @@ class ExploreViewModel @Inject constructor(
         }
     }
     
-    fun toggleSaveRecipe(recipeId: Long) {
+    fun saveRecipe(recipeId: Long, saved: Boolean) {
     
     }
     

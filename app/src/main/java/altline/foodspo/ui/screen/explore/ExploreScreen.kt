@@ -29,7 +29,7 @@ fun ExploreScreen(viewModel: ExploreViewModel = hiltViewModel()) {
         pagedRecipes = viewModel.uiState.recipes.collectAsLazyPagingItems(),
         onRecipeClick = appNavController::navigateToRecipeDetails,
         onAddToShoppingList = viewModel::addIngredientsToShoppingList,
-        onToggleSave = viewModel::toggleSaveRecipe
+        onToggleSave = viewModel::saveRecipe
     )
 }
 
@@ -38,7 +38,7 @@ private fun Content(
     pagedRecipes: LazyPagingItems<RecipeCardUi>,
     onRecipeClick: (recipeId: Long) -> Unit,
     onAddToShoppingList: (recipeId: Long) -> Unit,
-    onToggleSave: (recipeId: Long) -> Unit
+    onToggleSave: (recipeId: Long, saved: Boolean) -> Unit
 ) {
     LazyColumn(
         contentPadding = PaddingValues(AppTheme.spaces.xl),
@@ -50,7 +50,7 @@ private fun Content(
                     recipe = recipe,
                     onRecipeClick = { onRecipeClick(recipe.id) },
                     onAddToShoppingList = { onAddToShoppingList(recipe.id) },
-                    onToggleSave = { onToggleSave(recipe.id) }
+                    onSavedChange = { saved -> onToggleSave(recipe.id, saved) }
                 )
             }
         }
@@ -96,7 +96,7 @@ private fun PreviewContent() {
             ).collectAsLazyPagingItems(),
             onRecipeClick = {},
             onAddToShoppingList = {},
-            onToggleSave = {}
+            onToggleSave = { _, _ -> }
         )
     }
 }
