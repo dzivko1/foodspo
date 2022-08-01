@@ -6,4 +6,8 @@ class NotConnectedException : AppException()
 class ServiceUnavailableException : AppException()
 class AccessDeniedException : AppException()
 class NotFoundException : AppException()
-class UnknownException(val original: Exception) : AppException()
+class UnknownException(original: Exception) : AppException() {
+    init {
+        initCause(original)
+    }
+}
