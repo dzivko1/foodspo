@@ -53,6 +53,7 @@ dependencies {
     implementation Libs.AndroidX.Navigation.navigationCompose
     implementation Libs.AndroidX.Paging.pagingCompose
     implementation Libs.Accompanist.systemUiController
+    implementation Libs.ComposeHtml.composeHtml
     implementation Libs.Hilt.hiltAndroid
     kapt Libs.Hilt.hiltCompiler
     implementation Libs.Hilt.hiltNavigationCompose

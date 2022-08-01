@@ -1,9 +1,10 @@
 package altline.foodspo.data.recipe.mapper
 
+import altline.foodspo.data.core.model.ImageSrc
 import altline.foodspo.data.ingredient.mapper.IngredientMapper
+import altline.foodspo.data.recipe.model.Instruction
 import altline.foodspo.data.recipe.model.Recipe
 import altline.foodspo.data.recipe.model.network.RecipeResponse
-import altline.foodspo.data.core.model.ImageSrc
 import javax.inject.Inject
 
 internal class RecipeMapper @Inject constructor(
@@ -15,18 +16,17 @@ internal class RecipeMapper @Inject constructor(
             title = raw.title ?: "",
             image = raw.image?.let { ImageSrc(it) },
             sourceName = raw.sourceName,
-            sourceUrl = raw.sourceUrl,
             creditsText = raw.creditsText,
+            sourceUrl = raw.sourceUrl,
+            spoonacularSourceUrl = raw.spoonacularSourceUrl,
             servings = raw.servings,
             readyInMinutes = raw.readyInMinutes,
-            instructions = raw.instructions ?: "",
+            instructions = raw.instructions.firstOrNull()?.steps?.map {
+                Instruction(it.number, it.text)
+            } ?: emptyList(),
             summary = raw.summary ?: "",
-            ingredients = mapIngredients(raw.extendedIngredients),
+            ingredients = raw.extendedIngredients.map(mapIngredients::invoke),
             isSaved = false
         )
-    }
-    
-    operator fun invoke(rawList: List<RecipeResponse>): List<Recipe> {
-        return rawList.map(::invoke)
     }
 }

@@ -55,10 +55,7 @@ enum class AppDestination(
         title = R.string.destination_title_recipe,
         icon = null,
         arguments = listOf(navArgument("recipeId") { type = NavType.LongType }),
-        content = {
-            val recipeId = it.arguments!!.getLong("recipeId")
-            RecipeDetailsScreen(recipeId)
-        }
+        content = { RecipeDetailsScreen() }
     );
     
     companion object {

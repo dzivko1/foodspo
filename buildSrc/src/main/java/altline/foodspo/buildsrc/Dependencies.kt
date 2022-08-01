@@ -75,6 +75,10 @@ object Libs {
         const val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:$version"
     }
     
+    object ComposeHtml {
+        const val composeHtml = "com.github.ireward:compose-html:1.0.2"
+    }
+    
     object Hilt {
         const val version = "2.42"
         

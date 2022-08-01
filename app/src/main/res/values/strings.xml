@@ -1,15 +1,15 @@
 <resources>
     <string name="app_name">Foodspo</string>
 
+    <!-- Actions -->
+    <string name="action_retry">Retry</string>
+
     <!-- Destination titles -->
     <string name="destination_title_explore">Explore</string>
     <string name="destination_title_recipes">Recipes</string>
     <string name="destination_title_shopping">Shopping</string>
     <string name="destination_title_meal_planner">Meal planner</string>
     <string name="destination_title_recipe">Recipe</string>
-
-    <!-- Actions -->
-    <string name="action_retry">Retry</string>
 
     <!-- Content descriptions -->
     <string name="content_desc_navigate_up">Go back</string>
@@ -29,4 +29,14 @@
     <string name="error_not_found_message">We could not find the requested resource</string>
     <string name="error_unknown_title">Something went wrong</string>
     <string name="error_unknown_message">Please try again</string>
+
+    <!-- Recipe Details screen -->
+    <string name="recipe_details_servings_title">Servings</string>
+    <string name="recipe_details_ready_in_title">Ready in</string>
+    <string name="recipe_details_ready_in_value">%d min.</string>
+    <string name="recipe_details_instructions_title">Instructions</string>
+    <string name="recipe_details_about_recipe_title">About this recipe</string>
+    <string name="recipe_details_source_prefix">Source: %s</string>
+    <string name="recipe_details_visit_on_spoonacular">Visit on Spoonacular.com</string>
+
 </resources>

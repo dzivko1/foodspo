@@ -1,8 +1,8 @@
 package altline.foodspo.data.ingredient.mapper
 
+import altline.foodspo.data.core.model.ImageSrc
 import altline.foodspo.data.ingredient.model.Ingredient
 import altline.foodspo.data.ingredient.model.network.IngredientResponse
-import altline.foodspo.data.core.model.ImageSrc
 import javax.inject.Inject
 
 internal class IngredientMapper @Inject constructor(
@@ -20,9 +20,4 @@ internal class IngredientMapper @Inject constructor(
             rawText = raw.original ?: ""
         )
     }
-    
-    operator fun invoke(rawList: List<IngredientResponse>): List<Ingredient> {
-        return rawList.map(::invoke)
-    }
-    
 }
