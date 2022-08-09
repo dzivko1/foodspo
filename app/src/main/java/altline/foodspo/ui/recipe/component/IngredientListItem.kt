@@ -24,7 +24,19 @@ data class IngredientListItemUi(
     val id: Long,
     val name: String,
     val measure: Measure?
-)
+) {
+    companion object {
+        val PREVIEW = IngredientListItemUi(
+            id = 0,
+            name = "Bread",
+            measure = Measure(
+                amount = 2.0,
+                unitLong = "slices",
+                unitShort = "slice"
+            )
+        )
+    }
+}
 
 @Composable
 fun IngredientListItem(
@@ -52,16 +64,6 @@ fun IngredientListItem(
 @Composable
 private fun PreviewIngredientListItem() {
     AppTheme {
-        IngredientListItem(
-            IngredientListItemUi(
-                id = 0,
-                name = "Bread",
-                measure = Measure(
-                    amount = 2.0,
-                    unitLong = "slices",
-                    unitShort = "slice"
-                )
-            )
-        )
+        IngredientListItem(IngredientListItemUi.PREVIEW)
     }
 }

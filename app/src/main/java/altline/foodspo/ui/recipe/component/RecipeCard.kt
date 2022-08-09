@@ -29,7 +29,17 @@ data class RecipeCardUi(
     val image: ImageSrc,
     val author: String?,
     val isSaved: Boolean
-)
+) {
+    companion object {
+        val PREVIEW = RecipeCardUi(
+            id = 0,
+            title = "Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs",
+            image = PlaceholderImages.recipe,
+            author = "Maplewood Road",
+            isSaved = false
+        )
+    }
+}
 
 @Composable
 fun RecipeCard(
@@ -85,13 +95,7 @@ fun RecipeCard(
 private fun PreviewRecipeCard() {
     AppTheme {
         RecipeCard(
-            recipe = RecipeCardUi(
-                id = 0,
-                title = "Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs",
-                image = PlaceholderImages.recipe,
-                author = "Maplewood Road",
-                isSaved = false
-            ),
+            recipe = RecipeCardUi.PREVIEW,
             onRecipeClick = {},
             onAddToShoppingList = {},
             onSavedChange = {}
