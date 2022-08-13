@@ -3,7 +3,6 @@ package altline.foodspo.ui.screen.explore
 import altline.foodspo.ui.core.LocalNavController
 import altline.foodspo.ui.core.component.InfoPanel
 import altline.foodspo.ui.core.component.LoadingSpinner
-import altline.foodspo.ui.placeholder.PlaceholderImages
 import altline.foodspo.ui.recipe.component.RecipeCard
 import altline.foodspo.ui.recipe.component.RecipeCardUi
 import altline.foodspo.ui.theme.AppTheme
@@ -16,42 +15,55 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.PagingData
-import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
+
+data class ExploreScreenUi(
+    val recipes: Flow<PagingData<RecipeCardUi>>,
+) {
+    companion object {
+        val PREVIEW = ExploreScreenUi(
+            recipes = flowOf(
+                PagingData.from(
+                    listOf(
+                        RecipeCardUi.PREVIEW,
+                        RecipeCardUi.PREVIEW,
+                        RecipeCardUi.PREVIEW
+                    )
+                )
+            )
+        )
+    }
+}
 
 @Composable
 fun ExploreScreen(viewModel: ExploreViewModel = hiltViewModel()) {
-    val appNavController = LocalNavController.current
+    val navController = LocalNavController.current
     
-    Content(
-        pagedRecipes = viewModel.uiState.recipes.collectAsLazyPagingItems(),
-        onRecipeClick = appNavController::navigateToRecipeDetails,
-        onAddToShoppingList = viewModel::addIngredientsToShoppingList,
-        onToggleSave = viewModel::saveRecipe
-    )
+    with(viewModel.uiState) {
+        if (navEvent != null) {
+            navEvent.navigate(navController)
+            viewModel.onNavEventConsumed()
+        }
+        data?.let { Content(it) }
+    }
 }
 
 @Composable
 private fun Content(
-    pagedRecipes: LazyPagingItems<RecipeCardUi>,
-    onRecipeClick: (recipeId: Long) -> Unit,
-    onAddToShoppingList: (recipeId: Long) -> Unit,
-    onToggleSave: (recipeId: Long, saved: Boolean) -> Unit
+    data: ExploreScreenUi
 ) {
+    val pagedRecipes = data.recipes.collectAsLazyPagingItems()
+    
     LazyColumn(
         contentPadding = PaddingValues(AppTheme.spaces.xl),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spaces.xl)
     ) {
         items(pagedRecipes) { recipe ->
             recipe?.let {
-                RecipeCard(
-                    recipe = recipe,
-                    onRecipeClick = { onRecipeClick(recipe.id) },
-                    onAddToShoppingList = { onAddToShoppingList(recipe.id) },
-                    onSavedChange = { saved -> onToggleSave(recipe.id, saved) }
-                )
+                RecipeCard(recipe)
             }
         }
         item {
@@ -73,30 +85,6 @@ private fun Content(
 @Composable
 private fun PreviewContent() {
     AppTheme {
-        Content(
-            flowOf(
-                PagingData.from(
-                    listOf(
-                        RecipeCardUi(
-                            id = 0,
-                            title = "Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs",
-                            image = PlaceholderImages.recipe,
-                            author = "Maplewood Road",
-                            isSaved = false
-                        ),
-                        RecipeCardUi(
-                            id = 1,
-                            title = "Spaghetti with Meatballs",
-                            image = PlaceholderImages.recipe,
-                            author = "Maplewood Road",
-                            isSaved = true
-                        )
-                    )
-                )
-            ).collectAsLazyPagingItems(),
-            onRecipeClick = {},
-            onAddToShoppingList = {},
-            onToggleSave = { _, _ -> }
-        )
+        Content(ExploreScreenUi.PREVIEW)
     }
 }

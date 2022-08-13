@@ -66,9 +66,5 @@ enum class AppDestination(
         fun fromRoute(route: String): AppDestination? {
             return values().find { it.route == route }
         }
-        
-        fun recipeDetailsRoute(recipeId: Long): String {
-            return RecipeDetails.route.replaceAfter('/', recipeId.toString())
-        }
     }
 }

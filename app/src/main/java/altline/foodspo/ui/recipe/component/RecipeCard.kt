@@ -28,7 +28,10 @@ data class RecipeCardUi(
     val title: String,
     val image: ImageSrc,
     val author: String?,
-    val isSaved: Boolean
+    val isSaved: Boolean?,
+    val onContentClick: () -> Unit,
+    val onAddToShoppingList: () -> Unit,
+    val onSavedChange: (Boolean) -> Unit = {}
 ) {
     companion object {
         val PREVIEW = RecipeCardUi(
@@ -36,24 +39,24 @@ data class RecipeCardUi(
             title = "Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs",
             image = PlaceholderImages.recipe,
             author = "Maplewood Road",
-            isSaved = false
+            isSaved = false,
+            onContentClick = {},
+            onAddToShoppingList = {},
+            onSavedChange = {}
         )
     }
 }
 
 @Composable
 fun RecipeCard(
-    recipe: RecipeCardUi,
-    onRecipeClick: () -> Unit,
-    onAddToShoppingList: () -> Unit,
-    onSavedChange: (Boolean) -> Unit
+    data: RecipeCardUi
 ) {
     Card(
-        Modifier.clickable(onClick = onRecipeClick)
+        Modifier.clickable(onClick = data.onContentClick)
     ) {
         Column {
             GeneralImage(
-                image = recipe.image,
+                image = data.image,
                 contentDescription = null,
                 Modifier.fillMaxWidth(),
                 contentScale = ContentScale.Crop,
@@ -63,10 +66,10 @@ fun RecipeCard(
                 Modifier.padding(AppTheme.spaces.xl)
             ) {
                 Text(
-                    text = recipe.title,
+                    text = data.title,
                     style = AppTheme.typography.subtitle1
                 )
-                recipe.author?.let {
+                data.author?.let {
                     Text(
                         text = "by $it",
                         style = AppTheme.typography.caption,
@@ -75,15 +78,17 @@ fun RecipeCard(
                 }
             }
             Row(Modifier.align(End)) {
-                IconButton(onClick = onAddToShoppingList) {
+                IconButton(onClick = data.onAddToShoppingList) {
                     Icon(
                         imageVector = Icons.Default.AddShoppingCart,
                         contentDescription = stringResource(R.string.content_desc_add_ingredients_to_shopping_list),
                         tint = modifiedColor(alpha = ContentAlpha.medium)
                     )
                 }
-                IconToggleButton(checked = recipe.isSaved, onCheckedChange = onSavedChange) {
-                    SaveIcon(recipe.isSaved)
+                if (data.isSaved != null) {
+                    IconToggleButton(checked = data.isSaved, onCheckedChange = data.onSavedChange) {
+                        SaveIcon(data.isSaved)
+                    }
                 }
             }
         }
@@ -95,10 +100,7 @@ fun RecipeCard(
 private fun PreviewRecipeCard() {
     AppTheme {
         RecipeCard(
-            recipe = RecipeCardUi.PREVIEW,
-            onRecipeClick = {},
-            onAddToShoppingList = {},
-            onSavedChange = {}
+            data = RecipeCardUi.PREVIEW
         )
     }
 }

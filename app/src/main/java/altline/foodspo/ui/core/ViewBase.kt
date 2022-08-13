@@ -11,24 +11,26 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 
-val LocalNavController = staticCompositionLocalOf<AppNavController> {
+val LocalNavController = staticCompositionLocalOf<NavHostController> {
     error("No LocalNavController provided")
 }
 
 @Composable
 fun ViewBase() {
-    val appNavController = rememberAppNavController()
+    val navController = rememberNavController()
     
     val startDestination = AppDestination.Explore
     
-    val navBackStackEntry = appNavController.navHostController.currentBackStackEntryAsState()
+    val navBackStackEntry = navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry.value?.destination?.route ?: startDestination.route
     val currentDestination = AppDestination.fromRoute(currentRoute)!!
     
     CompositionLocalProvider(
-        LocalNavController provides appNavController
+        LocalNavController provides navController
     ) {
         Scaffold(
             topBar = {
@@ -36,7 +38,7 @@ fun ViewBase() {
                     title = { Text(stringResource(currentDestination.title)) },
                     navigationIcon = if (currentDestination !in AppDestination.topDestinations) {
                         {
-                            IconButton(onClick = appNavController::navigateUp) {
+                            IconButton(onClick = navController::navigateUp) {
                                 Icon(
                                     Icons.Default.ArrowBack,
                                     contentDescription = stringResource(R.string.content_desc_navigate_up)
@@ -51,13 +53,13 @@ fun ViewBase() {
                     AppBottomNavigation(
                         destinations = AppDestination.topDestinations,
                         currentDestination = currentDestination,
-                        onDestinationSelected = { appNavController.navigateToAppDestination(it) }
+                        onDestinationSelected = { navController.navigate(it.route) }
                     )
                 }
             }
         ) { paddingValues ->
             NavGraph(
-                navController = appNavController.navHostController,
+                navController = navController,
                 destinations = AppDestination.values().asList(),
                 startDestination = startDestination,
                 modifier = Modifier.padding(paddingValues)

@@ -1,7 +1,7 @@
 package altline.foodspo.ui.screen.recipeDetails
 
 import altline.foodspo.R
-import altline.foodspo.data.ingredient.model.Measure
+import altline.foodspo.data.core.model.ImageSrc
 import altline.foodspo.data.recipe.model.Instruction
 import altline.foodspo.ui.core.component.GeneralImage
 import altline.foodspo.ui.core.component.InfoPanel
@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Divider
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,25 +29,65 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ireward.htmlcompose.HtmlText
 
+data class RecipeDetailsScreenUi(
+    val id: Long = 0,
+    val image: ImageSrc = PlaceholderImages.recipe,
+    val title: String = "",
+    val author: String? = null,
+    val creditsText: String? = null,
+    val servings: Int? = null,
+    val readyInMinutes: Int? = null,
+    val ingredients: List<IngredientListItemUi> = emptyList(),
+    val instructions: List<Instruction> = emptyList(),
+    val summary: String? = null,
+    val sourceUrl: String? = null,
+    val spoonacularSourceUrl: String? = null
+) {
+    companion object {
+        val PREVIEW = RecipeDetailsScreenUi(
+            id = 0,
+            image = PlaceholderImages.recipe,
+            title = "Bacon-Apple-Pecan Stuffed French Toast",
+            author = "Maplewood Road",
+            servings = 2,
+            readyInMinutes = 30,
+            ingredients = listOf(
+                IngredientListItemUi.PREVIEW,
+                IngredientListItemUi.PREVIEW,
+                IngredientListItemUi.PREVIEW
+            ),
+            instructions = listOf(
+                Instruction(1, "Slice bread into 2 pieces."),
+                Instruction(2, "Slice an apple into pieces of desired length."),
+                Instruction(3, "Put apple on bread.")
+            ),
+            summary = "A food with bread, apples, and other things.",
+            creditsText = "Maplewood Road",
+            sourceUrl = "https://maplewoodroad.com/bacon-apple-pecan-stuffed-french-toast/",
+            spoonacularSourceUrl = "https://spoonacular.com/bacon-apple-pecan-stuffed-french-toast-1697823"
+        )
+    }
+}
+
 @Composable
 fun RecipeDetailsScreen(viewModel: RecipeDetailsViewModel = hiltViewModel()) {
     with(viewModel.uiState) {
         if (loading) LoadingSpinner()
         
         if (error != null) InfoPanel(error) { viewModel.loadRecipeDetails() }
-        else Content(this)
+        else if (data != null) Content(data)
     }
 }
 
 @Composable
 private fun Content(
-    state: RecipeDetailsUiState
+    data: RecipeDetailsScreenUi
 ) {
     LazyColumn {
         item {
-            UpperSection(state)
+            UpperSection(data)
         }
-        items(state.ingredients) { ingredient ->
+        items(data.ingredients) { ingredient ->
             IngredientListItem(ingredient)
             Divider()
         }
@@ -57,7 +98,7 @@ private fun Content(
                 style = AppTheme.typography.h6
             )
         }
-        items(state.instructions) { instruction ->
+        items(data.instructions) { instruction ->
             Text(
                 text = "${instruction.number}. ${instruction.text}",
                 Modifier.padding(horizontal = AppTheme.spaces.xl),
@@ -66,17 +107,17 @@ private fun Content(
             Spacer(Modifier.height(AppTheme.spaces.xl))
         }
         item {
-            LowerSection(state)
+            LowerSection(data)
         }
     }
 }
 
 @Composable
 private fun UpperSection(
-    recipe: RecipeDetailsUiState
+    data: RecipeDetailsScreenUi
 ) {
     GeneralImage(
-        image = recipe.image,
+        image = data.image,
         contentDescription = null,
         Modifier.fillMaxWidth(),
         contentScale = ContentScale.Crop,
@@ -89,12 +130,12 @@ private fun UpperSection(
     ) {
         Column {
             Text(
-                text = recipe.title,
+                text = data.title,
                 style = AppTheme.typography.h6
             )
-            if (recipe.author != null) {
+            if (data.author != null) {
                 Text(
-                    text = " by ${recipe.author}",
+                    text = " by ${data.author}",
                     style = AppTheme.typography.caption,
                     color = modifiedColor(alpha = ContentAlpha.medium)
                 )
@@ -112,7 +153,7 @@ private fun UpperSection(
                     color = modifiedColor(alpha = ContentAlpha.medium)
                 )
                 Text(
-                    text = recipe.servings?.toString() ?: "-",
+                    text = data.servings?.toString() ?: "-",
                     style = AppTheme.typography.subtitle2
                 )
             }
@@ -123,7 +164,7 @@ private fun UpperSection(
                     color = modifiedColor(alpha = ContentAlpha.medium)
                 )
                 Text(
-                    text = recipe.readyInMinutes?.let {
+                    text = data.readyInMinutes?.let {
                         stringResource(R.string.recipe_details_ready_in_value, it)
                     } ?: "-",
                     style = AppTheme.typography.subtitle2
@@ -136,40 +177,40 @@ private fun UpperSection(
 
 @Composable
 private fun LowerSection(
-    recipe: RecipeDetailsUiState
+    data: RecipeDetailsScreenUi
 ) {
     Column(
         Modifier.padding(AppTheme.spaces.xl),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spaces.xl)
     ) {
-        if (recipe.summary != null) {
+        if (data.summary != null) {
             Text(
                 text = stringResource(R.string.recipe_details_about_recipe_title),
                 style = AppTheme.typography.h6
             )
             HtmlText(
-                text = recipe.summary,
+                text = data.summary,
                 style = AppTheme.typography.body2,
                 linkClicked = { linkString ->
                     println(linkString)
                 }
             )
         }
-        if (recipe.sourceUrl != null) {
+        if (data.sourceUrl != null) {
             val sourceText = stringResource(
                 R.string.recipe_details_source_prefix,
-                recipe.creditsText ?: ""
-            ) + "\n${recipe.sourceUrl.toHtmlAnchor()}"
+                data.creditsText ?: ""
+            ) + "\n${data.sourceUrl.toHtmlAnchor()}"
             
             HtmlText(
                 text = sourceText,
                 style = AppTheme.typography.caption
             )
         }
-        if (recipe.spoonacularSourceUrl != null) {
+        if (data.spoonacularSourceUrl != null) {
             val spoonacularSourceText =
                 stringResource(R.string.recipe_details_visit_on_spoonacular) +
-                        "\n${recipe.spoonacularSourceUrl.toHtmlAnchor()}"
+                        "\n${data.spoonacularSourceUrl.toHtmlAnchor()}"
             
             HtmlText(
                 text = spoonacularSourceText,
@@ -183,44 +224,8 @@ private fun LowerSection(
 @Composable
 private fun PreviewContent() {
     AppTheme {
-        Content(
-            RecipeDetailsUiState(
-                id = 0,
-                image = PlaceholderImages.recipe,
-                title = "Bacon-Apple-Pecan Stuffed French Toast",
-                author = "Maplewood Road",
-                servings = 2,
-                readyInMinutes = 30,
-                ingredients = listOf(
-                    IngredientListItemUi(
-                        id = 0,
-                        name = "Bread",
-                        measure = Measure(
-                            amount = 2.0,
-                            unitLong = "slices",
-                            unitShort = "slice"
-                        )
-                    ),
-                    IngredientListItemUi(
-                        id = 1,
-                        name = "Apple",
-                        measure = Measure(
-                            amount = 0.25,
-                            unitLong = "pieces",
-                            unitShort = "piece"
-                        )
-                    )
-                ),
-                instructions = listOf(
-                    Instruction(1, "Slice bread into 2 pieces."),
-                    Instruction(2, "Slice an apple into pieces of desired length."),
-                    Instruction(3, "Put apple on bread.")
-                ),
-                summary = "A food with bread, apples, and other things.",
-                creditsText = "Maplewood Road",
-                sourceUrl = "https://maplewoodroad.com/bacon-apple-pecan-stuffed-french-toast/",
-                spoonacularSourceUrl = "https://spoonacular.com/bacon-apple-pecan-stuffed-french-toast-1697823"
-            )
-        )
+        Surface {
+            Content(RecipeDetailsScreenUi.PREVIEW)
+        }
     }
 }

@@ -1,9 +1,8 @@
 package altline.foodspo.ui.screen.explore
 
-import altline.foodspo.ui.recipe.component.RecipeCardUi
-import androidx.paging.PagingData
-import kotlinx.coroutines.flow.Flow
+import altline.foodspo.ui.core.navigation.NavigationEvent
 
 data class ExploreUiState(
-    val recipes: Flow<PagingData<RecipeCardUi>>
+    val navEvent: NavigationEvent? = null,
+    val data: ExploreScreenUi? = null
 )

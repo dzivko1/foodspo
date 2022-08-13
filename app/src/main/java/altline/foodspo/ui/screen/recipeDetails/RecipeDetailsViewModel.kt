@@ -37,7 +37,10 @@ class RecipeDetailsViewModel @Inject constructor(
             }.onError {
                 uiState = uiState.copy(error = it, loading = false)
             }.onSuccess { recipe ->
-                uiState = recipeUiMapper.toRecipeDetailsUi(recipe)
+                uiState = uiState.copy(
+                    data = recipeUiMapper.toRecipeDetailsUi(recipe),
+                    loading = false
+                )
             }
         }
     }
