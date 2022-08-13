@@ -5,7 +5,7 @@ import altline.foodspo.data.core.model.ImageSrc
 import altline.foodspo.data.recipe.model.Instruction
 import altline.foodspo.ui.core.component.GeneralImage
 import altline.foodspo.ui.core.component.InfoPanel
-import altline.foodspo.ui.core.component.LoadingSpinner
+import altline.foodspo.ui.core.component.PageLoadingIndicator
 import altline.foodspo.ui.placeholder.PlaceholderImages
 import altline.foodspo.ui.recipe.component.IngredientListItem
 import altline.foodspo.ui.recipe.component.IngredientListItemUi
@@ -72,7 +72,7 @@ data class RecipeDetailsScreenUi(
 @Composable
 fun RecipeDetailsScreen(viewModel: RecipeDetailsViewModel = hiltViewModel()) {
     with(viewModel.uiState) {
-        if (loading) LoadingSpinner()
+        if (loading) PageLoadingIndicator()
         
         if (error != null) InfoPanel(error) { viewModel.loadRecipeDetails() }
         else if (data != null) Content(data)
