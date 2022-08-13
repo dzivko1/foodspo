@@ -1,11 +1,12 @@
 package altline.foodspo.data.error
 
 import altline.foodspo.data.network.NetworkUtils
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import retrofit2.HttpException
 import java.io.IOException
 import java.net.HttpURLConnection
 import javax.inject.Inject
-
 
 class ExceptionMapper @Inject constructor(
     private val networkUtils: NetworkUtils
@@ -15,18 +16,22 @@ class ExceptionMapper @Inject constructor(
         try {
             return block()
         } catch (e: Exception) {
-            throw mapException(e)
+            throw mapThrowable(e)
         }
     }
     
-    private fun mapException(e: Exception): AppException {
-        return when (e) {
+    fun <T> forFlow(flow: Flow<T>) = flow.catch { throw mapThrowable(it) }
+    
+    private fun mapThrowable(throwable: Throwable): AppException {
+        return when (throwable) {
+            is AppException -> throw throwable
             is IOException -> {
-                if (networkUtils.hasInternetConnection()) UnknownException(e)
+                if (networkUtils.hasInternetConnection()) UnknownException(throwable)
                 else NotConnectedException()
             }
-            is HttpException -> mapHttpError(e)
-            else -> UnknownException(e)
+            is HttpException -> mapHttpError(throwable)
+            is Exception -> UnknownException(throwable)
+            else -> throw throwable
         }
     }
     

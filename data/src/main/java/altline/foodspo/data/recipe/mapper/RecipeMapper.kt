@@ -26,6 +26,7 @@ internal class RecipeMapper @Inject constructor(
             } ?: emptyList(),
             summary = raw.summary ?: "",
             ingredients = raw.extendedIngredients.map(mapIngredients::invoke),
+            additionTime = null,
             isSaved = false
         )
     }

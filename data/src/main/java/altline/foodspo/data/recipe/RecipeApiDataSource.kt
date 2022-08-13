@@ -14,4 +14,8 @@ internal class RecipeApiDataSource @Inject constructor(
     suspend fun getRecipeDetails(recipeId: Long): RecipeResponse {
         return recipeApi.getRecipeInformation(recipeId)
     }
+    
+    suspend fun getRecipeDetailsBulk(recipeIds: List<Long>): List<RecipeResponse> {
+        return recipeApi.getRecipeInformationBulk(recipeIds.joinToString(","))
+    }
 }

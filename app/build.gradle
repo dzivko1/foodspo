@@ -36,8 +36,6 @@ android {
 dependencies {
     api project(":domain")
 
-    implementation platform(Libs.Firebase.bom)
-
     implementation Libs.KotlinX.Coroutines.core
     implementation Libs.KotlinX.Coroutines.android
     implementation Libs.Firebase.analyticsKtx

@@ -9,8 +9,12 @@ plugins {
 apply from: rootProject.file("android.build.gradle")
 
 dependencies {
+    implementation platform(Libs.Firebase.bom)
+
     implementation Libs.KotlinX.Coroutines.core
     implementation Libs.KotlinX.Coroutines.android
+    implementation Libs.KotlinX.Coroutines.playServices
+    implementation Libs.Firebase.firestore
     implementation Libs.AndroidX.coreKtx
     implementation Libs.AndroidX.Paging.pagingRuntime
     implementation Libs.Hilt.hiltAndroid

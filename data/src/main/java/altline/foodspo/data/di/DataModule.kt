@@ -2,6 +2,8 @@ package altline.foodspo.data.di
 
 import altline.foodspo.data.recipe.RecipeRepository
 import altline.foodspo.data.recipe.RecipeRepositoryImpl
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -19,7 +21,11 @@ internal abstract class DataModule {
         recipeRepositoryImpl: RecipeRepositoryImpl
     ): RecipeRepository
     
+    // @Provides go in here
     companion object {
+    
+        @Provides
+        fun provideFirestore() = Firebase.firestore
         
         @Provides
         @IODispatcher

@@ -3,6 +3,8 @@ package altline.foodspo.data.recipe
 import altline.foodspo.data.error.ExceptionMapper
 import altline.foodspo.data.recipe.mapper.RecipeMapper
 import altline.foodspo.data.recipe.model.Recipe
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 internal class RecipeRepositoryImpl @Inject constructor(
@@ -24,5 +26,24 @@ internal class RecipeRepositoryImpl @Inject constructor(
                 apiDataSource.getRecipeDetails(recipeId)
             )
         }
+    }
+    
+    override suspend fun getRecipeDetailsBulk(recipeIds: List<Long>): List<Recipe> {
+        return mapException {
+            apiDataSource.getRecipeDetailsBulk(recipeIds).map(mapRecipe::invoke)
+        }
+    }
+    
+    override fun getMyRecipesPaged(loadTrigger: Flow<Pair<Int, Int>>): Flow<List<Recipe>> {
+        return mapException.forFlow(
+            firebaseDataSource.getMyRecipesPaged(loadTrigger)
+        )
+    }
+    
+    override fun getSavedRecipesPaged(loadTrigger: Flow<Pair<Int, Int>>): Flow<List<Recipe>> {
+        return mapException.forFlow(
+            firebaseDataSource.getSavedRecipeIdsPaged(loadTrigger)
+                .map(this::getRecipeDetailsBulk)
+        )
     }
 }

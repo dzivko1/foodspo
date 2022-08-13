@@ -15,6 +15,13 @@ internal interface RecipeApi {
     
     @GET("recipes/{recipeId}/information")
     suspend fun getRecipeInformation(
-        @Path("recipeId") recipeId: Long
+        @Path("recipeId") recipeId: Long,
+        @Query("includeNutrition") includeNutrition: Boolean = false
     ): RecipeResponse
+    
+    @GET("recipes/informationBulk")
+    suspend fun getRecipeInformationBulk(
+        @Query("ids") ids: String,
+        @Query("includeNutrition") includeNutrition: Boolean = false
+    ): List<RecipeResponse>
 }
