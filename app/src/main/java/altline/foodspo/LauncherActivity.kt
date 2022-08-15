@@ -20,7 +20,9 @@ class LauncherActivity : ComponentActivity() {
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        startSignIn()
+        val auth = FirebaseAuth.getInstance()
+        if (auth.currentUser != null) onSignInSuccess()
+        else startSignIn()
     }
     
     private fun startSignIn() {
@@ -41,9 +43,6 @@ class LauncherActivity : ComponentActivity() {
     private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {
         val response = result.idpResponse
         if (result.resultCode == RESULT_OK) {
-            val user = FirebaseAuth.getInstance().currentUser
-            println(user?.email)
-            println(user?.displayName)
             onSignInSuccess()
         } else {
             // Sign in failed. If response is null the user canceled the
@@ -57,6 +56,7 @@ class LauncherActivity : ComponentActivity() {
         startActivity(
             Intent(this, MainActivity::class.java)
         )
+        finish()
     }
     
     private fun onSignInFail(error: FirebaseUiException?) {
