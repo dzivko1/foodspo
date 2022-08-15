@@ -5,7 +5,7 @@ import altline.foodspo.data.ingredient.model.Ingredient
 import com.google.firebase.Timestamp
 
 data class Recipe(
-    val id: Long,
+    val id: String,
     val title: String,
     val image: ImageSrc?,
     val sourceName: String?,

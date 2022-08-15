@@ -29,22 +29,22 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.ireward.htmlcompose.HtmlText
 
 data class RecipeDetailsScreenUi(
-    val id: Long = 0,
-    val image: ImageSrc = PlaceholderImages.recipe,
-    val title: String = "",
-    val author: String? = null,
-    val creditsText: String? = null,
-    val servings: Int? = null,
-    val readyInMinutes: Int? = null,
-    val ingredients: List<IngredientListItemUi> = emptyList(),
-    val instructions: List<Instruction> = emptyList(),
-    val summary: String? = null,
-    val sourceUrl: String? = null,
-    val spoonacularSourceUrl: String? = null
+    val id: String,
+    val image: ImageSrc,
+    val title: String,
+    val author: String?,
+    val creditsText: String?,
+    val servings: Int?,
+    val readyInMinutes: Int?,
+    val ingredients: List<IngredientListItemUi>,
+    val instructions: List<Instruction>,
+    val summary: String?,
+    val sourceUrl: String?,
+    val spoonacularSourceUrl: String?
 ) {
     companion object {
         val PREVIEW = RecipeDetailsScreenUi(
-            id = 0,
+            id = "",
             image = PlaceholderImages.recipe,
             title = "Bacon-Apple-Pecan Stuffed French Toast",
             author = "Maplewood Road",

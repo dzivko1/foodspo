@@ -24,7 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 
 data class RecipeCardUi(
-    val id: Long,
+    val id: String,
     val title: String,
     val image: ImageSrc,
     val author: String?,
@@ -35,7 +35,7 @@ data class RecipeCardUi(
 ) {
     companion object {
         val PREVIEW = RecipeCardUi(
-            id = 0,
+            id = "",
             title = "Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs",
             image = PlaceholderImages.recipe,
             author = "Maplewood Road",

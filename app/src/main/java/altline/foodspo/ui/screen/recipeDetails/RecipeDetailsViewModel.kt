@@ -17,7 +17,7 @@ class RecipeDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModelBase<RecipeDetailsScreenUi>() {
 
-    private val recipeId: Long = savedStateHandle["recipeId"]!!
+    private val recipeId: String = savedStateHandle["recipeId"]!!
 
     init {
         loadData()

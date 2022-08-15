@@ -20,7 +20,7 @@ internal class RecipeRepositoryImpl @Inject constructor(
         }
     }
     
-    override suspend fun getRecipeDetails(recipeId: Long): Recipe {
+    override suspend fun getRecipeDetails(recipeId: String): Recipe {
         return mapException {
             mapRecipe(
                 apiDataSource.getRecipeDetails(recipeId)
@@ -28,7 +28,7 @@ internal class RecipeRepositoryImpl @Inject constructor(
         }
     }
     
-    override suspend fun getRecipeDetailsBulk(recipeIds: List<Long>): List<Recipe> {
+    override suspend fun getRecipeDetailsBulk(recipeIds: List<String>): List<Recipe> {
         return mapException {
             apiDataSource.getRecipeDetailsBulk(recipeIds).map(mapRecipe::invoke)
         }

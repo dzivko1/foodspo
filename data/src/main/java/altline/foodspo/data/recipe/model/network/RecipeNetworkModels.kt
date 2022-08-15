@@ -8,7 +8,7 @@ internal data class RandomRecipesResponse(
 )
 
 internal data class RecipeResponse(
-    @Json(name = "id") val id: Long,
+    @Json(name = "id") val id: String,
     @Json(name = "title") val title: String?,
     @Json(name = "image") val image: String?,
     @Json(name = "sourceName") val sourceName: String?,

@@ -54,7 +54,7 @@ enum class AppDestination(
         route = "recipes/{recipeId}",
         title = R.string.destination_title_recipe,
         icon = null,
-        arguments = listOf(navArgument("recipeId") { type = NavType.LongType }),
+        arguments = listOf(navArgument("recipeId") { type = NavType.StringType }),
         content = { RecipeDetailsScreen() }
     );
     

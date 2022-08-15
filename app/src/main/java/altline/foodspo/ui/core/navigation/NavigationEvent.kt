@@ -12,7 +12,7 @@ sealed class NavigationEvent(
     object Shopping : NavigationEvent(AppDestination.Shopping)
     object MealPlanner : NavigationEvent(AppDestination.MealPlanner)
     
-    data class RecipeDetails(val recipeId: Long) : NavigationEvent(
+    data class RecipeDetails(val recipeId: String) : NavigationEvent(
         destination = AppDestination.RecipeDetails,
         args = mapOf("recipeId" to recipeId)
     )

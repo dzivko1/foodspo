@@ -20,7 +20,7 @@ internal class RecipeFirebaseDataSource @Inject constructor(
         
     }
     
-    fun getSavedRecipeIdsPaged(loadTrigger: Flow<Pair<Int, Int>>): Flow<List<Long>> {
+    fun getSavedRecipeIdsPaged(loadTrigger: Flow<Pair<Int, Int>>): Flow<List<String>> {
         return db.collection(FirestoreSchema.Users.SavedRecipes.toString())
             .orderBy(FirestoreSchema.RecipeModel.additionTime)
             .paginate(loadTrigger)

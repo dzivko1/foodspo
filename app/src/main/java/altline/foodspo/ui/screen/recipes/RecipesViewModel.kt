@@ -61,11 +61,11 @@ class RecipesViewModel @Inject constructor(
         }.cachedIn(viewModelScope)
     }
 
-    private fun addIngredientsToShoppingList(recipeId: Long) {
+    private fun addIngredientsToShoppingList(recipeId: String) {
         TODO("Not yet implemented")
     }
 
-    private fun navigateToRecipeDetails(recipeId: Long) {
+    private fun navigateToRecipeDetails(recipeId: String) {
         navigateTo(NavigationEvent.RecipeDetails(recipeId))
     }
 }

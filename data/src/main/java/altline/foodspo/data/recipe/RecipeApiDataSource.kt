@@ -11,11 +11,11 @@ internal class RecipeApiDataSource @Inject constructor(
         return recipeApi.getRandomRecipes(count).recipes
     }
     
-    suspend fun getRecipeDetails(recipeId: Long): RecipeResponse {
+    suspend fun getRecipeDetails(recipeId: String): RecipeResponse {
         return recipeApi.getRecipeInformation(recipeId)
     }
     
-    suspend fun getRecipeDetailsBulk(recipeIds: List<Long>): List<RecipeResponse> {
+    suspend fun getRecipeDetailsBulk(recipeIds: List<String>): List<RecipeResponse> {
         return recipeApi.getRecipeInformationBulk(recipeIds.joinToString(","))
     }
 }
