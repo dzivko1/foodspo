@@ -4,6 +4,7 @@ import altline.foodspo.data.RECIPE_PAGE_SIZE
 import altline.foodspo.data.core.paging.IndexedPagingSource
 import altline.foodspo.data.recipe.model.Recipe
 import altline.foodspo.domain.recipe.GetRandomRecipesUseCase
+import altline.foodspo.domain.recipe.SaveRecipeUseCase
 import altline.foodspo.ui.core.UiState
 import altline.foodspo.ui.core.ViewModelBase
 import altline.foodspo.ui.core.navigation.NavigationEvent
@@ -19,6 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ExploreViewModel @Inject constructor(
     private val getRandomRecipesUseCase: GetRandomRecipesUseCase,
+    private val saveRecipeUseCase: SaveRecipeUseCase,
     private val recipeUiMapper: RecipeUiMapper
 ) : ViewModelBase<ExploreScreenUi>() {
 
@@ -57,8 +59,10 @@ class ExploreViewModel @Inject constructor(
         }.cachedIn(viewModelScope)
     }
 
-    private fun saveRecipe(recipeId: String, saved: Boolean) {
-        TODO("Not yet implemented")
+    private fun saveRecipe(recipeId: String, save: Boolean) {
+        viewModelScope.launchLoading {
+            saveRecipeUseCase(recipeId, save)
+        }
     }
 
     private fun addIngredientsToShoppingList(recipeId: String) {

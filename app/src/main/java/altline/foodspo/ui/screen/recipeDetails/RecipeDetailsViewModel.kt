@@ -7,7 +7,6 @@ import altline.foodspo.ui.recipe.RecipeUiMapper
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,16 +23,14 @@ class RecipeDetailsViewModel @Inject constructor(
     }
 
     override fun loadData() {
-        viewModelScope.launch {
+        viewModelScope.launchLoading {
             kotlin.runCatching {
-                setLoading(true)
                 getRecipeDetailsUseCase(recipeId)
             }.onError {
-                uiState = uiState.copy(error = it, loading = false)
+                setError(it)
             }.onSuccess { recipe ->
                 uiState = uiState.copy(
-                    data = recipeUiMapper.toRecipeDetailsUi(recipe),
-                    loading = false
+                    data = recipeUiMapper.toRecipeDetailsUi(recipe)
                 )
             }
         }

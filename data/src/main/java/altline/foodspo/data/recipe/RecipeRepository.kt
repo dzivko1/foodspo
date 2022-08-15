@@ -15,4 +15,5 @@ interface RecipeRepository {
     
     fun getSavedRecipesPaged(loadTrigger: Flow<Pair<Int, Int>>): Flow<List<Recipe>>
 
+    suspend fun saveRecipe(recipeId: String, save: Boolean)
 }

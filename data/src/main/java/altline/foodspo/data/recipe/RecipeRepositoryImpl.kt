@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 internal class RecipeRepositoryImpl @Inject constructor(
     private val apiDataSource: RecipeApiDataSource,
-    private val firebaseDataSource: RecipeFirebaseDataSource,
+    private val firebaseDataSource: FirebaseDataSource,
     private val mapRecipe: RecipeMapper,
     private val mapException: ExceptionMapper
 ) : RecipeRepository {
@@ -45,5 +45,11 @@ internal class RecipeRepositoryImpl @Inject constructor(
             firebaseDataSource.getSavedRecipeIdsPaged(loadTrigger)
                 .map(this::getRecipeDetailsBulk)
         )
+    }
+
+    override suspend fun saveRecipe(recipeId: String, save: Boolean) {
+        mapException {
+            firebaseDataSource.saveRecipe(recipeId, save)
+        }
     }
 }

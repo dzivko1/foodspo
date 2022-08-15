@@ -68,6 +68,7 @@ object Libs {
         const val bom = "com.google.firebase:firebase-bom:30.0.1"
         const val analyticsKtx = "com.google.firebase:firebase-analytics-ktx"
         const val firestore = "com.google.firebase:firebase-firestore-ktx"
+        const val auth = "com.google.firebase:firebase-auth"
         const val uiAuth = "com.firebaseui:firebase-ui-auth:7.2.0"
     }
     
