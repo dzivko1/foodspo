@@ -5,13 +5,11 @@ import altline.foodspo.data.core.paging.FlowPagingSource
 import altline.foodspo.data.recipe.model.Recipe
 import altline.foodspo.domain.recipe.GetMyRecipesUseCase
 import altline.foodspo.domain.recipe.GetSavedRecipesUseCase
+import altline.foodspo.ui.core.UiState
+import altline.foodspo.ui.core.ViewModelBase
 import altline.foodspo.ui.core.navigation.NavigationEvent
 import altline.foodspo.ui.recipe.RecipeUiMapper
 import altline.foodspo.ui.recipe.component.RecipeCardUi
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,17 +22,14 @@ class RecipesViewModel @Inject constructor(
     private val getMyRecipesUseCase: GetMyRecipesUseCase,
     private val getSavedRecipesUseCase: GetSavedRecipesUseCase,
     private val recipeUiMapper: RecipeUiMapper
-) : ViewModel() {
-    
-    var uiState by mutableStateOf(RecipesUiState())
-        private set
-    
+) : ViewModelBase<RecipesScreenUi>() {
+
     init {
         loadData()
     }
-    
-    fun loadData() {
-        uiState = RecipesUiState(
+
+    override fun loadData() {
+        uiState = UiState(
             data = RecipesScreenUi(
                 myRecipes = constructPagedFlow(
                     dataProvider = getMyRecipesUseCase::invoke
@@ -45,7 +40,7 @@ class RecipesViewModel @Inject constructor(
             )
         )
     }
-    
+
     private fun constructPagedFlow(
         dataProvider: (loadTrigger: Flow<Pair<Int, Int>>) -> Flow<List<Recipe>>
     ): Flow<PagingData<RecipeCardUi>> {
@@ -65,16 +60,12 @@ class RecipesViewModel @Inject constructor(
             }
         }.cachedIn(viewModelScope)
     }
-    
+
     private fun addIngredientsToShoppingList(recipeId: Long) {
         TODO("Not yet implemented")
     }
-    
+
     private fun navigateToRecipeDetails(recipeId: Long) {
-        uiState = uiState.copy(navEvent = NavigationEvent.RecipeDetails(recipeId))
-    }
-    
-    fun onNavEventConsumed() {
-        uiState = uiState.copy(navEvent = null)
+        navigateTo(NavigationEvent.RecipeDetails(recipeId))
     }
 }

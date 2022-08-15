@@ -3,9 +3,8 @@ package altline.foodspo.ui.screen.recipeDetails
 import altline.foodspo.R
 import altline.foodspo.data.core.model.ImageSrc
 import altline.foodspo.data.recipe.model.Instruction
+import altline.foodspo.ui.core.ScreenBase
 import altline.foodspo.ui.core.component.GeneralImage
-import altline.foodspo.ui.core.component.InfoPanel
-import altline.foodspo.ui.core.component.PageLoadingIndicator
 import altline.foodspo.ui.placeholder.PlaceholderImages
 import altline.foodspo.ui.recipe.component.IngredientListItem
 import altline.foodspo.ui.recipe.component.IngredientListItemUi
@@ -71,11 +70,8 @@ data class RecipeDetailsScreenUi(
 
 @Composable
 fun RecipeDetailsScreen(viewModel: RecipeDetailsViewModel = hiltViewModel()) {
-    with(viewModel.uiState) {
-        if (loading) PageLoadingIndicator()
-        
-        if (error != null) InfoPanel(error) { viewModel.loadRecipeDetails() }
-        else if (data != null) Content(data)
+    ScreenBase(viewModel) {
+        Content(it)
     }
 }
 
@@ -123,7 +119,7 @@ private fun UpperSection(
         contentScale = ContentScale.Crop,
         placeholder = painterResource(R.drawable.placeholder_recipe)
     )
-    
+
     Column(
         Modifier.padding(AppTheme.spaces.xl),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spaces.xl)
@@ -141,7 +137,7 @@ private fun UpperSection(
                 )
             }
         }
-        
+
         Row(
             Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceAround
@@ -171,7 +167,7 @@ private fun UpperSection(
                 )
             }
         }
-        
+
     }
 }
 
@@ -201,7 +197,7 @@ private fun LowerSection(
                 R.string.recipe_details_source_prefix,
                 data.creditsText ?: ""
             ) + "\n${data.sourceUrl.toHtmlAnchor()}"
-            
+
             HtmlText(
                 text = sourceText,
                 style = AppTheme.typography.caption
@@ -210,8 +206,8 @@ private fun LowerSection(
         if (data.spoonacularSourceUrl != null) {
             val spoonacularSourceText =
                 stringResource(R.string.recipe_details_visit_on_spoonacular) +
-                        "\n${data.spoonacularSourceUrl.toHtmlAnchor()}"
-            
+                    "\n${data.spoonacularSourceUrl.toHtmlAnchor()}"
+
             HtmlText(
                 text = spoonacularSourceText,
                 style = AppTheme.typography.caption

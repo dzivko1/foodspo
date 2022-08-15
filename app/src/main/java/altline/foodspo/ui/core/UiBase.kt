@@ -19,20 +19,27 @@ val LocalNavController = staticCompositionLocalOf<NavHostController> {
     error("No LocalNavController provided")
 }
 
+val LocalScaffoldState = staticCompositionLocalOf<ScaffoldState> {
+    error("No LocalScaffoldState provided")
+}
+
 @Composable
-fun ViewBase() {
+fun UiBase() {
     val navController = rememberNavController()
-    
+    val scaffoldState = rememberScaffoldState()
+
     val startDestination = AppDestination.Explore
-    
+
     val navBackStackEntry = navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry.value?.destination?.route ?: startDestination.route
     val currentDestination = AppDestination.fromRoute(currentRoute)!!
-    
+
     CompositionLocalProvider(
-        LocalNavController provides navController
+        LocalNavController provides navController,
+        LocalScaffoldState provides scaffoldState
     ) {
         Scaffold(
+            scaffoldState = scaffoldState,
             topBar = {
                 TopAppBar(
                     title = { Text(stringResource(currentDestination.title)) },

@@ -1,6 +1,6 @@
 package altline.foodspo
 
-import altline.foodspo.ui.core.ViewBase
+import altline.foodspo.ui.core.UiBase
 import altline.foodspo.ui.theme.AppTheme
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity() {
                 val systemUiController = rememberSystemUiController()
                 systemUiController.setSystemBarsColor(AppTheme.colors.primarySurface)
                 
-                ViewBase()
+                UiBase()
             }
         }
     }

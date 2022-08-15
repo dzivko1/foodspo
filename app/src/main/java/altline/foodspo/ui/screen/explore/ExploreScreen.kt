@@ -1,6 +1,6 @@
 package altline.foodspo.ui.screen.explore
 
-import altline.foodspo.ui.core.LocalNavController
+import altline.foodspo.ui.core.ScreenBase
 import altline.foodspo.ui.core.component.InfoPanel
 import altline.foodspo.ui.core.component.LoadingSpinner
 import altline.foodspo.ui.recipe.component.RecipeCard
@@ -40,14 +40,8 @@ data class ExploreScreenUi(
 
 @Composable
 fun ExploreScreen(viewModel: ExploreViewModel = hiltViewModel()) {
-    val navController = LocalNavController.current
-    
-    with(viewModel.uiState) {
-        if (navEvent != null) {
-            navEvent.navigate(navController)
-            viewModel.onNavEventConsumed()
-        }
-        data?.let { Content(it) }
+    ScreenBase(viewModel) {
+        Content(it)
     }
 }
 
@@ -56,7 +50,7 @@ private fun Content(
     data: ExploreScreenUi
 ) {
     val pagedRecipes = data.recipes.collectAsLazyPagingItems()
-    
+
     LazyColumn(
         contentPadding = PaddingValues(AppTheme.spaces.xl),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spaces.xl)
@@ -72,7 +66,7 @@ private fun Content(
                     pagedRecipes.retry()
                 }
             }
-            
+
             if (pagedRecipes.loadState.isAnyLoading) {
                 LoadingSpinner()
             }

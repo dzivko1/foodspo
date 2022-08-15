@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import java.io.IOException
 
 @Composable
-fun InfoPanel(error: Throwable, retryAction: (() -> Unit)) = when (error) {
+fun InfoPanel(error: Throwable, retryAction: (() -> Unit)? = null) = when (error) {
     is NotConnectedException -> InfoPanel(
         title = stringResource(R.string.error_not_connected_title),
         message = stringResource(R.string.error_not_connected_message),
@@ -84,9 +84,9 @@ fun InfoPanel(
                         tint = modifiedColor(alpha = 0.25f),
                     )
                 }
-                
+
                 Text(title, style = AppTheme.typography.h6)
-                
+
                 if (message != null) {
                     Text(
                         text = message,
@@ -94,7 +94,7 @@ fun InfoPanel(
                         textAlign = TextAlign.Center
                     )
                 }
-                
+
                 if (action != null) {
                     Spacer(Modifier.height(AppTheme.spaces.xxl))
                     Button(
