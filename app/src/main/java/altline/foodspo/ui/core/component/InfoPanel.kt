@@ -61,7 +61,7 @@ fun InfoPanel(error: Throwable, retryAction: (() -> Unit)? = null) = when (error
 
 @Composable
 fun InfoPanel(
-    title: String,
+    title: String? = null,
     message: String? = null,
     image: Painter? = null,
     actionLabel: String? = null,
@@ -85,7 +85,13 @@ fun InfoPanel(
                     )
                 }
 
-                Text(title, style = AppTheme.typography.h6)
+                if (title != null) {
+                    Text(
+                        text = title,
+                        style = AppTheme.typography.h6,
+                        textAlign = TextAlign.Center
+                    )
+                }
 
                 if (message != null) {
                     Text(

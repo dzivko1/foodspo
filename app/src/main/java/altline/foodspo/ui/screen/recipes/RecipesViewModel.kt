@@ -36,7 +36,9 @@ class RecipesViewModel @Inject constructor(
                 ),
                 savedRecipes = constructPagedFlow(
                     dataProvider = getSavedRecipesUseCase::invoke
-                )
+                ),
+                onCreateRecipeClick = this::navigateToNewRecipe,
+                onExploreRecipesClick = this::navigateToExplore
             )
         )
     }
@@ -63,6 +65,14 @@ class RecipesViewModel @Inject constructor(
 
     private fun addIngredientsToShoppingList(recipeId: String) {
         TODO("Not yet implemented")
+    }
+
+    private fun navigateToNewRecipe() {
+        TODO("Not yet implemented")
+    }
+
+    private fun navigateToExplore() {
+        navigateTo(NavigationEvent.Explore)
     }
 
     private fun navigateToRecipeDetails(recipeId: String) {

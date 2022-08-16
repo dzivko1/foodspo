@@ -32,14 +32,14 @@ internal class FirebaseDataSource @Inject constructor(
         return myRecipesCollection
             .orderBy("additionTime")
             .paginate(loadTrigger)
-            .map { docs -> docs.map { it.toObject<Recipe>()!! } }
+            .map { docs -> docs.map { it.toObject()!! } }
     }
 
     fun getSavedRecipeIdsPaged(loadTrigger: Flow<Pair<Int, Int>>): Flow<List<String>> {
         return savedRecipesCollection
             .orderBy("additionTime")
             .paginate(loadTrigger)
-            .map { docs -> docs.map { it.toObject()!! } }
+            .map { docs -> docs.map { it.id } }
     }
 
     suspend fun saveRecipe(recipeId: String, save: Boolean) {

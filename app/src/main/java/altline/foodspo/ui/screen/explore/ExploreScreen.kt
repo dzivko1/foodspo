@@ -1,13 +1,10 @@
 package altline.foodspo.ui.screen.explore
 
 import altline.foodspo.ui.core.ScreenBase
-import altline.foodspo.ui.core.component.InfoPanel
-import altline.foodspo.ui.core.component.LoadingSpinner
+import altline.foodspo.ui.core.component.PagedListStatus
 import altline.foodspo.ui.recipe.component.RecipeCard
 import altline.foodspo.ui.recipe.component.RecipeCardUi
 import altline.foodspo.ui.theme.AppTheme
-import altline.foodspo.util.anyError
-import altline.foodspo.util.isAnyLoading
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
@@ -56,24 +53,15 @@ private fun Content(
         verticalArrangement = Arrangement.spacedBy(AppTheme.spaces.xl)
     ) {
         items(pagedRecipes) { recipe ->
-            recipe?.let {
+            if (recipe != null) {
                 RecipeCard(recipe)
             }
         }
         item {
-            pagedRecipes.loadState.anyError?.let {
-                InfoPanel(it) {
-                    pagedRecipes.retry()
-                }
-            }
-
-            if (pagedRecipes.loadState.isAnyLoading) {
-                LoadingSpinner()
-            }
+            PagedListStatus(pagedRecipes)
         }
     }
 }
-
 
 @Preview
 @Composable
