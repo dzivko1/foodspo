@@ -9,11 +9,18 @@ import androidx.compose.runtime.LaunchedEffect
 @Composable
 fun <UiData> ScreenBase(
     viewModel: ViewModelBase<UiData>,
-    errorScreen: @Composable (AppException) -> Unit = { InfoPanel(it, retryAction = viewModel::loadData) },
+    fab: (@Composable () -> Unit)? = null,
+    errorScreen: @Composable (AppException) -> Unit = { error ->
+        InfoPanel(error, retryAction = viewModel::loadData)
+    },
     content: @Composable (UiData) -> Unit
 ) {
     val scaffoldState = LocalScaffoldState.current
     val navController = LocalNavController.current
+
+    if (fab != null) {
+        LocalFabSetter.current.invoke(fab)
+    }
 
     with(viewModel.uiState) {
         if (navEvent != null) {
@@ -26,7 +33,11 @@ fun <UiData> ScreenBase(
 
         if (snackbar != null) {
             LaunchedEffect(scaffoldState.snackbarHostState, snackbar) {
-                scaffoldState.snackbarHostState.showSnackbar(snackbar.message, snackbar.actionLabel, snackbar.duration)
+                scaffoldState.snackbarHostState.showSnackbar(
+                    snackbar.message,
+                    snackbar.actionLabel,
+                    snackbar.duration
+                )
                 viewModel.onSnackbarConsumed()
             }
         }

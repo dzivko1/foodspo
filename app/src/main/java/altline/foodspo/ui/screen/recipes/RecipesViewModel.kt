@@ -63,6 +63,10 @@ class RecipesViewModel @Inject constructor(
         }.cachedIn(viewModelScope)
     }
 
+    override fun onFabClick() {
+        navigateToNewRecipe()
+    }
+
     private fun addIngredientsToShoppingList(recipeId: String) {
         TODO("Not yet implemented")
     }

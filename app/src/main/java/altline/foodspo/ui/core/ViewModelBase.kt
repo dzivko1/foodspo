@@ -48,4 +48,8 @@ abstract class ViewModelBase<UiData> : ViewModel() {
     fun onNavEventConsumed() {
         uiState = uiState.copy(navEvent = null)
     }
+
+    open fun onFabClick() {
+        /* no-op */
+    }
 }

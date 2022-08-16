@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Foodspo</string>
 
+    <string name="fab_new_recipe">New recipe</string>
+
     <!-- Actions -->
     <string name="action_retry">Retry</string>
 

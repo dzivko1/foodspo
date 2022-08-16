@@ -1,32 +1,27 @@
 package altline.foodspo.ui.core
 
 import altline.foodspo.R
-import altline.foodspo.ui.core.navigation.*
+import altline.foodspo.ui.core.navigation.AppBottomNavigation
+import altline.foodspo.ui.core.navigation.AppDestination
+import altline.foodspo.ui.core.navigation.NavGraph
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-
-val LocalNavController = staticCompositionLocalOf<NavHostController> {
-    error("No LocalNavController provided")
-}
-
-val LocalScaffoldState = staticCompositionLocalOf<ScaffoldState> {
-    error("No LocalScaffoldState provided")
-}
 
 @Composable
 fun UiBase() {
     val navController = rememberNavController()
     val scaffoldState = rememberScaffoldState()
+    val (fab, setFab) = remember { mutableStateOf<@Composable () -> Unit>({}) }
 
     val startDestination = AppDestination.Explore
 
@@ -36,7 +31,8 @@ fun UiBase() {
 
     CompositionLocalProvider(
         LocalNavController provides navController,
-        LocalScaffoldState provides scaffoldState
+        LocalScaffoldState provides scaffoldState,
+        LocalFabSetter provides setFab
     ) {
         Scaffold(
             scaffoldState = scaffoldState,
@@ -63,7 +59,8 @@ fun UiBase() {
                         onDestinationSelected = { navController.navigate(it.route) }
                     )
                 }
-            }
+            },
+            floatingActionButton = fab
         ) { paddingValues ->
             NavGraph(
                 navController = navController,
