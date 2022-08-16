@@ -9,6 +9,7 @@ import androidx.compose.runtime.LaunchedEffect
 @Composable
 fun <UiData> ScreenBase(
     viewModel: ViewModelBase<UiData>,
+    topBar: @Composable () -> Unit = { DefaultTopBar() },
     fab: (@Composable () -> Unit)? = null,
     errorScreen: @Composable (AppException) -> Unit = { error ->
         InfoPanel(error, retryAction = viewModel::loadData)
@@ -17,6 +18,8 @@ fun <UiData> ScreenBase(
 ) {
     val scaffoldState = LocalScaffoldState.current
     val navController = LocalNavController.current
+
+    LocalTopBarSetter.current.invoke(topBar)
 
     if (fab != null) {
         LocalFabSetter.current.invoke(fab)

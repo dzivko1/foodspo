@@ -3,8 +3,10 @@ package altline.foodspo.ui.screen.recipeDetails
 import altline.foodspo.R
 import altline.foodspo.data.core.model.ImageSrc
 import altline.foodspo.data.recipe.model.Instruction
+import altline.foodspo.ui.core.LocalNavController
 import altline.foodspo.ui.core.ScreenBase
 import altline.foodspo.ui.core.component.GeneralImage
+import altline.foodspo.ui.core.component.SaveButton
 import altline.foodspo.ui.placeholder.PlaceholderImages
 import altline.foodspo.ui.recipe.component.IngredientListItem
 import altline.foodspo.ui.recipe.component.IngredientListItemUi
@@ -14,10 +16,10 @@ import altline.foodspo.util.toHtmlAnchor
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material.Divider
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddShoppingCart
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,7 +42,8 @@ data class RecipeDetailsScreenUi(
     val instructions: List<Instruction>,
     val summary: String?,
     val sourceUrl: String?,
-    val spoonacularSourceUrl: String?
+    val spoonacularSourceUrl: String?,
+    val isSaved: Boolean
 ) {
     companion object {
         val PREVIEW = RecipeDetailsScreenUi(
@@ -63,16 +66,57 @@ data class RecipeDetailsScreenUi(
             summary = "A food with bread, apples, and other things.",
             creditsText = "Maplewood Road",
             sourceUrl = "https://maplewoodroad.com/bacon-apple-pecan-stuffed-french-toast/",
-            spoonacularSourceUrl = "https://spoonacular.com/bacon-apple-pecan-stuffed-french-toast-1697823"
+            spoonacularSourceUrl = "https://spoonacular.com/bacon-apple-pecan-stuffed-french-toast-1697823",
+            isSaved = false
         )
     }
 }
 
 @Composable
 fun RecipeDetailsScreen(viewModel: RecipeDetailsViewModel = hiltViewModel()) {
-    ScreenBase(viewModel) {
+    ScreenBase(
+        viewModel,
+        topBar = {
+            TopBar(
+                isRecipeSaved = viewModel.uiState.data?.isSaved ?: false,
+                onAddToShoppingList = viewModel::onAddToShoppingListClicked,
+                onSave = viewModel::onSaveClicked
+            )
+        }
+    ) {
         Content(it)
     }
+}
+
+@Composable
+private fun TopBar(
+    isRecipeSaved: Boolean,
+    onAddToShoppingList: () -> Unit,
+    onSave: (Boolean) -> Unit
+) {
+    val navController = LocalNavController.current
+    TopAppBar(
+        title = { Text(stringResource(R.string.destination_title_recipe)) },
+        navigationIcon = {
+            IconButton(onClick = navController::navigateUp) {
+                Icon(
+                    Icons.Default.ArrowBack,
+                    contentDescription = stringResource(R.string.content_desc_navigate_up)
+                )
+            }
+        },
+        actions = {
+            IconButton(
+                onClick = onAddToShoppingList
+            ) {
+                Icon(
+                    Icons.Default.AddShoppingCart,
+                    contentDescription = stringResource(R.string.content_desc_add_ingredients_to_shopping_list)
+                )
+            }
+            SaveButton(isRecipeSaved, onSave)
+        }
+    )
 }
 
 @Composable

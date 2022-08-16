@@ -3,7 +3,7 @@ package altline.foodspo.ui.recipe.component
 import altline.foodspo.R
 import altline.foodspo.data.core.model.ImageSrc
 import altline.foodspo.ui.core.component.GeneralImage
-import altline.foodspo.ui.core.component.SaveIcon
+import altline.foodspo.ui.core.component.SaveButton
 import altline.foodspo.ui.placeholder.PlaceholderImages
 import altline.foodspo.ui.theme.AppTheme
 import altline.foodspo.util.modifiedColor
@@ -86,9 +86,7 @@ fun RecipeCard(
                     )
                 }
                 if (data.isSaved != null) {
-                    IconToggleButton(checked = data.isSaved, onCheckedChange = data.onSavedChange) {
-                        SaveIcon(data.isSaved)
-                    }
+                    SaveButton(data.isSaved, data.onSavedChange)
                 }
             }
         }

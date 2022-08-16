@@ -39,6 +39,7 @@ class RecipeUiMapper @Inject constructor(
         instructions = raw.instructions,
         summary = raw.summary,
         sourceUrl = raw.sourceUrl,
-        spoonacularSourceUrl = raw.spoonacularSourceUrl
+        spoonacularSourceUrl = raw.spoonacularSourceUrl,
+        isSaved = raw.isSaved
     )
 }

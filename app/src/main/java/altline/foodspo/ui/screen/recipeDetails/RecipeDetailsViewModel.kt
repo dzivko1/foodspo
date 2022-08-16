@@ -35,4 +35,12 @@ class RecipeDetailsViewModel @Inject constructor(
             }
         }
     }
+
+    fun onAddToShoppingListClicked() {
+        TODO("Not yet implemented")
+    }
+
+    fun onSaveClicked(saved: Boolean) {
+        TODO("Not yet implemented")
+    }
 }

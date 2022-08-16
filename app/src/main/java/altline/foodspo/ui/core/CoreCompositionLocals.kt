@@ -13,6 +13,10 @@ val LocalScaffoldState = staticCompositionLocalOf<ScaffoldState> {
     error("No LocalScaffoldState provided")
 }
 
+val LocalTopBarSetter = staticCompositionLocalOf<(@Composable () -> Unit) -> Unit> {
+    error("No LocalTopBarSetter")
+}
+
 val LocalFabSetter = staticCompositionLocalOf<(@Composable () -> Unit) -> Unit> {
     error("No LocalFabSetter provided")
 }
