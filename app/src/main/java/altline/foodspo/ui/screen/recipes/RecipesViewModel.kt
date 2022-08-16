@@ -29,8 +29,8 @@ class RecipesViewModel @Inject constructor(
     }
 
     override fun loadData() {
-        uiState = UiState(
-            data = RecipesScreenUi(
+        setUiData(
+            RecipesScreenUi(
                 myRecipes = constructPagedFlow(
                     dataProvider = getMyRecipesUseCase::invoke
                 ),

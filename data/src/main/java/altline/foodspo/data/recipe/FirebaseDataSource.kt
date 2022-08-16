@@ -42,6 +42,12 @@ internal class FirebaseDataSource @Inject constructor(
             .map { docs -> docs.map { it.id } }
     }
 
+    suspend fun isRecipeSaved(recipeId: String): Boolean {
+        return savedRecipesCollection.document(recipeId)
+            .get().await()
+            .exists()
+    }
+
     suspend fun saveRecipe(recipeId: String, save: Boolean) {
         if (save) {
             savedRecipesCollection.document(recipeId)

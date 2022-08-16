@@ -5,7 +5,6 @@ import altline.foodspo.data.core.paging.IndexedPagingSource
 import altline.foodspo.data.recipe.model.Recipe
 import altline.foodspo.domain.recipe.GetRandomRecipesUseCase
 import altline.foodspo.domain.recipe.SaveRecipeUseCase
-import altline.foodspo.ui.core.UiState
 import altline.foodspo.ui.core.ViewModelBase
 import altline.foodspo.ui.core.navigation.NavigationEvent
 import altline.foodspo.ui.recipe.RecipeUiMapper
@@ -15,6 +14,7 @@ import androidx.paging.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,8 +29,8 @@ class ExploreViewModel @Inject constructor(
     }
 
     override fun loadData() {
-        uiState = UiState(
-            data = ExploreScreenUi(
+        setUiData(
+            ExploreScreenUi(
                 recipes = constructPagedFlow(
                     dataProvider = { _, loadSize -> getRandomRecipesUseCase(loadSize) }
                 )
@@ -60,8 +60,10 @@ class ExploreViewModel @Inject constructor(
     }
 
     private fun saveRecipe(recipeId: String, save: Boolean) {
-        viewModelScope.launchLoading {
-            saveRecipeUseCase(recipeId, save)
+        viewModelScope.launch {
+            runAction {
+                saveRecipeUseCase(recipeId, save)
+            }
         }
     }
 

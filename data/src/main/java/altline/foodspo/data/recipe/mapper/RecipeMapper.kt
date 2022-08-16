@@ -10,7 +10,7 @@ import javax.inject.Inject
 internal class RecipeMapper @Inject constructor(
     private val mapIngredients: IngredientMapper
 ) {
-    operator fun invoke(raw: RecipeResponse): Recipe {
+    operator fun invoke(raw: RecipeResponse, saved: Boolean): Recipe {
         return Recipe(
             id = raw.id,
             title = raw.title ?: "",
@@ -27,7 +27,7 @@ internal class RecipeMapper @Inject constructor(
             summary = raw.summary ?: "",
             ingredients = raw.extendedIngredients.map(mapIngredients::invoke),
             additionTime = null,
-            isSaved = false
+            isSaved = saved
         )
     }
 }

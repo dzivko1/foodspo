@@ -1,14 +1,13 @@
 package altline.foodspo.ui.core
 
 import altline.foodspo.data.error.AppException
+import altline.foodspo.error.onError
 import altline.foodspo.ui.core.navigation.NavigationEvent
 import altline.foodspo.ui.core.snackbar.SnackbarModel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 abstract class ViewModelBase<UiData> : ViewModel() {
 
@@ -17,12 +16,19 @@ abstract class ViewModelBase<UiData> : ViewModel() {
 
     abstract fun loadData()
 
-    protected fun CoroutineScope.launchLoading(block: suspend () -> Unit) {
+    protected suspend fun <T> runAction(block: suspend () -> T): Result<T> {
         setLoading(true)
-        launch {
+        return kotlin.runCatching {
             block()
+        }.onError {
+            setError(it)
+        }.also {
             setLoading(false)
         }
+    }
+
+    protected fun setUiData(uiData: UiData?) {
+        uiState = uiState.copy(data = uiData)
     }
 
     protected fun setLoading(loading: Boolean) {

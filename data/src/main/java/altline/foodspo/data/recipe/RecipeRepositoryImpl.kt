@@ -13,37 +13,47 @@ internal class RecipeRepositoryImpl @Inject constructor(
     private val mapRecipe: RecipeMapper,
     private val mapException: ExceptionMapper
 ) : RecipeRepository {
-    
+
     override suspend fun getRandomRecipes(count: Int): List<Recipe> {
         return mapException {
-            apiDataSource.getRandomRecipes(count).map(mapRecipe::invoke)
+            apiDataSource.getRandomRecipes(count).map {
+                val saved = firebaseDataSource.isRecipeSaved(it.id)
+                mapRecipe(it, saved)
+            }
         }
     }
-    
+
     override suspend fun getRecipeDetails(recipeId: String): Recipe {
         return mapException {
-            mapRecipe(
-                apiDataSource.getRecipeDetails(recipeId)
-            )
+            apiDataSource.getRecipeDetails(recipeId).let {
+                val saved = firebaseDataSource.isRecipeSaved(it.id)
+                mapRecipe(it, saved)
+            }
         }
     }
-    
+
     override suspend fun getRecipeDetailsBulk(recipeIds: List<String>): List<Recipe> {
         return mapException {
-            apiDataSource.getRecipeDetailsBulk(recipeIds).map(mapRecipe::invoke)
+            apiDataSource.getRecipeDetailsBulk(recipeIds).map {
+                val saved = firebaseDataSource.isRecipeSaved(it.id)
+                mapRecipe(it, saved)
+            }
         }
     }
-    
+
     override fun getMyRecipesPaged(loadTrigger: Flow<Pair<Int, Int>>): Flow<List<Recipe>> {
         return mapException.forFlow(
             firebaseDataSource.getMyRecipesPaged(loadTrigger)
         )
     }
-    
+
     override fun getSavedRecipesPaged(loadTrigger: Flow<Pair<Int, Int>>): Flow<List<Recipe>> {
         return mapException.forFlow(
-            firebaseDataSource.getSavedRecipeIdsPaged(loadTrigger)
-                .map(this::getRecipeDetailsBulk)
+            firebaseDataSource.getSavedRecipeIdsPaged(loadTrigger).map { ids ->
+                apiDataSource.getRecipeDetailsBulk(ids).map {
+                    mapRecipe(it, true)
+                }
+            }
         )
     }
 
