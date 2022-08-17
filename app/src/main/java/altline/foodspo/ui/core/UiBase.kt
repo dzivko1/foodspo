@@ -22,7 +22,7 @@ fun UiBase() {
     val navController = rememberNavController()
     val scaffoldState = rememberScaffoldState()
     val (topBar, setTopBar) = remember { mutableStateOf<@Composable () -> Unit>({}) }
-    val (fab, setFab) = remember { mutableStateOf<@Composable () -> Unit>({}) }
+    val (fab, setFab) = remember { mutableStateOf<(@Composable () -> Unit)?>({}) }
 
     val currentDestination = navController.getCurrentAppDestination()
 
@@ -44,7 +44,7 @@ fun UiBase() {
                     )
                 }
             },
-            floatingActionButton = fab
+            floatingActionButton = fab ?: {}
         ) { paddingValues ->
             NavGraph(
                 navController = navController,

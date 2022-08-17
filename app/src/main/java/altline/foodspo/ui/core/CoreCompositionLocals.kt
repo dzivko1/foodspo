@@ -17,6 +17,6 @@ val LocalTopBarSetter = staticCompositionLocalOf<(@Composable () -> Unit) -> Uni
     error("No LocalTopBarSetter")
 }
 
-val LocalFabSetter = staticCompositionLocalOf<(@Composable () -> Unit) -> Unit> {
+val LocalFabSetter = staticCompositionLocalOf<((@Composable () -> Unit)?) -> Unit> {
     error("No LocalFabSetter provided")
 }

@@ -20,10 +20,7 @@ fun <UiData> ScreenBase(
     val navController = LocalNavController.current
 
     LocalTopBarSetter.current.invoke(topBar)
-
-    if (fab != null) {
-        LocalFabSetter.current.invoke(fab)
-    }
+    LocalFabSetter.current.invoke(fab)
 
     with(viewModel.uiState) {
         if (navEvent != null) {
