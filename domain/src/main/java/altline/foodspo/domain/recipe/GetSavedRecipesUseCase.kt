@@ -1,19 +1,16 @@
 package altline.foodspo.domain.recipe
 
-import altline.foodspo.data.di.IODispatcher
+import altline.foodspo.data.core.paging.PageLoadTrigger
+import altline.foodspo.data.core.paging.PagingAccessor
 import altline.foodspo.data.recipe.RecipeRepository
 import altline.foodspo.data.recipe.model.Recipe
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.CoroutineScope
 import javax.inject.Inject
 
 class GetSavedRecipesUseCase @Inject constructor(
-    private val recipeRepository: RecipeRepository,
-    @IODispatcher private val dispatcher: CoroutineDispatcher
+    private val recipeRepository: RecipeRepository
 ) {
-    operator fun invoke(loadTrigger: Flow<Pair<Int, Int>>): Flow<List<Recipe>> {
-        return recipeRepository.getSavedRecipesPaged(loadTrigger)
-            .flowOn(dispatcher)
+    operator fun invoke(coroutineScope: CoroutineScope): PagingAccessor<Recipe> {
+        return recipeRepository.getSavedRecipesPaged(PageLoadTrigger(), coroutineScope)
     }
 }

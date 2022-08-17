@@ -1,5 +1,6 @@
 package altline.foodspo.data.recipe
 
+import altline.foodspo.data.core.paging.PageLoadTrigger
 import altline.foodspo.data.core.paging.paginate
 import altline.foodspo.data.recipe.model.Recipe
 import altline.foodspo.data.user.model.User
@@ -28,14 +29,14 @@ internal class FirebaseDataSource @Inject constructor(
         this.user = user
     }
 
-    fun getMyRecipesPaged(loadTrigger: Flow<Pair<Int, Int>>): Flow<List<Recipe>> {
+    fun getMyRecipesPaged(loadTrigger: PageLoadTrigger): Flow<List<Recipe>> {
         return myRecipesCollection
             .orderBy("additionTime")
             .paginate(loadTrigger)
             .map { docs -> docs.map { it.toObject()!! } }
     }
 
-    fun getSavedRecipeIdsPaged(loadTrigger: Flow<Pair<Int, Int>>): Flow<List<String>> {
+    fun getSavedRecipeIdsPaged(loadTrigger: PageLoadTrigger): Flow<List<String>> {
         return savedRecipesCollection
             .orderBy("additionTime")
             .paginate(loadTrigger)

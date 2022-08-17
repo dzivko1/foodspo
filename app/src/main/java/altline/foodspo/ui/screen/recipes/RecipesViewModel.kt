@@ -2,10 +2,10 @@ package altline.foodspo.ui.screen.recipes
 
 import altline.foodspo.data.RECIPE_PAGE_SIZE
 import altline.foodspo.data.core.paging.FlowPagingSource
+import altline.foodspo.data.core.paging.PagingAccessor
 import altline.foodspo.data.recipe.model.Recipe
 import altline.foodspo.domain.recipe.GetMyRecipesUseCase
 import altline.foodspo.domain.recipe.GetSavedRecipesUseCase
-import altline.foodspo.ui.core.UiState
 import altline.foodspo.ui.core.ViewModelBase
 import altline.foodspo.ui.core.navigation.NavigationEvent
 import altline.foodspo.ui.recipe.RecipeUiMapper
@@ -32,10 +32,10 @@ class RecipesViewModel @Inject constructor(
         setUiData(
             RecipesScreenUi(
                 myRecipes = constructPagedFlow(
-                    dataProvider = getMyRecipesUseCase::invoke
+                    getMyRecipesUseCase(viewModelScope)
                 ),
                 savedRecipes = constructPagedFlow(
-                    dataProvider = getSavedRecipesUseCase::invoke
+                    getSavedRecipesUseCase(viewModelScope)
                 ),
                 onCreateRecipeClick = this::navigateToNewRecipe,
                 onExploreRecipesClick = this::navigateToExplore
@@ -44,12 +44,12 @@ class RecipesViewModel @Inject constructor(
     }
 
     private fun constructPagedFlow(
-        dataProvider: (loadTrigger: Flow<Pair<Int, Int>>) -> Flow<List<Recipe>>
+        pagingAccessor: PagingAccessor<Recipe>
     ): Flow<PagingData<RecipeCardUi>> {
         return Pager(
             PagingConfig(RECIPE_PAGE_SIZE),
             pagingSourceFactory = {
-                FlowPagingSource(dataProvider, viewModelScope)
+                FlowPagingSource(pagingAccessor, RECIPE_PAGE_SIZE)
             }
         ).flow.map { pagingData ->
             pagingData.map { recipe ->

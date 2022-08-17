@@ -1,19 +1,30 @@
 package altline.foodspo.data.recipe
 
+import altline.foodspo.data.core.paging.PageLoadTrigger
+import altline.foodspo.data.core.paging.PagingAccessor
 import altline.foodspo.data.recipe.model.Recipe
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.CoroutineScope
 
 interface RecipeRepository {
-    
-    suspend fun getRandomRecipes(count: Int): List<Recipe>
-    
+
+    fun getRandomRecipesPaged(
+        loadTrigger: PageLoadTrigger,
+        coroutineScope: CoroutineScope
+    ): PagingAccessor<Recipe>
+
     suspend fun getRecipeDetails(recipeId: String): Recipe
-    
+
     suspend fun getRecipeDetailsBulk(recipeIds: List<String>): List<Recipe>
-    
-    fun getMyRecipesPaged(loadTrigger: Flow<Pair<Int, Int>>): Flow<List<Recipe>>
-    
-    fun getSavedRecipesPaged(loadTrigger: Flow<Pair<Int, Int>>): Flow<List<Recipe>>
+
+    fun getMyRecipesPaged(
+        loadTrigger: PageLoadTrigger,
+        coroutineScope: CoroutineScope
+    ): PagingAccessor<Recipe>
+
+    fun getSavedRecipesPaged(
+        loadTrigger: PageLoadTrigger,
+        coroutineScope: CoroutineScope
+    ): PagingAccessor<Recipe>
 
     suspend fun saveRecipe(recipeId: String, save: Boolean)
 }

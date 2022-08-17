@@ -1,7 +1,8 @@
 package altline.foodspo.ui.screen.explore
 
 import altline.foodspo.data.RECIPE_PAGE_SIZE
-import altline.foodspo.data.core.paging.IndexedPagingSource
+import altline.foodspo.data.core.paging.FlowPagingSource
+import altline.foodspo.data.core.paging.PagingAccessor
 import altline.foodspo.data.recipe.model.Recipe
 import altline.foodspo.domain.recipe.GetRandomRecipesUseCase
 import altline.foodspo.domain.recipe.SaveRecipeUseCase
@@ -24,6 +25,8 @@ class ExploreViewModel @Inject constructor(
     private val recipeUiMapper: RecipeUiMapper
 ) : ViewModelBase<ExploreScreenUi>() {
 
+    private lateinit var pagingSource: FlowPagingSource<Recipe>
+
     init {
         loadData()
     }
@@ -32,19 +35,19 @@ class ExploreViewModel @Inject constructor(
         setUiData(
             ExploreScreenUi(
                 recipes = constructPagedFlow(
-                    dataProvider = { _, loadSize -> getRandomRecipesUseCase(loadSize) }
+                    getRandomRecipesUseCase(viewModelScope)
                 )
             )
         )
     }
 
     private fun constructPagedFlow(
-        dataProvider: suspend (page: Int, loadSize: Int) -> List<Recipe>
+        pagingAccessor: PagingAccessor<Recipe>
     ): Flow<PagingData<RecipeCardUi>> {
         return Pager(
             PagingConfig(RECIPE_PAGE_SIZE),
             pagingSourceFactory = {
-                IndexedPagingSource(dataProvider)
+                FlowPagingSource(pagingAccessor, RECIPE_PAGE_SIZE).also { pagingSource = it }
             }
         ).flow.map { pagingData ->
             pagingData.map { recipe ->
@@ -63,6 +66,8 @@ class ExploreViewModel @Inject constructor(
         viewModelScope.launch {
             runAction {
                 saveRecipeUseCase(recipeId, save)
+            }.onSuccess {
+                pagingSource.invalidate()
             }
         }
     }

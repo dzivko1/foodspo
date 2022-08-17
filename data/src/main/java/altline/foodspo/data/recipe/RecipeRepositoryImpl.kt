@@ -1,9 +1,11 @@
 package altline.foodspo.data.recipe
 
+import altline.foodspo.data.core.paging.PageLoadTrigger
+import altline.foodspo.data.core.paging.PagingAccessor
 import altline.foodspo.data.error.ExceptionMapper
 import altline.foodspo.data.recipe.mapper.RecipeMapper
 import altline.foodspo.data.recipe.model.Recipe
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -14,13 +16,19 @@ internal class RecipeRepositoryImpl @Inject constructor(
     private val mapException: ExceptionMapper
 ) : RecipeRepository {
 
-    override suspend fun getRandomRecipes(count: Int): List<Recipe> {
-        return mapException {
-            apiDataSource.getRandomRecipes(count).map {
-                val saved = firebaseDataSource.isRecipeSaved(it.id)
-                mapRecipe(it, saved)
+    override fun getRandomRecipesPaged(
+        loadTrigger: PageLoadTrigger,
+        coroutineScope: CoroutineScope
+    ): PagingAccessor<Recipe> {
+        val flow = mapException.forFlow(
+            apiDataSource.getRandomRecipesPaged(loadTrigger).map { responses ->
+                responses.map {
+                    val saved = firebaseDataSource.isRecipeSaved(it.id)
+                    mapRecipe(it, saved)
+                }
             }
-        }
+        )
+        return PagingAccessor(flow, loadTrigger, coroutineScope)
     }
 
     override suspend fun getRecipeDetails(recipeId: String): Recipe {
@@ -41,20 +49,28 @@ internal class RecipeRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getMyRecipesPaged(loadTrigger: Flow<Pair<Int, Int>>): Flow<List<Recipe>> {
-        return mapException.forFlow(
+    override fun getMyRecipesPaged(
+        loadTrigger: PageLoadTrigger,
+        coroutineScope: CoroutineScope
+    ): PagingAccessor<Recipe> {
+        val flow = mapException.forFlow(
             firebaseDataSource.getMyRecipesPaged(loadTrigger)
         )
+        return PagingAccessor(flow, loadTrigger, coroutineScope)
     }
 
-    override fun getSavedRecipesPaged(loadTrigger: Flow<Pair<Int, Int>>): Flow<List<Recipe>> {
-        return mapException.forFlow(
+    override fun getSavedRecipesPaged(
+        loadTrigger: PageLoadTrigger,
+        coroutineScope: CoroutineScope
+    ): PagingAccessor<Recipe> {
+        val flow = mapException.forFlow(
             firebaseDataSource.getSavedRecipeIdsPaged(loadTrigger).map { ids ->
                 apiDataSource.getRecipeDetailsBulk(ids).map {
                     mapRecipe(it, true)
                 }
             }
         )
+        return PagingAccessor(flow, loadTrigger, coroutineScope)
     }
 
     override suspend fun saveRecipe(recipeId: String, save: Boolean) {
