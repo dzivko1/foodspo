@@ -1,9 +1,12 @@
 package altline.foodspo.data.recipe
 
+import altline.foodspo.data.CUSTOM_RECIPE_ID_PREFIX
 import altline.foodspo.data.core.paging.PageLoadTrigger
 import altline.foodspo.data.core.paging.PagingAccessor
 import altline.foodspo.data.error.ExceptionMapper
+import altline.foodspo.data.recipe.mapper.InstructionMapper
 import altline.foodspo.data.recipe.mapper.RecipeMapper
+import altline.foodspo.data.recipe.model.Instruction
 import altline.foodspo.data.recipe.model.Recipe
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.map
@@ -13,6 +16,7 @@ internal class RecipeRepositoryImpl @Inject constructor(
     private val apiDataSource: RecipeApiDataSource,
     private val firebaseDataSource: FirebaseDataSource,
     private val mapRecipe: RecipeMapper,
+    private val mapInstruction: InstructionMapper,
     private val mapException: ExceptionMapper
 ) : RecipeRepository {
 
@@ -33,9 +37,13 @@ internal class RecipeRepositoryImpl @Inject constructor(
 
     override suspend fun getRecipeDetails(recipeId: String): Recipe {
         return mapException {
-            apiDataSource.getRecipeDetails(recipeId).let {
-                val saved = firebaseDataSource.isRecipeSaved(it.id)
-                mapRecipe(it, saved)
+            if (recipeId.startsWith(CUSTOM_RECIPE_ID_PREFIX)) {
+                firebaseDataSource.getMyRecipeDetails(recipeId)
+            } else {
+                apiDataSource.getRecipeDetails(recipeId).let {
+                    val saved = firebaseDataSource.isRecipeSaved(it.id)
+                    mapRecipe(it, saved)
+                }
             }
         }
     }
@@ -65,17 +73,36 @@ internal class RecipeRepositoryImpl @Inject constructor(
     ): PagingAccessor<Recipe> {
         val flow = mapException.forFlow(
             firebaseDataSource.getSavedRecipeIdsPaged(loadTrigger).map { ids ->
-                apiDataSource.getRecipeDetailsBulk(ids).map {
-                    mapRecipe(it, true)
-                }
+                if (ids.isNotEmpty()) {
+                    apiDataSource.getRecipeDetailsBulk(ids).map {
+                        mapRecipe(it, true)
+                    }
+                } else emptyList()
             }
         )
         return PagingAccessor(flow, loadTrigger, coroutineScope)
     }
 
+    override suspend fun createRecipe(recipe: Recipe) {
+        mapException {
+            firebaseDataSource.createRecipe(recipe)
+        }
+    }
+
     override suspend fun saveRecipe(recipeId: String, save: Boolean) {
         mapException {
             firebaseDataSource.saveRecipe(recipeId, save)
+        }
+    }
+
+    override suspend fun analyzeInstructions(instructions: String): List<Instruction> {
+        return mapException {
+            if (instructions.isNotEmpty()) {
+                apiDataSource.analyzeInstructions(instructions)
+                    .parsedInstructions.firstOrNull()
+                    ?.steps?.map(mapInstruction::invoke)
+                    ?: emptyList()
+            } else emptyList()
         }
     }
 }

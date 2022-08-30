@@ -21,12 +21,3 @@ internal data class RecipeResponse(
     @Json(name = "summary") val summary: String?,
     @Json(name = "extendedIngredients") val extendedIngredients: List<IngredientResponse>
 )
-
-internal data class AnalyzedInstructionsResponse(
-    @Json(name = "steps") val steps: List<InstructionResponse>
-)
-
-internal data class InstructionResponse(
-    @Json(name = "number") val number: Int,
-    @Json(name = "step") val text: String
-)

@@ -72,7 +72,7 @@ class RecipesViewModel @Inject constructor(
     }
 
     private fun navigateToNewRecipe() {
-        TODO("Not yet implemented")
+        navigateTo(NavigationEvent.RecipeEditor(null))
     }
 
     private fun navigateToExplore() {

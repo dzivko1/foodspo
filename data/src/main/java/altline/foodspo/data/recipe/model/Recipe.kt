@@ -2,6 +2,7 @@ package altline.foodspo.data.recipe.model
 
 import altline.foodspo.data.core.model.ImageSrc
 import altline.foodspo.data.ingredient.model.Ingredient
+import altline.foodspo.data.ingredient.model.IngredientFirestore
 import com.google.firebase.Timestamp
 
 data class Recipe(
@@ -19,9 +20,59 @@ data class Recipe(
     val ingredients: List<Ingredient>,
     val additionTime: Timestamp?,
     val isSaved: Boolean
-)
+) {
+    val rawInstructions: String
+        get() = instructions.joinToString("\n")
+}
 
 data class Instruction(
     val number: Int,
     val text: String
-)
+) {
+    override fun toString(): String {
+        return "$number. $text"
+    }
+}
+
+internal data class RecipeFirestore(
+    var id: String = "",
+    var title: String = "",
+    var image: Map<String, String> = emptyMap(),
+    var sourceName: String? = null,
+    var creditsText: String? = null,
+    var sourceUrl: String? = null,
+    var spoonacularSourceUrl: String? = null,
+    var servings: Int? = null,
+    var readyInMinutes: Int? = null,
+    var instructions: List<InstructionFirestore> = emptyList(),
+    var summary: String? = null,
+    var ingredients: List<IngredientFirestore> = emptyList(),
+    var additionTime: Timestamp? = null,
+    var isSaved: Boolean = false
+) {
+    fun toDomainModel() = Recipe(
+        id,
+        title,
+        image["path"]?.let { ImageSrc(it) },
+        sourceName,
+        creditsText,
+        sourceUrl,
+        spoonacularSourceUrl,
+        servings,
+        readyInMinutes,
+        instructions.map { it.toDomainModel() },
+        summary,
+        ingredients.map { it.toDomainModel() },
+        additionTime,
+        isSaved
+    )
+}
+
+internal data class InstructionFirestore(
+    var number: Int = 0,
+    var text: String = ""
+) {
+    fun toDomainModel() = Instruction(
+        number, text
+    )
+}

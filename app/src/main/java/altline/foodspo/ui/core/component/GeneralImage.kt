@@ -1,16 +1,16 @@
 package altline.foodspo.ui.core.component
 
+import altline.foodspo.data.core.model.BitmapImageSrc
 import altline.foodspo.data.core.model.DrawableImageSrc
 import altline.foodspo.data.core.model.ImageSrc
 import altline.foodspo.data.core.model.PathImageSrc
-import altline.foodspo.ui.core.model.BitmapImageSrc
-import altline.foodspo.ui.core.model.VectorImageSrc
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.DefaultAlpha
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -30,20 +30,9 @@ fun GeneralImage(
     fallback: Painter? = null
 ) {
     when (image) {
-        is VectorImageSrc -> {
-            Image(
-                imageVector = image.imageVector,
-                contentDescription = contentDescription,
-                modifier = modifier,
-                alignment = alignment,
-                contentScale = contentScale,
-                alpha = alpha,
-                colorFilter = colorFilter
-            )
-        }
         is BitmapImageSrc -> {
             Image(
-                bitmap = image.imageBitmap,
+                bitmap = image.bitmap.asImageBitmap(),
                 contentDescription = contentDescription,
                 modifier = modifier,
                 alignment = alignment,

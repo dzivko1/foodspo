@@ -9,13 +9,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 
-abstract class ViewModelBase<UiData> : ViewModel() {
+abstract class ViewModelBase<UI> : ViewModel() {
 
-    var uiState by mutableStateOf<UiState<UiData>>(UiState())
+    var uiState by mutableStateOf<UiState<UI>>(UiState())
         protected set
 
+    /**
+     * Loads the main screen data. Needs to be called manually, usually from the init block of the
+     * implementing class.
+     */
     abstract fun loadData()
 
+    /**
+     * Executes the given suspending code with a loading indicator and error handling.
+     */
     protected suspend fun <T> runAction(block: suspend () -> T): Result<T> {
         setLoading(true)
         return kotlin.runCatching {
@@ -27,7 +34,7 @@ abstract class ViewModelBase<UiData> : ViewModel() {
         }
     }
 
-    protected fun setUiData(uiData: UiData?) {
+    protected fun setUiData(uiData: UI?) {
         uiState = uiState.copy(data = uiData)
     }
 

@@ -96,7 +96,7 @@ private fun TopBar(
 ) {
     val navController = LocalNavController.current
     TopAppBar(
-        title = { Text(stringResource(R.string.destination_title_recipe)) },
+        title = { Text(stringResource(R.string.destination_title_recipe_details)) },
         navigationIcon = {
             IconButton(onClick = navController::navigateUp) {
                 Icon(

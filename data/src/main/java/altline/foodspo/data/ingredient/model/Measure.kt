@@ -18,3 +18,13 @@ data class Measure(
         return "${rounded.toFractionString()} $unit"
     }
 }
+
+internal data class MeasureFirestore(
+    var amount: Double = 0.0,
+    var unitShort: String = "",
+    var unitLong: String = ""
+) {
+    fun toDomainModel() = Measure(
+        amount, unitShort, unitLong
+    )
+}

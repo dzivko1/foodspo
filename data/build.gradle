@@ -16,6 +16,7 @@ dependencies {
     implementation Libs.KotlinX.Coroutines.playServices
     implementation Libs.Firebase.auth
     implementation Libs.Firebase.firestore
+    implementation Libs.Firebase.storage
     implementation Libs.AndroidX.coreKtx
     implementation Libs.AndroidX.Paging.pagingRuntime
     implementation Libs.Hilt.hiltAndroid

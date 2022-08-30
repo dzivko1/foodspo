@@ -11,14 +11,21 @@
     <string name="destination_title_recipes">Recipes</string>
     <string name="destination_title_shopping">Shopping</string>
     <string name="destination_title_meal_planner">Meal planner</string>
-    <string name="destination_title_recipe">Recipe</string>
+    <string name="destination_title_recipe_details">Recipe</string>
+    <string name="destination_title_new_recipe">New Recipe</string>
+    <string name="destination_title_edit_recipe">Edit Recipe</string>
 
     <!-- Content descriptions -->
     <string name="content_desc_navigate_up">Go back</string>
+    <string name="content_desc_cancel">Cancel</string>
+    <string name="content_desc_take_photo">Take a photo</string>
+    <string name="content_desc_choose_image">Choose an image from gallery</string>
     <string name="content_desc_add_ingredients_to_shopping_list">Add ingredients to shopping list</string>
     <string name="content_desc_add_to_shopping_list">Add to shopping list</string>
+    <string name="content_desc_edit_recipe">Edit recipe</string>
     <string name="content_desc_save_recipe">Save recipe</string>
     <string name="content_desc_drop_recipe">Drop recipe</string>
+    <string name="content_desc_remove_ingredient">Remove ingredient</string>
 
     <!-- Error titles and messages -->
     <string name="error_not_connected_title">No internet connection</string>
@@ -48,5 +55,16 @@
     <string name="recipes_my_recipes_empty_create_button">Create recipe</string>
     <string name="recipes_saved_recipes_empty_message">You have not saved any recipes yet</string>
     <string name="recipes_saved_recipes_explore_button">Explore recipes</string>
+
+    <!-- Recipe Editor screen -->
+    <string name="recipe_editor_title_label">Title</string>
+    <string name="recipe_editor_photo_label">Meal photo</string>
+    <string name="recipe_editor_servings_label">Servings</string>
+    <string name="recipe_editor_prep_time_label">Prep. time (min.)</string>
+    <string name="recipe_editor_ingredients_title">Ingredients</string>
+    <string name="recipe_editor_add_ingredient_button">Add ingredient</string>
+    <string name="recipe_editor_instructions_label">Instructions</string>
+    <string name="recipe_editor_summary_label">Summary</string>
+    <string name="recipe_editor_save_button">Save recipe</string>
 
 </resources>

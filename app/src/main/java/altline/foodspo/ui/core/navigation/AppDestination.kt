@@ -4,6 +4,7 @@ import altline.foodspo.R
 import altline.foodspo.ui.screen.explore.ExploreScreen
 import altline.foodspo.ui.screen.mealPlanner.MealPlannerScreen
 import altline.foodspo.ui.screen.recipeDetails.RecipeDetailsScreen
+import altline.foodspo.ui.screen.recipeEditor.RecipeEditorScreen
 import altline.foodspo.ui.screen.recipes.RecipesScreen
 import altline.foodspo.ui.screen.shopping.ShoppingScreen
 import androidx.annotation.StringRes
@@ -52,17 +53,24 @@ enum class AppDestination(
     ),
     RecipeDetails(
         route = "recipes/{recipeId}",
-        title = R.string.destination_title_recipe,
+        title = R.string.destination_title_recipe_details,
         icon = null,
         arguments = listOf(navArgument("recipeId") { type = NavType.StringType }),
         content = { RecipeDetailsScreen() }
+    ),
+    RecipeEditor(
+        route = "recipes/{recipeId}/edit",
+        title = R.string.destination_title_new_recipe,
+        icon = null,
+        arguments = listOf(navArgument("recipeId") { type = NavType.StringType }),
+        content = { RecipeEditorScreen() }
     );
-    
+
     companion object {
         val topDestinations = listOf(
             Explore, Recipes, Shopping, MealPlanner
         )
-        
+
         fun fromRoute(route: String): AppDestination? {
             return values().find { it.route == route }
         }

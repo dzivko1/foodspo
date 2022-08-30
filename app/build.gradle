@@ -21,7 +21,7 @@ android {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion Libs.AndroidX.Compose.version
+        kotlinCompilerExtensionVersion Libs.AndroidX.Compose.compilerVersion
     }
     packagingOptions {
         resources {
@@ -33,13 +33,21 @@ android {
     }
 }
 
+kotlin.sourceSets.all {
+    languageSettings.optIn("kotlin.RequiresOptIn")
+}
+
 dependencies {
     api project(":domain")
+
+    implementation platform(Libs.Firebase.bom)
 
     implementation Libs.KotlinX.Coroutines.core
     implementation Libs.KotlinX.Coroutines.android
     implementation Libs.Firebase.analyticsKtx
     implementation Libs.Firebase.uiAuth
+    implementation Libs.Firebase.firestore
+    implementation Libs.Firebase.storage
     implementation Libs.Android.playServicesAuth
     implementation Libs.AndroidX.coreKtx
     implementation Libs.AndroidX.Compose.ui

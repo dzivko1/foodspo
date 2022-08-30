@@ -6,17 +6,22 @@ sealed class NavigationEvent(
     private val destination: AppDestination,
     private val args: Map<String, Any> = emptyMap()
 ) {
-    
+
     object Explore : NavigationEvent(AppDestination.Explore)
     object Recipes : NavigationEvent(AppDestination.Recipes)
     object Shopping : NavigationEvent(AppDestination.Shopping)
     object MealPlanner : NavigationEvent(AppDestination.MealPlanner)
-    
+
     data class RecipeDetails(val recipeId: String) : NavigationEvent(
         destination = AppDestination.RecipeDetails,
         args = mapOf("recipeId" to recipeId)
     )
-    
+
+    data class RecipeEditor(val recipeId: String?) : NavigationEvent(
+        destination = AppDestination.RecipeEditor,
+        args = recipeId?.let { mapOf("recipeId" to recipeId) } ?: emptyMap()
+    )
+
     fun navigate(navController: NavHostController) {
         var argumentedRoute = destination.route
         destination.arguments.forEach { arg ->
