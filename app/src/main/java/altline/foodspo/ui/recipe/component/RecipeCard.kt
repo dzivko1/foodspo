@@ -8,10 +8,7 @@ import altline.foodspo.ui.placeholder.PlaceholderImages
 import altline.foodspo.ui.theme.AppTheme
 import altline.foodspo.util.modifiedColor
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddShoppingCart
@@ -22,6 +19,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 
 data class RecipeCardUi(
     val id: String,
@@ -58,7 +56,9 @@ fun RecipeCard(
             GeneralImage(
                 image = data.image,
                 contentDescription = null,
-                Modifier.fillMaxWidth(),
+                Modifier
+                    .fillMaxWidth()
+                    .requiredHeight(240.dp),
                 contentScale = ContentScale.Crop,
                 placeholder = painterResource(R.drawable.placeholder_recipe)
             )

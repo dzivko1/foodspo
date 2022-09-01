@@ -147,7 +147,9 @@ private fun Content(
         GeneralImage(
             data.image,
             contentDescription = null,
-            Modifier.fillMaxWidth(),
+            Modifier
+                .fillMaxWidth()
+                .requiredHeight(240.dp),
             contentScale = ContentScale.Crop
         )
 

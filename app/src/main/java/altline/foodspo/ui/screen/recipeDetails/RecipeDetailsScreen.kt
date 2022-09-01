@@ -27,6 +27,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ireward.htmlcompose.HtmlText
 
@@ -159,7 +160,9 @@ private fun UpperSection(
     GeneralImage(
         image = data.image,
         contentDescription = null,
-        Modifier.fillMaxWidth(),
+        Modifier
+            .fillMaxWidth()
+            .requiredHeight(240.dp),
         contentScale = ContentScale.Crop,
         placeholder = painterResource(R.drawable.placeholder_recipe)
     )
@@ -250,7 +253,7 @@ private fun LowerSection(
         if (data.spoonacularSourceUrl != null) {
             val spoonacularSourceText =
                 stringResource(R.string.recipe_details_visit_on_spoonacular) +
-                    "\n${data.spoonacularSourceUrl.toHtmlAnchor()}"
+                        "\n${data.spoonacularSourceUrl.toHtmlAnchor()}"
 
             HtmlText(
                 text = spoonacularSourceText,
