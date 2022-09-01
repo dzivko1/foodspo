@@ -4,7 +4,11 @@ import altline.foodspo.data.error.AppException
 import altline.foodspo.ui.core.component.InfoPanel
 import altline.foodspo.ui.core.component.PageLoadingIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 
 @Composable
 fun <UiData> ScreenBase(
@@ -14,6 +18,7 @@ fun <UiData> ScreenBase(
     errorScreen: @Composable (AppException) -> Unit = { error ->
         InfoPanel(error, retryAction = viewModel::loadData)
     },
+    reloadOnResume: Boolean = false,
     content: @Composable (UiData) -> Unit
 ) {
     val scaffoldState = LocalScaffoldState.current
@@ -21,6 +26,22 @@ fun <UiData> ScreenBase(
 
     LocalTopBarSetter.current.invoke(topBar)
     LocalFabSetter.current.invoke(fab)
+
+    if (reloadOnResume) {
+        val lifeCycleOwner = LocalLifecycleOwner.current
+        DisposableEffect(lifeCycleOwner) {
+            val observer = LifecycleEventObserver { _, event ->
+                println(event)
+                if (event == Lifecycle.Event.ON_RESUME) {
+                    viewModel.loadData()
+                }
+            }
+            lifeCycleOwner.lifecycle.addObserver(observer)
+            onDispose {
+                lifeCycleOwner.lifecycle.removeObserver(observer)
+            }
+        }
+    }
 
     with(viewModel.uiState) {
         if (navEvent != null) {
