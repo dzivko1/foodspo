@@ -1,9 +1,11 @@
 package altline.foodspo.data.ingredient.mapper
 
+import altline.foodspo.data.CUSTOM_INGREDIENT_ID_PREFIX
 import altline.foodspo.data.core.model.ImageSrc
 import altline.foodspo.data.ingredient.model.Ingredient
 import altline.foodspo.data.ingredient.model.Measure
 import altline.foodspo.data.ingredient.model.network.IngredientResponse
+import java.util.*
 import javax.inject.Inject
 
 internal class IngredientMapper @Inject constructor(
@@ -12,7 +14,7 @@ internal class IngredientMapper @Inject constructor(
 
     operator fun invoke(raw: IngredientResponse): Ingredient {
         return Ingredient(
-            id = raw.id,
+            id = raw.id ?: (CUSTOM_INGREDIENT_ID_PREFIX + UUID.randomUUID()),
             name = raw.name ?: "",
             image = raw.image?.let { ImageSrc(it) },
             aisle = raw.aisle ?: "",
@@ -23,7 +25,6 @@ internal class IngredientMapper @Inject constructor(
                         raw.unitLong
                     )
                 } else null,
-            amount = raw.amount ?: 0.0,
             rawText = raw.original ?: ""
         )
     }

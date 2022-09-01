@@ -4,6 +4,7 @@ import altline.foodspo.data.core.model.ImageSrc
 import altline.foodspo.data.ingredient.model.Ingredient
 import altline.foodspo.data.ingredient.model.IngredientFirestore
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.Exclude
 
 data class Recipe(
     val id: String,
@@ -21,6 +22,7 @@ data class Recipe(
     val additionTime: Timestamp?,
     val isSaved: Boolean
 ) {
+    @get:Exclude
     val rawInstructions: String
         get() = instructions.joinToString("\n")
 }
@@ -37,7 +39,7 @@ data class Instruction(
 internal data class RecipeFirestore(
     var id: String = "",
     var title: String = "",
-    var image: Map<String, String> = emptyMap(),
+    var image: Map<String, Any> = emptyMap(),
     var sourceName: String? = null,
     var creditsText: String? = null,
     var sourceUrl: String? = null,
@@ -53,7 +55,13 @@ internal data class RecipeFirestore(
     fun toDomainModel() = Recipe(
         id,
         title,
-        image["path"]?.let { ImageSrc(it) },
+        image["path"]?.let {
+            when (it) {
+                is String -> ImageSrc(path = it)
+                is Long -> ImageSrc(drawableRes = it.toInt())
+                else -> null
+            }
+        },
         sourceName,
         creditsText,
         sourceUrl,
