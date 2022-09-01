@@ -24,10 +24,6 @@ class RecipesViewModel @Inject constructor(
     private val recipeUiMapper: RecipeUiMapper
 ) : ViewModelBase<RecipesScreenUi>() {
 
-    init {
-        loadData()
-    }
-
     override fun loadData() {
         setUiData(
             RecipesScreenUi(

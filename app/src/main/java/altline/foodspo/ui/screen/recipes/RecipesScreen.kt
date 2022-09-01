@@ -67,7 +67,8 @@ fun RecipesScreen(viewModel: RecipesViewModel = hiltViewModel()) {
                 onClick = viewModel::onFabClick,
                 icon = { Icon(Icons.Default.Add, contentDescription = null) }
             )
-        }
+        },
+        reloadOnResume = true
     ) {
         Content(it)
     }

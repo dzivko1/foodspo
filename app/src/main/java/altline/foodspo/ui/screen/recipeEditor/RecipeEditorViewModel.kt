@@ -24,7 +24,7 @@ class RecipeEditorViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModelBase<RecipeEditorScreenUi>() {
 
-    private val recipeId: String? = savedStateHandle["recipeId"]
+    private val recipeId: String = savedStateHandle["recipeId"]!!
 
     init {
         loadData()
@@ -33,7 +33,9 @@ class RecipeEditorViewModel @Inject constructor(
     override fun loadData() {
         viewModelScope.launch {
             runAction {
-                val recipe = recipeId?.let { getRecipeDetailsUseCase(it) }
+                val recipe =
+                    if (recipeId != "null") getRecipeDetailsUseCase(recipeId)
+                    else null
                 setUiData(
                     recipeUiMapper.toRecipeEditorUi(
                         recipe,
@@ -96,6 +98,7 @@ class RecipeEditorViewModel @Inject constructor(
                         parsedIngredients
                     )
                     createRecipeUseCase(recipe)
+                    navigateUp()
                 }
             }
         }
