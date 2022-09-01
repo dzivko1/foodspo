@@ -245,7 +245,11 @@ private fun LowerSection(
         if (data.summary != null) {
             HtmlText(
                 text = data.summary,
-                style = AppTheme.typography.body2,
+                style = AppTheme.typography.body2.copy(
+                    color = AppTheme.colors.onSurface.copy(
+                        alpha = ContentAlpha.high
+                    ),
+                ),
                 linkClicked = { linkString ->
                     println(linkString)
                 }
