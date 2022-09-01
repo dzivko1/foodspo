@@ -28,14 +28,19 @@ fun NavGraph(
         for (dest in destinations) {
             composable(
                 route = dest.route,
-                arguments = dest.arguments
-            ) {
-                CompositionLocalProvider(
-                    LocalViewModelStoreOwner provides viewModelStoreOwner
-                ) {
-                    dest.content(it)
+                arguments = dest.arguments,
+                content = {
+                    if (dest.arguments.isEmpty()) {
+                        CompositionLocalProvider(
+                            LocalViewModelStoreOwner provides viewModelStoreOwner
+                        ) {
+                            dest.content(it)
+                        }
+                    } else {
+                        dest.content(it)
+                    }
                 }
-            }
+            )
         }
 
     }
