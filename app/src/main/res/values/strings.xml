@@ -44,7 +44,9 @@
     <string name="recipe_details_ready_in_title">Ready in</string>
     <string name="recipe_details_ready_in_value">%d min.</string>
     <string name="recipe_details_instructions_title">Instructions</string>
-    <string name="recipe_details_about_recipe_title">About this recipe</string>
+    <string name="recipe_details_no_instructions">No instructions provided.</string>
+    <string name="recipe_details_summary_title">About this recipe</string>
+    <string name="recipe_details_no_summary">No summary provided.</string>
     <string name="recipe_details_source_prefix">Source: %s</string>
     <string name="recipe_details_visit_on_spoonacular">Visit on Spoonacular.com</string>
 

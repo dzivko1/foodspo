@@ -43,7 +43,7 @@ class RecipeUiMapper @Inject constructor(
         readyInMinutes = raw.readyInMinutes,
         ingredients = raw.ingredients.map(ingredientUiMapper::toListItemUi),
         instructions = raw.instructions,
-        summary = raw.summary,
+        summary = raw.summary?.takeIf { it.isNotEmpty() },
         sourceUrl = raw.sourceUrl,
         spoonacularSourceUrl = raw.spoonacularSourceUrl,
         isSaved = raw.isSaved

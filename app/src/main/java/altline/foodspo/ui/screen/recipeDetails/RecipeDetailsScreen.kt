@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -147,6 +148,17 @@ private fun Content(
             )
             Spacer(Modifier.height(AppTheme.spaces.xl))
         }
+        if (data.instructions.isEmpty()) {
+            item {
+                Text(
+                    text = stringResource(R.string.recipe_details_no_instructions),
+                    Modifier.padding(horizontal = AppTheme.spaces.xl),
+                    color = modifiedColor(alpha = ContentAlpha.disabled),
+                    style = AppTheme.typography.body2,
+                    fontStyle = FontStyle.Italic
+                )
+            }
+        }
         item {
             LowerSection(data)
         }
@@ -226,11 +238,11 @@ private fun LowerSection(
         Modifier.padding(AppTheme.spaces.xl),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spaces.xl)
     ) {
+        Text(
+            text = stringResource(R.string.recipe_details_summary_title),
+            style = AppTheme.typography.h6
+        )
         if (data.summary != null) {
-            Text(
-                text = stringResource(R.string.recipe_details_about_recipe_title),
-                style = AppTheme.typography.h6
-            )
             HtmlText(
                 text = data.summary,
                 style = AppTheme.typography.body2,
@@ -238,7 +250,15 @@ private fun LowerSection(
                     println(linkString)
                 }
             )
+        } else {
+            Text(
+                text = stringResource(R.string.recipe_details_no_summary),
+                color = modifiedColor(alpha = ContentAlpha.disabled),
+                style = AppTheme.typography.body2,
+                fontStyle = FontStyle.Italic
+            )
         }
+
         if (data.sourceUrl != null) {
             val sourceText = stringResource(
                 R.string.recipe_details_source_prefix,
