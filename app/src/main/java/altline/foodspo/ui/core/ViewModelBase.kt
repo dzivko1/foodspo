@@ -53,6 +53,14 @@ abstract class ViewModelBase<UI> : ViewModel() {
     protected fun navigateTo(navEvent: NavigationEvent) {
         uiState = uiState.copy(navEvent = navEvent)
     }
+    
+    protected fun navigateUp() {
+        uiState = uiState.copy(navEvent = NavigationEvent.NavigateUp)
+    }
+
+    protected fun navigateBack() {
+        uiState = uiState.copy(navEvent = NavigationEvent.NavigateBack)
+    }
 
     fun onSnackbarConsumed() {
         uiState = uiState.copy(snackbar = null)

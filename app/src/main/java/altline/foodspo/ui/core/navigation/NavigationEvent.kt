@@ -12,6 +12,10 @@ sealed class NavigationEvent(
     object Shopping : NavigationEvent(AppDestination.Shopping)
     object MealPlanner : NavigationEvent(AppDestination.MealPlanner)
 
+    // Special events, the specified destination is ignored here
+    object NavigateUp : NavigationEvent(AppDestination.Explore)
+    object NavigateBack : NavigationEvent(AppDestination.Explore)
+
     data class RecipeDetails(val recipeId: String) : NavigationEvent(
         destination = AppDestination.RecipeDetails,
         args = mapOf("recipeId" to recipeId)
@@ -23,10 +27,18 @@ sealed class NavigationEvent(
     )
 
     fun navigate(navController: NavHostController) {
+        when (this) {
+            is NavigateUp -> navController.navigateUp()
+            is NavigateBack -> navController.popBackStack()
+            else -> navController.navigate(constructRoute())
+        }
+    }
+
+    private fun constructRoute(): String {
         var argumentedRoute = destination.route
         destination.arguments.forEach { arg ->
             argumentedRoute = argumentedRoute.replace("{${arg.name}}", args[arg.name].toString())
         }
-        navController.navigate(argumentedRoute)
+        return argumentedRoute
     }
 }
