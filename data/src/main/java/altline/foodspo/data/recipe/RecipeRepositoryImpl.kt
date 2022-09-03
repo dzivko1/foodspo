@@ -89,6 +89,12 @@ internal class RecipeRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun deleteRecipe(recipeId: String) {
+        mapException {
+            firebaseDataSource.deleteRecipe(recipeId)
+        }
+    }
+
     override suspend fun saveRecipe(recipeId: String, save: Boolean) {
         mapException {
             firebaseDataSource.saveRecipe(recipeId, save)

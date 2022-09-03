@@ -29,6 +29,8 @@ interface RecipeRepository {
 
     suspend fun storeCustomRecipe(recipe: Recipe): String
 
+    suspend fun deleteRecipe(recipeId: String)
+
     suspend fun saveRecipe(recipeId: String, save: Boolean)
 
     suspend fun analyzeInstructions(instructions: String): List<Instruction>

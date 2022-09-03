@@ -1,8 +1,10 @@
 package altline.foodspo.ui.screen.recipeDetails
 
+import altline.foodspo.domain.recipe.DeleteRecipeUseCase
 import altline.foodspo.domain.recipe.GetRecipeDetailsUseCase
 import altline.foodspo.domain.recipe.SaveRecipeUseCase
 import altline.foodspo.ui.core.ViewModelBase
+import altline.foodspo.ui.core.navigation.NavigationEvent
 import altline.foodspo.ui.recipe.RecipeUiMapper
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
@@ -14,6 +16,7 @@ import javax.inject.Inject
 class RecipeDetailsViewModel @Inject constructor(
     private val getRecipeDetailsUseCase: GetRecipeDetailsUseCase,
     private val saveRecipeUseCase: SaveRecipeUseCase,
+    private val deleteRecipeUseCase: DeleteRecipeUseCase,
     private val recipeUiMapper: RecipeUiMapper,
     savedStateHandle: SavedStateHandle
 ) : ViewModelBase<RecipeDetailsScreenUi>() {
@@ -44,6 +47,20 @@ class RecipeDetailsViewModel @Inject constructor(
                 saveRecipeUseCase(recipeId, save)
             }.onSuccess {
                 setUiData(uiState.data?.copy(isSaved = save))
+            }
+        }
+    }
+
+    fun onEditClicked() {
+        navigateTo(NavigationEvent.RecipeEditor(recipeId))
+    }
+
+    fun onDeleteClicked() {
+        viewModelScope.launch {
+            runAction {
+                deleteRecipeUseCase(recipeId)
+            }.onSuccess {
+                navigateTo(NavigationEvent.Recipes)
             }
         }
     }

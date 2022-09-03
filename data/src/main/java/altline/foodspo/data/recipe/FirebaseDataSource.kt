@@ -109,6 +109,14 @@ internal class FirebaseDataSource @Inject constructor(
         return fileRef.downloadUrl.await()
     }
 
+    suspend fun deleteRecipe(recipeId: String) {
+        require(recipeId.startsWith(CUSTOM_RECIPE_ID_PREFIX)) { "Only custom recipes can be deleted" }
+        myRecipesCollection.whereEqualTo("id", recipeId)
+            .get().await()
+            .documents.first().reference
+            .delete()
+    }
+
     suspend fun saveRecipe(recipeId: String, save: Boolean) {
         if (save) {
             savedRecipesCollection.document(recipeId)

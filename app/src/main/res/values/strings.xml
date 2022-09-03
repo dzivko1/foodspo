@@ -4,6 +4,9 @@
     <string name="fab_new_recipe">New recipe</string>
 
     <!-- Actions -->
+    <string name="action_edit">Edit</string>
+    <string name="action_copy_and_edit">Copy and edit</string>
+    <string name="action_delete">Delete</string>
     <string name="action_retry">Retry</string>
 
     <!-- Destination titles -->
@@ -18,11 +21,13 @@
     <!-- Content descriptions -->
     <string name="content_desc_navigate_up">Go back</string>
     <string name="content_desc_cancel">Cancel</string>
+    <string name="content_desc_more_actions">More actions</string>
     <string name="content_desc_take_photo">Take a photo</string>
     <string name="content_desc_choose_image">Choose an image from gallery</string>
     <string name="content_desc_add_ingredients_to_shopping_list">Add ingredients to shopping list</string>
     <string name="content_desc_add_to_shopping_list">Add to shopping list</string>
     <string name="content_desc_edit_recipe">Edit recipe</string>
+    <string name="content_desc_delete_recipe">Delete recipe</string>
     <string name="content_desc_save_recipe">Save recipe</string>
     <string name="content_desc_drop_recipe">Drop recipe</string>
     <string name="content_desc_remove_ingredient">Remove ingredient</string>

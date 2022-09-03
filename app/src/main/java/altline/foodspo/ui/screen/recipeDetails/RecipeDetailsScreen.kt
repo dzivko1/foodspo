@@ -5,6 +5,8 @@ import altline.foodspo.data.core.model.ImageSrc
 import altline.foodspo.data.recipe.model.Instruction
 import altline.foodspo.ui.core.LocalNavController
 import altline.foodspo.ui.core.ScreenBase
+import altline.foodspo.ui.core.component.AppDropdownMenuItem
+import altline.foodspo.ui.core.component.BarDropdownMenu
 import altline.foodspo.ui.core.component.GeneralImage
 import altline.foodspo.ui.core.component.SaveButton
 import altline.foodspo.ui.placeholder.PlaceholderImages
@@ -20,7 +22,9 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddShoppingCart
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.runtime.Composable
+import androidx.compose.material.icons.outlined.DeleteOutline
+import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -34,6 +38,7 @@ import com.ireward.htmlcompose.HtmlText
 
 data class RecipeDetailsScreenUi(
     val id: String,
+    val isOwnedByUser: Boolean,
     val image: ImageSrc,
     val title: String,
     val author: String?,
@@ -50,6 +55,7 @@ data class RecipeDetailsScreenUi(
     companion object {
         val PREVIEW = RecipeDetailsScreenUi(
             id = "",
+            isOwnedByUser = false,
             image = PlaceholderImages.recipe,
             title = "Bacon-Apple-Pecan Stuffed French Toast",
             author = "Maplewood Road",
@@ -80,11 +86,15 @@ fun RecipeDetailsScreen(viewModel: RecipeDetailsViewModel = hiltViewModel()) {
         viewModel,
         topBar = {
             TopBar(
+                isRecipeUsers = viewModel.uiState.data?.isOwnedByUser ?: false,
                 isRecipeSaved = viewModel.uiState.data?.isSaved ?: false,
                 onAddToShoppingList = viewModel::onAddToShoppingListClicked,
-                onSave = viewModel::onSaveClicked
+                onSave = viewModel::onSaveClicked,
+                onEdit = viewModel::onEditClicked,
+                onDelete = viewModel::onDeleteClicked
             )
-        }
+        },
+        reloadOnResume = true
     ) {
         Content(it)
     }
@@ -92,11 +102,16 @@ fun RecipeDetailsScreen(viewModel: RecipeDetailsViewModel = hiltViewModel()) {
 
 @Composable
 private fun TopBar(
+    isRecipeUsers: Boolean,
     isRecipeSaved: Boolean,
     onAddToShoppingList: () -> Unit,
-    onSave: (Boolean) -> Unit
+    onSave: (Boolean) -> Unit,
+    onEdit: () -> Unit,
+    onDelete: () -> Unit
 ) {
     val navController = LocalNavController.current
+    var menuExpanded by remember { mutableStateOf(false) }
+
     TopAppBar(
         title = { Text(stringResource(R.string.destination_title_recipe_details)) },
         navigationIcon = {
@@ -108,15 +123,35 @@ private fun TopBar(
             }
         },
         actions = {
-            IconButton(
-                onClick = onAddToShoppingList
-            ) {
+            IconButton(onClick = onAddToShoppingList) {
                 Icon(
                     Icons.Default.AddShoppingCart,
                     contentDescription = stringResource(R.string.content_desc_add_ingredients_to_shopping_list)
                 )
             }
-            SaveButton(isRecipeSaved, onSave)
+            if (!isRecipeUsers) SaveButton(isRecipeSaved, onSave)
+            BarDropdownMenu(
+                expanded = menuExpanded,
+                onExpandedChange = { menuExpanded = it }
+            ) {
+                AppDropdownMenuItem(
+                    text = stringResource(
+                        if (isRecipeUsers) R.string.action_edit
+                        else R.string.action_copy_and_edit
+                    ),
+                    icon = Icons.Outlined.Edit,
+                    iconContentDescription = stringResource(R.string.content_desc_edit_recipe),
+                    onClick = { onEdit(); menuExpanded = false }
+                )
+                if (isRecipeUsers) {
+                    AppDropdownMenuItem(
+                        text = stringResource(R.string.action_delete),
+                        icon = Icons.Outlined.DeleteOutline,
+                        iconContentDescription = stringResource(R.string.content_desc_delete_recipe),
+                        onClick = { onDelete(); menuExpanded = false; }
+                    )
+                }
+            }
         }
     )
 }
