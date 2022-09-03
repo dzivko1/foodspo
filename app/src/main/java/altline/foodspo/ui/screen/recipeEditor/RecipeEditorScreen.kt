@@ -134,8 +134,8 @@ private fun Content(
 
     Column(
         Modifier
-            .padding(AppTheme.spaces.xl)
-            .verticalScroll(rememberScrollState()),
+            .verticalScroll(rememberScrollState())
+            .padding(AppTheme.spaces.xl),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spaces.xl)
     ) {
         TextField(
