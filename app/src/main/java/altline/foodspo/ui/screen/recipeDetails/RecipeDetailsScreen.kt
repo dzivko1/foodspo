@@ -9,9 +9,9 @@ import altline.foodspo.ui.core.component.AppDropdownMenuItem
 import altline.foodspo.ui.core.component.BarDropdownMenu
 import altline.foodspo.ui.core.component.GeneralImage
 import altline.foodspo.ui.core.component.SaveButton
+import altline.foodspo.ui.ingredient.component.IngredientListItem
+import altline.foodspo.ui.ingredient.component.IngredientListItemUi
 import altline.foodspo.ui.placeholder.PlaceholderImages
-import altline.foodspo.ui.recipe.component.IngredientListItem
-import altline.foodspo.ui.recipe.component.IngredientListItemUi
 import altline.foodspo.ui.theme.AppTheme
 import altline.foodspo.util.modifiedColor
 import altline.foodspo.util.toHtmlAnchor

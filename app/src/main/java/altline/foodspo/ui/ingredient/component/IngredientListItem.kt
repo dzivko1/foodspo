@@ -1,4 +1,4 @@
-package altline.foodspo.ui.recipe.component
+package altline.foodspo.ui.ingredient.component
 
 import altline.foodspo.R
 import altline.foodspo.data.ingredient.model.Measure

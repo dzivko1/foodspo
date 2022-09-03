@@ -5,6 +5,7 @@ import altline.foodspo.data.ingredient.model.Ingredient
 import altline.foodspo.data.recipe.model.Instruction
 import altline.foodspo.data.recipe.model.Recipe
 import altline.foodspo.ui.core.component.ListEditorUi
+import altline.foodspo.ui.ingredient.IngredientUiMapper
 import altline.foodspo.ui.placeholder.PlaceholderImages
 import altline.foodspo.ui.recipe.component.RecipeCardUi
 import altline.foodspo.ui.screen.recipeDetails.RecipeDetailsScreenUi
