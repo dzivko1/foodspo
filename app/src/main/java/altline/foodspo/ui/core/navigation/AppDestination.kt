@@ -66,6 +66,14 @@ enum class AppDestination(
         content = { RecipeEditorScreen() }
     );
 
+    fun constructArgumentedRoute(args: Map<String, Any>): String {
+        var argumentedRoute = route
+        arguments.forEach { arg ->
+            argumentedRoute = argumentedRoute.replace("{${arg.name}}", args[arg.name].toString())
+        }
+        return argumentedRoute
+    }
+
     companion object {
         val topDestinations = listOf(
             Explore, Recipes, Shopping, MealPlanner
