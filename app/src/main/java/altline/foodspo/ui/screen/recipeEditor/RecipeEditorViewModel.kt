@@ -2,9 +2,10 @@ package altline.foodspo.ui.screen.recipeEditor
 
 import altline.foodspo.domain.ingredient.ParseIngredientsUseCase
 import altline.foodspo.domain.recipe.AnalyzeInstructionsUseCase
-import altline.foodspo.domain.recipe.CreateRecipeUseCase
+import altline.foodspo.domain.recipe.StoreCustomRecipeUseCase
 import altline.foodspo.domain.recipe.GetRecipeDetailsUseCase
 import altline.foodspo.ui.core.ViewModelBase
+import altline.foodspo.ui.core.navigation.NavigationEvent
 import altline.foodspo.ui.recipe.RecipeUiMapper
 import altline.foodspo.util.minusAt
 import altline.foodspo.util.replaceAt
@@ -17,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class RecipeEditorViewModel @Inject constructor(
     private val getRecipeDetailsUseCase: GetRecipeDetailsUseCase,
-    private val createRecipeUseCase: CreateRecipeUseCase,
+    private val storeCustomRecipeUseCase: StoreCustomRecipeUseCase,
     private val analyzeInstructionsUseCase: AnalyzeInstructionsUseCase,
     private val parseIngredientsUseCase: ParseIngredientsUseCase,
     private val recipeUiMapper: RecipeUiMapper,
@@ -97,8 +98,9 @@ class RecipeEditorViewModel @Inject constructor(
                         parsedInstructions,
                         parsedIngredients
                     )
-                    createRecipeUseCase(recipe)
-                    navigateUp()
+                    storeCustomRecipeUseCase(recipe)
+                }.onSuccess {
+                    navigateTo(NavigationEvent.RecipeDetails(recipeId).pop(2))
                 }
             }
         }

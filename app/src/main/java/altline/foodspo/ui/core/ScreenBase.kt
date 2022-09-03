@@ -31,7 +31,7 @@ fun <UiData> ScreenBase(
         val lifeCycleOwner = LocalLifecycleOwner.current
         DisposableEffect(lifeCycleOwner) {
             val observer = LifecycleEventObserver { _, event ->
-                if (event == Lifecycle.Event.ON_RESUME) {
+                if (event == Lifecycle.Event.ON_START) {
                     viewModel.loadData()
                 }
             }

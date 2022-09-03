@@ -53,9 +53,9 @@ internal class FirebaseDataSource @Inject constructor(
 
     suspend fun getMyRecipeDetails(recipeId: String): Recipe {
         return myRecipesCollection
-            .whereEqualTo("id", recipeId)
-            .get().await().first()
-            .toObject<RecipeFirestore>().toDomainModel()
+            .document(recipeId)
+            .get().await()
+            .toObject<RecipeFirestore>()!!.toDomainModel()
     }
 
     fun getSavedRecipeIdsPaged(loadTrigger: PageLoadTrigger): Flow<List<String>> {
@@ -71,8 +71,10 @@ internal class FirebaseDataSource @Inject constructor(
             .exists()
     }
 
-    suspend fun createRecipe(recipe: Recipe) {
-        val recipeId = CUSTOM_RECIPE_ID_PREFIX + UUID.randomUUID()
+    suspend fun storeCustomRecipe(recipe: Recipe): String {
+        val recipeId =
+            if (recipe.isOwnedByUser) recipe.id
+            else CUSTOM_RECIPE_ID_PREFIX + UUID.randomUUID()
 
         val modelToStore = if (recipe.image is BitmapImageSrc) {
             val fileUri = storeRecipeImage(recipeId, recipe.image.bitmap)
@@ -88,7 +90,10 @@ internal class FirebaseDataSource @Inject constructor(
             )
         }
 
-        myRecipesCollection.add(modelToStore)
+        myRecipesCollection.document(recipeId)
+            .set(modelToStore)
+
+        return recipeId
     }
 
     private suspend fun storeRecipeImage(recipeId: String, bitmap: Bitmap): Uri {

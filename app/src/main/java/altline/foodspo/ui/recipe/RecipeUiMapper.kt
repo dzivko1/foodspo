@@ -35,6 +35,7 @@ class RecipeUiMapper @Inject constructor(
 
     fun toRecipeDetailsUi(raw: Recipe) = RecipeDetailsScreenUi(
         id = raw.id,
+        isOwnedByUser = raw.isOwnedByUser,
         image = raw.image ?: PlaceholderImages.recipe,
         title = raw.title,
         author = raw.sourceName,

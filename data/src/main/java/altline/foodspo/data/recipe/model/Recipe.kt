@@ -1,5 +1,6 @@
 package altline.foodspo.data.recipe.model
 
+import altline.foodspo.data.CUSTOM_RECIPE_ID_PREFIX
 import altline.foodspo.data.core.model.ImageSrc
 import altline.foodspo.data.ingredient.model.Ingredient
 import altline.foodspo.data.ingredient.model.IngredientFirestore
@@ -25,6 +26,10 @@ data class Recipe(
     @get:Exclude
     val rawInstructions: String
         get() = instructions.joinToString("\n")
+
+    @get:Exclude
+    val isOwnedByUser: Boolean
+        get() = id.startsWith(CUSTOM_RECIPE_ID_PREFIX)
 }
 
 data class Instruction(

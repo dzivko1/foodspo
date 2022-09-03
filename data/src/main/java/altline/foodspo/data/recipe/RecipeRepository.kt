@@ -27,7 +27,7 @@ interface RecipeRepository {
         coroutineScope: CoroutineScope
     ): PagingAccessor<Recipe>
 
-    suspend fun createRecipe(recipe: Recipe)
+    suspend fun storeCustomRecipe(recipe: Recipe): String
 
     suspend fun saveRecipe(recipeId: String, save: Boolean)
 

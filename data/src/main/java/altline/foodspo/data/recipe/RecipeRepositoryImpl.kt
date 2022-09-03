@@ -83,9 +83,9 @@ internal class RecipeRepositoryImpl @Inject constructor(
         return PagingAccessor(flow, loadTrigger, coroutineScope)
     }
 
-    override suspend fun createRecipe(recipe: Recipe) {
-        mapException {
-            firebaseDataSource.createRecipe(recipe)
+    override suspend fun storeCustomRecipe(recipe: Recipe): String {
+        return mapException {
+            firebaseDataSource.storeCustomRecipe(recipe)
         }
     }
 

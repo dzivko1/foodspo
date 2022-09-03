@@ -4,10 +4,10 @@ import altline.foodspo.data.recipe.RecipeRepository
 import altline.foodspo.data.recipe.model.Recipe
 import javax.inject.Inject
 
-class CreateRecipeUseCase @Inject constructor(
+class StoreCustomRecipeUseCase @Inject constructor(
     private val recipeRepository: RecipeRepository
 ) {
-    suspend operator fun invoke(recipe: Recipe) {
-        recipeRepository.createRecipe(recipe)
+    suspend operator fun invoke(recipe: Recipe): String {
+        return recipeRepository.storeCustomRecipe(recipe)
     }
 }
