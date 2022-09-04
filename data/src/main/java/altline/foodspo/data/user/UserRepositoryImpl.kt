@@ -1,6 +1,6 @@
 package altline.foodspo.data.user
 
-import altline.foodspo.data.recipe.FirebaseDataSource
+import altline.foodspo.data.core.FirebaseDataSource
 import altline.foodspo.data.user.mapper.UserMapper
 import altline.foodspo.data.user.model.User
 import com.google.firebase.auth.FirebaseAuth

@@ -1,4 +1,4 @@
-package altline.foodspo.data.recipe
+package altline.foodspo.data.core
 
 import altline.foodspo.data.CUSTOM_RECIPE_ID_PREFIX
 import altline.foodspo.data.core.model.BitmapImageSrc
@@ -44,7 +44,7 @@ internal class FirebaseDataSource @Inject constructor(
 
     fun getMyRecipesPaged(loadTrigger: PageLoadTrigger): Flow<List<Recipe>> {
         return myRecipesCollection
-            .orderBy("additionTime")
+            .orderBy(ADDITION_TIME_COLUMN)
             .paginate(loadTrigger)
             .map { docs ->
                 docs.map { it.toObject<RecipeFirestore>()!!.toDomainModel() }
@@ -60,7 +60,7 @@ internal class FirebaseDataSource @Inject constructor(
 
     fun getSavedRecipeIdsPaged(loadTrigger: PageLoadTrigger): Flow<List<String>> {
         return savedRecipesCollection
-            .orderBy("additionTime")
+            .orderBy(ADDITION_TIME_COLUMN)
             .paginate(loadTrigger)
             .map { docs -> docs.map { it.id } }
     }
@@ -111,21 +111,24 @@ internal class FirebaseDataSource @Inject constructor(
 
     suspend fun deleteRecipe(recipeId: String) {
         require(recipeId.startsWith(CUSTOM_RECIPE_ID_PREFIX)) { "Only custom recipes can be deleted" }
-        myRecipesCollection.whereEqualTo("id", recipeId)
-            .get().await()
-            .documents.first().reference
+        myRecipesCollection.document(recipeId)
             .delete()
+            .await()
     }
 
     suspend fun saveRecipe(recipeId: String, save: Boolean) {
         if (save) {
             savedRecipesCollection.document(recipeId)
-                .set(mapOf("additionTime" to Timestamp.now()))
+                .set(mapOf(ADDITION_TIME_COLUMN to Timestamp.now()))
                 .await()
         } else {
             savedRecipesCollection.document(recipeId)
                 .delete()
                 .await()
         }
+    }
+
+    companion object {
+        private const val ADDITION_TIME_COLUMN = "additionTime"
     }
 }

@@ -3,7 +3,7 @@ package altline.foodspo.data.ingredient
 import altline.foodspo.data.error.ExceptionMapper
 import altline.foodspo.data.ingredient.mapper.IngredientMapper
 import altline.foodspo.data.ingredient.model.Ingredient
-import altline.foodspo.data.recipe.RecipeApiDataSource
+import altline.foodspo.data.core.RecipeApiDataSource
 import javax.inject.Inject
 
 internal class IngredientRepositoryImpl @Inject constructor(

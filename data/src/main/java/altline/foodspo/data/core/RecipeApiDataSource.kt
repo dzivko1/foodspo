@@ -1,4 +1,4 @@
-package altline.foodspo.data.recipe
+package altline.foodspo.data.core
 
 import altline.foodspo.data.core.paging.PageLoadTrigger
 import altline.foodspo.data.core.paging.pagedFlow
