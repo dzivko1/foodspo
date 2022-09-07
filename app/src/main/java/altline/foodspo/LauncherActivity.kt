@@ -62,10 +62,9 @@ class LauncherActivity : ComponentActivity() {
     private fun onSignInFail(error: FirebaseUiException?) {
         if (error == null) {
             Timber.i("Sign in cancelled by user.")
+            startSignIn()
         } else {
             Timber.e("Sign in failed. Error code: ${error.errorCode}. Message: ${error.message}")
         }
-        
-        startSignIn()
     }
 }
