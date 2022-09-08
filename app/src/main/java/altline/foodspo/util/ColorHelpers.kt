@@ -16,7 +16,7 @@ fun modifiedColor(
 }
 
 @Composable
-fun ProvideColor(
+fun ProvideContentColor(
     color: Color? = null,
     alpha: Float? = null,
     content: @Composable () -> Unit

@@ -18,6 +18,9 @@
     <string name="destination_title_new_recipe">New Recipe</string>
     <string name="destination_title_edit_recipe">Edit Recipe</string>
 
+    <!-- Miscellaneous -->
+    <string name="ingredient_placeholder">"e.g. 500g potatoes"</string>
+
     <!-- Content descriptions -->
     <string name="content_desc_navigate_up">Go back</string>
     <string name="content_desc_cancel">Cancel</string>
@@ -31,6 +34,9 @@
     <string name="content_desc_save_recipe">Save recipe</string>
     <string name="content_desc_drop_recipe">Drop recipe</string>
     <string name="content_desc_remove_ingredient">Remove ingredient</string>
+    <string name="content_desc_drag_reorder">Drag to reorder</string>
+    <string name="content_desc_expand_shrink">Expand/Shrink</string>
+    <string name="content_desc_item_deleted">Item deleted</string>
 
     <!-- Error titles and messages -->
     <string name="error_not_connected_title">No internet connection</string>
@@ -73,5 +79,10 @@
     <string name="recipe_editor_instructions_label">Instructions</string>
     <string name="recipe_editor_summary_label">Summary</string>
     <string name="recipe_editor_save_button">Save recipe</string>
+
+    <!-- Shopping List screen -->
+    <string name="shopping_general_category_title">General</string>
+    <string name="shopping_add_item_button">Add item</string>
+    <string name="shopping_empty_message">Your shopping list is empty.\nYou can add items from here, or when viewing a recipe.</string>
 
 </resources>

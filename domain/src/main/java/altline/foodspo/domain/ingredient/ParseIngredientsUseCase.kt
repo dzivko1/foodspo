@@ -10,4 +10,8 @@ class ParseIngredientsUseCase @Inject constructor(
     suspend operator fun invoke(rawIngredients: List<String>): List<Ingredient> {
         return ingredientRepository.parseIngredients(rawIngredients)
     }
+
+    suspend operator fun invoke(rawIngredient: String): Ingredient {
+        return ingredientRepository.parseIngredients(listOf(rawIngredient)).first()
+    }
 }

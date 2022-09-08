@@ -3,7 +3,7 @@ package altline.foodspo.ui.core.component
 import altline.foodspo.R
 import altline.foodspo.data.error.*
 import altline.foodspo.ui.theme.AppTheme
-import altline.foodspo.util.ProvideColor
+import altline.foodspo.util.ProvideContentColor
 import altline.foodspo.util.modifiedColor
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -67,7 +67,7 @@ fun InfoPanel(
     actionLabel: String? = null,
     action: (() -> Unit)? = null
 ) {
-    ProvideColor(alpha = ContentAlpha.medium) {
+    ProvideContentColor(alpha = ContentAlpha.medium) {
         Box(
             Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center

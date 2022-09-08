@@ -7,8 +7,8 @@ import altline.foodspo.domain.recipe.GetRecipeDetailsUseCase
 import altline.foodspo.ui.core.ViewModelBase
 import altline.foodspo.ui.core.navigation.NavigationEvent
 import altline.foodspo.ui.recipe.RecipeUiMapper
-import altline.foodspo.util.minusAt
-import altline.foodspo.util.replaceAt
+import altline.foodspo.data.util.minusAt
+import altline.foodspo.data.util.replaceAt
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
