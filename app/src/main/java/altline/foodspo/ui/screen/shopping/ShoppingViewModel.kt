@@ -24,8 +24,6 @@ class ShoppingViewModel @Inject constructor(
     private val ingredientUiMapper: IngredientUiMapper
 ) : ViewModelBase<ShoppingScreenUi>() {
 
-    private lateinit var shoppingItems: Map<String?, List<ShoppingItem>>
-
     init {
         loadData()
     }
@@ -33,7 +31,6 @@ class ShoppingViewModel @Inject constructor(
     override fun loadData() {
         viewModelScope.launch {
             getShoppingListUseCase().collect { result ->
-                shoppingItems = result
 
                 // If there is a new (unsaved) item before refresh, create one afterwards
                 val hasUnsaved = uiState.data?.shoppingItems?.get(null)
@@ -155,7 +152,9 @@ class ShoppingViewModel @Inject constructor(
     }
 
     private fun findItem(recipeTitle: String?, itemId: String): ShoppingItem? {
-        return shoppingItems[recipeTitle]?.find { it.id == itemId }
+        return uiState.data?.shoppingItems?.get(recipeTitle)?.find { it.id == itemId }?.let {
+            ingredientUiMapper.fromShoppingListItemUi(it)
+        }
     }
 
     private fun updateItem(

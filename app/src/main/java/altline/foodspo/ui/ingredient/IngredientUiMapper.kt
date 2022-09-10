@@ -48,6 +48,14 @@ class IngredientUiMapper @Inject constructor() {
         onRemove = onRemove
     )
 
+    fun fromShoppingListItemUi(ui: ShoppingListItemUi): ShoppingItem {
+        return ShoppingItem(
+            id = ui.id,
+            text = ui.text,
+            checked = ui.checked
+        )
+    }
+
     fun toListItemUi(raw: Ingredient) = IngredientListItemUi(
         id = raw.id,
         name = raw.name,
