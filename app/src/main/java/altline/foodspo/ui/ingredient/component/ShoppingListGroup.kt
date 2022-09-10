@@ -2,12 +2,14 @@ package altline.foodspo.ui.ingredient.component
 
 import altline.foodspo.R
 import altline.foodspo.ui.theme.AppTheme
+import altline.foodspo.util.modifiedColor
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Icon
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -53,7 +55,9 @@ fun ShoppingListGroup(
         ) {
             Text(
                 text = data.title,
-                Modifier.weight(1f)
+                Modifier.weight(1f),
+                color = modifiedColor(alpha = ContentAlpha.medium),
+                style = AppTheme.typography.caption
             )
             Icon(
                 if (expanded) Icons.Default.ArrowDropDown

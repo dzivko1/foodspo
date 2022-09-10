@@ -117,7 +117,8 @@ fun ShoppingListItem(
                     data.text,
                     Modifier
                         .weight(1f)
-                        .clickable { data.onEditingChange(true) }
+                        .clickable { data.onEditingChange(true) },
+                    style = AppTheme.typography.subtitle1
                 )
             }
             Checkbox(
