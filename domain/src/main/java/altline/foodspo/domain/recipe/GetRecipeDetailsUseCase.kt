@@ -7,7 +7,7 @@ import javax.inject.Inject
 class GetRecipeDetailsUseCase @Inject constructor(
     private val recipeRepository: RecipeRepository
 ) {
-    suspend operator fun invoke(recipeId: String): Recipe {
+    suspend operator fun invoke(recipeId: String): Recipe? {
         return recipeRepository.getRecipeDetails(recipeId)
     }
 }

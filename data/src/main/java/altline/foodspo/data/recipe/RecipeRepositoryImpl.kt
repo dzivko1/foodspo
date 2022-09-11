@@ -37,7 +37,7 @@ internal class RecipeRepositoryImpl @Inject constructor(
         return PagingAccessor(flow, loadTrigger, coroutineScope)
     }
 
-    override suspend fun getRecipeDetails(recipeId: String): Recipe {
+    override suspend fun getRecipeDetails(recipeId: String): Recipe? {
         return mapException {
             if (recipeId.startsWith(CUSTOM_RECIPE_ID_PREFIX)) {
                 firebaseDataSource.getMyRecipeDetails(recipeId)

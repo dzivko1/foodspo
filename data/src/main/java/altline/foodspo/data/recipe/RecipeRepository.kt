@@ -13,7 +13,7 @@ interface RecipeRepository {
         coroutineScope: CoroutineScope
     ): PagingAccessor<Recipe>
 
-    suspend fun getRecipeDetails(recipeId: String): Recipe
+    suspend fun getRecipeDetails(recipeId: String): Recipe?
 
     suspend fun getRecipeDetailsBulk(recipeIds: List<String>): List<Recipe>
 

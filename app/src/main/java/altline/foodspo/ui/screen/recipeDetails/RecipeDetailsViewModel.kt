@@ -32,7 +32,7 @@ class RecipeDetailsViewModel @Inject constructor(
             runAction {
                 getRecipeDetailsUseCase(recipeId)
             }.onSuccess { recipe ->
-                setUiData(recipeUiMapper.toRecipeDetailsUi(recipe))
+                setUiData(recipe?.let { recipeUiMapper.toRecipeDetailsUi(it) })
             }
         }
     }

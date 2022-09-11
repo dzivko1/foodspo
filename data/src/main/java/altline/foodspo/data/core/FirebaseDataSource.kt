@@ -62,11 +62,11 @@ internal class FirebaseDataSource @Inject constructor(
             }
     }
 
-    suspend fun getMyRecipeDetails(recipeId: String): Recipe {
+    suspend fun getMyRecipeDetails(recipeId: String): Recipe? {
         return myRecipesCollection
             .document(recipeId)
             .get().await()
-            .toObject<RecipeFirestore>()!!.toDomainModel()
+            .toObject<RecipeFirestore>()?.toDomainModel()
     }
 
     fun getSavedRecipeIdsPaged(loadTrigger: PageLoadTrigger): Flow<List<String>> {
