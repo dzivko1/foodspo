@@ -122,9 +122,10 @@ internal class FirebaseDataSource @Inject constructor(
 
     suspend fun deleteRecipe(recipeId: String) {
         require(recipeId.startsWith(CUSTOM_RECIPE_ID_PREFIX)) { "Only custom recipes can be deleted" }
-        myRecipesCollection.document(recipeId)
-            .delete()
-            .await()
+        val docDeleteTask = myRecipesCollection.document(recipeId).delete()
+        val imgDeleteTask = recipeImageStore.child(recipeId).delete()
+        docDeleteTask.await()
+        imgDeleteTask.await()
     }
 
     suspend fun saveRecipe(recipeId: String, save: Boolean) {
