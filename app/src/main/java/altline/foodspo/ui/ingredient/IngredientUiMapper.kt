@@ -56,9 +56,13 @@ class IngredientUiMapper @Inject constructor() {
         )
     }
 
-    fun toListItemUi(raw: Ingredient) = IngredientListItemUi(
+    fun toListItemUi(
+        raw: Ingredient,
+        onAddToShoppingList: (id: String) -> Unit
+    ) = IngredientListItemUi(
         id = raw.id,
         name = raw.name,
-        measure = raw.measure
+        measure = raw.measure,
+        onAddToShoppingList = onAddToShoppingList
     )
 }

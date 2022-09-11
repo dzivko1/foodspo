@@ -34,7 +34,10 @@ class RecipeUiMapper @Inject constructor(
         onSavedChange = onSavedChange
     )
 
-    fun toRecipeDetailsUi(raw: Recipe) = RecipeDetailsScreenUi(
+    fun toRecipeDetailsUi(
+        raw: Recipe,
+        onAddIngredientToShoppingList: (ingredientId: String) -> Unit,
+    ) = RecipeDetailsScreenUi(
         id = raw.id,
         isOwnedByUser = raw.isOwnedByUser,
         image = raw.image ?: PlaceholderImages.recipe,
@@ -43,7 +46,9 @@ class RecipeUiMapper @Inject constructor(
         creditsText = raw.creditsText,
         servings = raw.servings,
         readyInMinutes = raw.readyInMinutes,
-        ingredients = raw.ingredients.map(ingredientUiMapper::toListItemUi),
+        ingredients = raw.ingredients.map {
+            ingredientUiMapper.toListItemUi(it, onAddIngredientToShoppingList)
+        },
         instructions = raw.instructions,
         summary = raw.summary?.takeIf { it.isNotEmpty() },
         sourceUrl = raw.sourceUrl,

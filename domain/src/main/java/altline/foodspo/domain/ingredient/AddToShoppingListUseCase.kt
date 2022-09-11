@@ -7,7 +7,7 @@ import javax.inject.Inject
 class AddToShoppingListUseCase @Inject constructor(
     private val ingredientRepository: IngredientRepository
 ) {
-    suspend operator fun invoke(recipeTitle: String?, item: ShoppingItem): String {
-        return ingredientRepository.addToShoppingList(recipeTitle, item)
+    suspend operator fun invoke(recipeTitle: String?, vararg items: ShoppingItem): List<String> {
+        return ingredientRepository.addToShoppingList(recipeTitle, *items)
     }
 }

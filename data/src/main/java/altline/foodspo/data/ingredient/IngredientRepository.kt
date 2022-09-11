@@ -10,7 +10,7 @@ interface IngredientRepository {
 
     fun getShoppingList(): Flow<Map<String?, List<ShoppingItem>>>
 
-    suspend fun addToShoppingList(recipeTitle: String?, item: ShoppingItem): String
+    suspend fun addToShoppingList(recipeTitle: String?, vararg items: ShoppingItem): List<String>
 
     suspend fun removeFromShoppingList(recipeTitle: String?, item: ShoppingItem)
 

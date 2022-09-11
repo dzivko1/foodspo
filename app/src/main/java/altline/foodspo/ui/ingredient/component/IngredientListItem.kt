@@ -18,7 +18,8 @@ import androidx.compose.ui.tooling.preview.Preview
 data class IngredientListItemUi(
     val id: String,
     val name: String,
-    val measure: Measure?
+    val measure: Measure?,
+    val onAddToShoppingList: (id: String) -> Unit
 ) {
     companion object {
         val PREVIEW = IngredientListItemUi(
@@ -28,7 +29,8 @@ data class IngredientListItemUi(
                 amount = 2.0,
                 unitLong = "slices",
                 unitShort = "slice"
-            )
+            ),
+            onAddToShoppingList = {}
         )
     }
 }
@@ -46,7 +48,7 @@ fun IngredientListItem(
             Modifier.weight(1f),
             style = AppTheme.typography.body2
         )
-        IconButton(onClick = {}) {
+        IconButton(onClick = { ingredient.onAddToShoppingList(ingredient.id) }) {
             Icon(
                 Icons.Default.AddShoppingCart,
                 contentDescription = stringResource(R.string.content_desc_add_to_shopping_list),

@@ -9,7 +9,15 @@ data class Ingredient(
     val aisle: String,
     val measure: Measure?,
     val rawText: String
-)
+) {
+    fun toShoppingItem(checked: Boolean = false): ShoppingItem {
+        return ShoppingItem(
+            id = id,
+            text = rawText,
+            checked = checked
+        )
+    }
+}
 
 internal data class IngredientFirestore(
     var id: String = "",

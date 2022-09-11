@@ -175,12 +175,12 @@ internal class FirebaseDataSource @Inject constructor(
         }
     }
 
-    suspend fun addToShoppingList(recipeTitle: String?, item: ShoppingItem): String {
-        val toStore = item.copy(id = SHOPPING_ITEM_ID_PREFIX + UUID.randomUUID())
+    suspend fun addToShoppingList(recipeTitle: String?, vararg items: ShoppingItem): List<String> {
+        val toStore = items.map { it.copy(id = SHOPPING_ITEM_ID_PREFIX + UUID.randomUUID()) }
         shoppingListCollection.document(recipeTitle ?: UNCATEGORIZED_SHOPPING_LIST_ID)
-            .set(mapOf(ITEMS_FIELD to FieldValue.arrayUnion(toStore)), SetOptions.merge())
+            .set(mapOf(ITEMS_FIELD to FieldValue.arrayUnion(*toStore.toTypedArray())), SetOptions.merge())
             .await()
-        return toStore.id
+        return toStore.map { it.id }
     }
 
     suspend fun removeFromShoppingList(recipeTitle: String?, item: ShoppingItem) {

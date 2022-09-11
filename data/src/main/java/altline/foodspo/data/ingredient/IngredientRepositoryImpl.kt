@@ -33,9 +33,9 @@ internal class IngredientRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun addToShoppingList(recipeTitle: String?, item: ShoppingItem): String {
+    override suspend fun addToShoppingList(recipeTitle: String?, vararg items: ShoppingItem): List<String> {
         return mapException {
-            firebaseDataSource.addToShoppingList(recipeTitle, item)
+            firebaseDataSource.addToShoppingList(recipeTitle, *items)
         }
     }
 

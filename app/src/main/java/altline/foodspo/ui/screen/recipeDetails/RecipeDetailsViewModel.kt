@@ -1,5 +1,8 @@
 package altline.foodspo.ui.screen.recipeDetails
 
+import altline.foodspo.data.recipe.model.Recipe
+import altline.foodspo.domain.ingredient.AddRecipeToShoppingListUseCase
+import altline.foodspo.domain.ingredient.AddToShoppingListUseCase
 import altline.foodspo.domain.recipe.DeleteRecipeUseCase
 import altline.foodspo.domain.recipe.GetRecipeDetailsUseCase
 import altline.foodspo.domain.recipe.SaveRecipeUseCase
@@ -17,11 +20,15 @@ class RecipeDetailsViewModel @Inject constructor(
     private val getRecipeDetailsUseCase: GetRecipeDetailsUseCase,
     private val saveRecipeUseCase: SaveRecipeUseCase,
     private val deleteRecipeUseCase: DeleteRecipeUseCase,
+    private val addRecipeToShoppingListUseCase: AddRecipeToShoppingListUseCase,
+    private val addToShoppingListUseCase: AddToShoppingListUseCase,
     private val recipeUiMapper: RecipeUiMapper,
     savedStateHandle: SavedStateHandle
 ) : ViewModelBase<RecipeDetailsScreenUi>() {
 
     private val recipeId: String = savedStateHandle["recipeId"]!!
+
+    private var recipe: Recipe? = null
 
     init {
         loadData()
@@ -30,15 +37,34 @@ class RecipeDetailsViewModel @Inject constructor(
     override fun loadData() {
         viewModelScope.launch {
             runAction {
-                getRecipeDetailsUseCase(recipeId)
-            }.onSuccess { recipe ->
-                setUiData(recipe?.let { recipeUiMapper.toRecipeDetailsUi(it) })
+                recipe = getRecipeDetailsUseCase(recipeId)
+                setUiData(recipe?.let { recipe ->
+                    recipeUiMapper.toRecipeDetailsUi(
+                        recipe,
+                        onAddIngredientToShoppingList = this@RecipeDetailsViewModel::addIngredientToShoppingList
+                    )
+                })
             }
         }
     }
 
-    fun onAddToShoppingListClicked() {
-        TODO("Not yet implemented")
+    private fun addIngredientToShoppingList(ingredientId: String) {
+        viewModelScope.launch {
+            runAction {
+                val item = recipe?.ingredients?.find { it.id == ingredientId }?.toShoppingItem()
+                if (item != null) {
+                    addToShoppingListUseCase(recipe!!.title, item)
+                }
+            }
+        }
+    }
+
+    fun onAddRecipeToShoppingListClicked() {
+        viewModelScope.launch {
+            runAction {
+                addRecipeToShoppingListUseCase(recipeId)
+            }
+        }
     }
 
     fun onSaveClicked(save: Boolean) {

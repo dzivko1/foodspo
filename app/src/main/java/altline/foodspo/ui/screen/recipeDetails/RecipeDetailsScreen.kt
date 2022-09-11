@@ -88,7 +88,7 @@ fun RecipeDetailsScreen(viewModel: RecipeDetailsViewModel = hiltViewModel()) {
             TopBar(
                 isRecipeUsers = viewModel.uiState.data?.isOwnedByUser ?: false,
                 isRecipeSaved = viewModel.uiState.data?.isSaved ?: false,
-                onAddToShoppingList = viewModel::onAddToShoppingListClicked,
+                onAddToShoppingList = viewModel::onAddRecipeToShoppingListClicked,
                 onSave = viewModel::onSaveClicked,
                 onEdit = viewModel::onEditClicked,
                 onDelete = viewModel::onDeleteClicked
