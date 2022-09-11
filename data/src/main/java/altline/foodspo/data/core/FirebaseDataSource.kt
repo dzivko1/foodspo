@@ -5,6 +5,7 @@ import altline.foodspo.data.SHOPPING_ITEM_ID_PREFIX
 import altline.foodspo.data.UNCATEGORIZED_SHOPPING_LIST_ID
 import altline.foodspo.data.core.model.BitmapImageSrc
 import altline.foodspo.data.core.model.ImageSrc
+import altline.foodspo.data.core.model.PathImageSrc
 import altline.foodspo.data.core.paging.PageLoadTrigger
 import altline.foodspo.data.core.paging.paginate
 import altline.foodspo.data.ingredient.model.ShoppingItem
@@ -14,17 +15,22 @@ import altline.foodspo.data.recipe.model.Recipe
 import altline.foodspo.data.recipe.model.RecipeFirestore
 import altline.foodspo.data.user.model.User
 import altline.foodspo.data.util.asSnapshotFlow
+import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
+import androidx.core.net.toUri
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.storage.FirebaseStorage
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import java.util.*
 import javax.inject.Inject
@@ -33,7 +39,8 @@ import javax.inject.Singleton
 @Singleton
 internal class FirebaseDataSource @Inject constructor(
     private val db: FirebaseFirestore,
-    private val storage: FirebaseStorage
+    private val storage: FirebaseStorage,
+    @ApplicationContext private val context: Context
 ) {
     private lateinit var user: User
 
@@ -87,12 +94,12 @@ internal class FirebaseDataSource @Inject constructor(
             if (recipe.isOwnedByUser) recipe.id
             else CUSTOM_RECIPE_ID_PREFIX + UUID.randomUUID()
 
-        val modelToStore = if (recipe.image is BitmapImageSrc) {
-            val fileUri = storeRecipeImage(recipeId, recipe.image.bitmap)
+        val modelToStore = if (recipe.image is BitmapImageSrc || recipe.image is PathImageSrc) {
+            val firebaseFileUri = storeRecipeImage(recipeId, recipe.image)
             recipe.copy(
                 id = recipeId,
                 additionTime = Timestamp.now(),
-                image = ImageSrc(fileUri.toString())
+                image = firebaseFileUri?.let { ImageSrc(it.toString()) } ?: recipe.image
             )
         } else {
             recipe.copy(
@@ -102,22 +109,38 @@ internal class FirebaseDataSource @Inject constructor(
         }
 
         myRecipesCollection.document(recipeId)
-            .set(modelToStore)
+            .set(modelToStore).await()
 
         return recipeId
     }
 
-    private suspend fun storeRecipeImage(recipeId: String, bitmap: Bitmap): Uri {
-        var imageData: ByteArray
-        ByteArrayOutputStream().use { baos ->
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-            imageData = baos.toByteArray()
-        }
-
+    private suspend fun storeRecipeImage(recipeId: String, imageSrc: ImageSrc): Uri? {
         val fileRef = recipeImageStore.child(recipeId)
-        fileRef.putBytes(imageData).await()
-
-        return fileRef.downloadUrl.await()
+        return when (imageSrc) {
+            is BitmapImageSrc -> {
+                ByteArrayOutputStream().use { baos ->
+                    imageSrc.bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+                    val imageData = baos.toByteArray()
+                    fileRef.putBytes(imageData).await()
+                    fileRef.downloadUrl.await()
+                }
+            }
+            is PathImageSrc -> {
+                if (!imageSrc.path.startsWith("http")) {
+                    withContext(Dispatchers.IO) {
+                        context.contentResolver.openInputStream(
+                            imageSrc.path.toUri()
+                        )?.use {
+                            it.buffered().readBytes()
+                        }?.let {
+                            fileRef.putBytes(it).await()
+                            fileRef.downloadUrl.await()
+                        }
+                    }
+                } else null
+            }
+            else -> null
+        }
     }
 
     suspend fun deleteRecipe(recipeId: String) {
