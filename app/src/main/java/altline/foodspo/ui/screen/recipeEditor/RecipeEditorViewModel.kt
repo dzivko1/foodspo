@@ -99,8 +99,8 @@ class RecipeEditorViewModel @Inject constructor(
                         parsedIngredients
                     )
                     storeCustomRecipeUseCase(recipe)
-                }.onSuccess {
-                    navigateTo(NavigationEvent.RecipeDetails(recipeId).pop(2))
+                }.onSuccess { storedRecipeId ->
+                    navigateTo(NavigationEvent.RecipeDetails(storedRecipeId).pop(2))
                 }
             }
         }
