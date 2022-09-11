@@ -11,6 +11,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -40,7 +41,15 @@ fun UiBase() {
                     AppBottomNavigation(
                         destinations = AppDestination.topDestinations,
                         currentDestination = currentDestination,
-                        onDestinationSelected = { navController.navigate(it.route) }
+                        onDestinationSelected = {
+                            navController.navigate(it.route) {
+                                launchSingleTop = true
+                                restoreState = true
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                            }
+                        }
                     )
                 }
             },
