@@ -5,26 +5,50 @@ import androidx.paging.PagingState
 import timber.log.Timber
 
 class IndexedPagingSource<T : Any>(
-    private val dataProvider: suspend (page: Int, loadSize: Int) -> List<T>
+    private val configPageSize: Int,
+    private val dataProvider: suspend (page: Int, loadSize: Int) -> List<T>,
+    private val allowNegativePages: Boolean = false,
 ) : PagingSource<Int, T>() {
-    
+
+    // See https://stackoverflow.com/a/71810010/6640693 for an explanation of many problems that were encountered here
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, T> {
+        var pageIndex = params.key ?: 0
+        var loadSize = configPageSize
+        if (params is LoadParams.Refresh) {
+            loadSize *= 3
+            pageIndex -= 1
+        }
+        val startIndex = pageIndex * configPageSize
+
         return try {
-            val nextPageNumber = params.key ?: 1
-            val loadSize = params.loadSize
-            val data = dataProvider.invoke(nextPageNumber, loadSize)
+            val data = dataProvider(pageIndex, loadSize)
+
+            val nextKey =
+                if (data.size < configPageSize) null
+                else pageIndex + (loadSize / configPageSize)
+            val prevKey =
+                if (!allowNegativePages && pageIndex == 0) null
+                else pageIndex - 1
+            val itemsBefore =
+                if (allowNegativePages) LoadResult.Page.COUNT_UNDEFINED
+                else startIndex
+
             LoadResult.Page(
                 data = data,
-                prevKey = null,
-                nextKey = nextPageNumber + 1
+                prevKey = prevKey,
+                nextKey = nextKey,
+                itemsBefore = itemsBefore
+
             )
         } catch (e: Exception) {
             Timber.e(e, "Exception caught in paging source.")
             LoadResult.Error(e)
         }
     }
-    
+
     override fun getRefreshKey(state: PagingState<Int, T>): Int? {
-        return state.anchorPosition
+        return state.anchorPosition?.let {
+            it / configPageSize
+        }
     }
 }

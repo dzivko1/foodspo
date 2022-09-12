@@ -2,6 +2,8 @@ package altline.foodspo.data.di
 
 import altline.foodspo.data.ingredient.IngredientRepository
 import altline.foodspo.data.ingredient.IngredientRepositoryImpl
+import altline.foodspo.data.meal.MealRepository
+import altline.foodspo.data.meal.MealRepositoryImpl
 import altline.foodspo.data.recipe.RecipeRepository
 import altline.foodspo.data.recipe.RecipeRepositoryImpl
 import altline.foodspo.data.user.UserRepository
@@ -35,6 +37,11 @@ internal abstract class DataModule {
     abstract fun bindIngredientRepository(
         ingredientRepositoryImpl: IngredientRepositoryImpl
     ): IngredientRepository
+
+    @Binds
+    abstract fun bindMealRepository(
+        mealRepositoryImpl: MealRepositoryImpl
+    ): MealRepository
 
     // @Provides go in here
     companion object {

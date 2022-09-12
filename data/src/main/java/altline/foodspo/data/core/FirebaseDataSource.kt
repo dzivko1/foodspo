@@ -11,6 +11,7 @@ import altline.foodspo.data.core.paging.paginate
 import altline.foodspo.data.ingredient.model.ShoppingItem
 import altline.foodspo.data.ingredient.model.network.ShoppingListFirestore
 import altline.foodspo.data.ingredient.model.network.ShoppingListNetwork
+import altline.foodspo.data.meal.model.MealPlan
 import altline.foodspo.data.recipe.model.Recipe
 import altline.foodspo.data.recipe.model.RecipeFirestore
 import altline.foodspo.data.user.model.User
@@ -20,6 +21,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import androidx.core.net.toUri
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
@@ -45,16 +47,23 @@ internal class FirebaseDataSource @Inject constructor(
     private lateinit var user: User
 
     private val myRecipesCollection
-        get() = db.collection("users/${user.uid}/ownRecipes")
+        get() = getCollectionForUser("ownRecipes")
 
     private val savedRecipesCollection
-        get() = db.collection("users/${user.uid}/savedRecipes")
+        get() = getCollectionForUser("savedRecipes")
 
     private val shoppingListCollection
-        get() = db.collection("users/${user.uid}/shoppingList")
+        get() = getCollectionForUser("shoppingList")
+
+    private val mealPlanCollection
+        get() = getCollectionForUser("mealPlan")
 
     private val recipeImageStore
         get() = storage.getReference("users/${user.uid}/recipeImages")
+
+    private fun getCollectionForUser(collectionPath: String): CollectionReference {
+        return db.collection("users/${user.uid}/$collectionPath")
+    }
 
     fun setCurrentUser(user: User) {
         this.user = user
@@ -163,6 +172,7 @@ internal class FirebaseDataSource @Inject constructor(
         }
     }
 
+
     fun getShoppingList(): Flow<Map<String?, List<ShoppingItem>>> {
         return shoppingListCollection.asSnapshotFlow().map { s ->
             s.associate { snapshot ->
@@ -178,7 +188,10 @@ internal class FirebaseDataSource @Inject constructor(
     suspend fun addToShoppingList(recipeTitle: String?, vararg items: ShoppingItem): List<String> {
         val toStore = items.map { it.copy(id = SHOPPING_ITEM_ID_PREFIX + UUID.randomUUID()) }
         shoppingListCollection.document(recipeTitle ?: UNCATEGORIZED_SHOPPING_LIST_ID)
-            .set(mapOf(ITEMS_FIELD to FieldValue.arrayUnion(*toStore.toTypedArray())), SetOptions.merge())
+            .set(
+                mapOf(ITEMS_FIELD to FieldValue.arrayUnion(*toStore.toTypedArray())),
+                SetOptions.merge()
+            )
             .await()
         return toStore.map { it.id }
     }
@@ -199,6 +212,13 @@ internal class FirebaseDataSource @Inject constructor(
         val index = items.indexOfFirst { it.id == item.id }
         items[index] = item
         docRef.set(ShoppingListNetwork(items))
+    }
+
+
+    suspend fun getMealPlan(weekTimestamp: Timestamp): MealPlan? {
+        return mealPlanCollection.document(weekTimestamp.toString())
+            .get().await()
+            .toObject()
     }
 
     companion object {

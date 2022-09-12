@@ -11,8 +11,11 @@ apply from: rootProject.file("android.build.gradle")
 dependencies {
     api project(":data")
 
+    implementation platform(Libs.Firebase.bom)
+
     implementation Libs.KotlinX.Coroutines.core
     implementation Libs.KotlinX.Coroutines.android
+    implementation Libs.Firebase.firestore
     implementation Libs.AndroidX.coreKtx
     implementation Libs.Hilt.hiltAndroid
     kapt Libs.Hilt.hiltCompiler

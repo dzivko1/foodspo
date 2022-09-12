@@ -10,7 +10,7 @@ class FlowPagingSource<T : Any>(
     private val configPageSize: Int
 ) : PagingSource<Int, T>() {
 
-    // See https://stackoverflow.com/a/71810010/6640693 for an explanation of many problems that existed here
+    // See https://stackoverflow.com/a/71810010/6640693 for an explanation of many problems that were encountered here
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, T> {
         var pageIndex = params.key ?: 0
         var loadSize = configPageSize
