@@ -3,6 +3,7 @@ package altline.foodspo.data.util
 import com.google.firebase.Timestamp
 import java.time.LocalDate
 import java.time.ZoneId
+import java.time.temporal.WeekFields
 import java.util.*
 
 fun Date.toLocalDate(): LocalDate = toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
@@ -13,3 +14,5 @@ fun LocalDate.toTimestamp(): Timestamp = Timestamp(toDate())
 
 fun Timestamp.plusWeeks(weeksToAdd: Long) = toLocalDate().plusWeeks(weeksToAdd).toTimestamp()
 fun Timestamp.minusWeeks(weeksToSubtract: Long) = toLocalDate().minusWeeks(weeksToSubtract).toTimestamp()
+
+fun LocalDate.atStartOfWeek(): LocalDate = with(WeekFields.of(Locale.getDefault()).dayOfWeek(), 1)

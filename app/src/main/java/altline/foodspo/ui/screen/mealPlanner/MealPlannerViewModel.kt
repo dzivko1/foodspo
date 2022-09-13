@@ -2,10 +2,7 @@ package altline.foodspo.ui.screen.mealPlanner
 
 import altline.foodspo.data.WEEK_PAGE_SIZE
 import altline.foodspo.data.core.paging.IndexedPagingSource
-import altline.foodspo.data.util.minusWeeks
-import altline.foodspo.data.util.plusWeeks
-import altline.foodspo.data.util.toLocalDate
-import altline.foodspo.data.util.toTimestamp
+import altline.foodspo.data.util.*
 import altline.foodspo.domain.meal.GetMealPlanUseCase
 import altline.foodspo.ui.core.ViewModelBase
 import altline.foodspo.ui.core.navigation.NavigationEvent
@@ -18,8 +15,6 @@ import com.google.firebase.Timestamp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
-import java.time.temporal.WeekFields
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -39,7 +34,8 @@ class MealPlannerViewModel @Inject constructor(
             MealPlannerScreenUi(
                 selectedWeekPlan = null,
                 weekTimestamps = weekTimestampPagedFlow(),
-                onWeekClick = this::selectWeek
+                onWeekClick = this::selectWeek,
+                onBackFromWeekPlan = this::goToWeekPicker
             )
         )
     }
@@ -51,8 +47,7 @@ class MealPlannerViewModel @Inject constructor(
                 IndexedPagingSource(
                     WEEK_PAGE_SIZE,
                     dataProvider = { page, loadSize ->
-                        val start = Timestamp.now().toLocalDate()
-                            .with(WeekFields.of(Locale.getDefault()).dayOfWeek(), 1)
+                        val start = Timestamp.now().toLocalDate().atStartOfWeek()
                             .plusWeeks((page * WEEK_PAGE_SIZE).toLong())
 
                         buildList<Timestamp> {
@@ -79,8 +74,10 @@ class MealPlannerViewModel @Inject constructor(
                         onAddMealClicked = this@MealPlannerViewModel::addMeal,
                         onNextWeekClicked = this@MealPlannerViewModel::goToNextWeek,
                         onPrevWeekClicked = this@MealPlannerViewModel::goToPrevWeek,
+                        onCurrentWeekClicked = this@MealPlannerViewModel::goToWeekPicker,
                         onMealClicked = this@MealPlannerViewModel::navigateToRecipeDetails,
-                        onMealRemoveClicked = this@MealPlannerViewModel::removeMeal
+                        onMealRemoveClicked = this@MealPlannerViewModel::removeMeal,
+                        onBackFromWeekPlan = this@MealPlannerViewModel::goToWeekPicker
                     )
                 )
             }
@@ -93,6 +90,15 @@ class MealPlannerViewModel @Inject constructor(
 
     private fun goToPrevWeek() {
         selectWeek(selectedWeek!!.minusWeeks(1))
+    }
+
+    private fun goToWeekPicker() {
+        setUiData(
+            uiState.data!!.copy(
+                selectedWeekPlan = null,
+                weekTimestamps = weekTimestampPagedFlow()
+            )
+        )
     }
 
     private fun navigateToRecipeDetails(recipeId: String) {

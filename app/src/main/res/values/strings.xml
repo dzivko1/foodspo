@@ -4,6 +4,7 @@
     <string name="fab_new_recipe">New recipe</string>
 
     <!-- Actions -->
+    <string name="action_add">Add</string>
     <string name="action_edit">Edit</string>
     <string name="action_copy_and_edit">Copy and edit</string>
     <string name="action_delete">Delete</string>
@@ -23,6 +24,8 @@
 
     <!-- Content descriptions -->
     <string name="content_desc_navigate_up">Go back</string>
+    <string name="content_desc_next_week">Next week</string>
+    <string name="content_desc_previous_week">Previous week</string>
     <string name="content_desc_cancel">Cancel</string>
     <string name="content_desc_more_actions">More actions</string>
     <string name="content_desc_take_photo">Take a photo</string>
@@ -34,6 +37,7 @@
     <string name="content_desc_save_recipe">Save recipe</string>
     <string name="content_desc_drop_recipe">Drop recipe</string>
     <string name="content_desc_remove_ingredient">Remove ingredient</string>
+    <string name="content_desc_remove_recipe_from_plan">Remove recipe from plan</string>
     <string name="content_desc_drag_reorder">Drag to reorder</string>
     <string name="content_desc_expand_shrink">Expand/Shrink</string>
     <string name="content_desc_item_deleted">Item deleted</string>
@@ -84,5 +88,8 @@
     <string name="shopping_general_category_title">General</string>
     <string name="shopping_add_item_button">Add item</string>
     <string name="shopping_empty_message">Your shopping list is empty.\nYou can add items from here, or when viewing a recipe.</string>
+
+    <!-- Meal Planner screen -->
+    <string name="meal_planner_no_meals_planned">No meals planned</string>
 
 </resources>

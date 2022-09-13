@@ -3,9 +3,11 @@ package altline.foodspo.ui.screen.mealPlanner
 import altline.foodspo.data.WEEK_PAGE_SIZE
 import altline.foodspo.data.util.toLocalDate
 import altline.foodspo.ui.core.ScreenBase
+import altline.foodspo.ui.meal.component.MealPlan
 import altline.foodspo.ui.meal.component.MealPlanUi
 import altline.foodspo.ui.screen.mealPlanner.component.WeekListItem
 import altline.foodspo.ui.theme.AppTheme
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -29,7 +31,8 @@ import java.time.Month
 data class MealPlannerScreenUi(
     val selectedWeekPlan: MealPlanUi?,
     val weekTimestamps: Flow<PagingData<Timestamp>>?,
-    val onWeekClick: (Timestamp) -> Unit
+    val onWeekClick: (Timestamp) -> Unit,
+    val onBackFromWeekPlan: () -> Unit
 ) {
     companion object {
         @Composable
@@ -44,7 +47,8 @@ data class MealPlannerScreenUi(
                     )
                 )
             ),
-            onWeekClick = {}
+            onWeekClick = {},
+            onBackFromWeekPlan = {}
         )
     }
 }
@@ -52,14 +56,17 @@ data class MealPlannerScreenUi(
 @Composable
 fun MealPlannerScreen(viewModel: MealPlannerViewModel = hiltViewModel()) {
     ScreenBase(viewModel) {
-        if (it.selectedWeekPlan == null) WeekPicker(it)
-        else Content(it)
+        Content(it)
     }
 }
 
 @Composable
 private fun Content(data: MealPlannerScreenUi) {
-
+    if (data.selectedWeekPlan == null) WeekPicker(data)
+    else {
+        MealPlan(data.selectedWeekPlan)
+        BackHandler(onBack = data.onBackFromWeekPlan)
+    }
 }
 
 @Composable

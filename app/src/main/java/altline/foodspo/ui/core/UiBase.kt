@@ -15,8 +15,11 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import java.time.format.DateTimeFormatter
 
 val START_DESTINATION = AppDestination.Explore
+
+val SHORT_DAY_MONTH_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.M")
 
 @Composable
 fun UiBase() {
