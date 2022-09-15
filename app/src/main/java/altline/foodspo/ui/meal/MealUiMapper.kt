@@ -82,7 +82,7 @@ class MealUiMapper @Inject constructor() {
         onRemoveClicked: (id: String) -> Unit
     ): MealUi {
         return MealUi(
-            id = raw.id,
+            recipeId = raw.recipeId,
             title = raw.recipeTitle,
             image = raw.recipeImage ?: PlaceholderImages.recipe,
             onContentClick = onContentClicked,

@@ -7,6 +7,7 @@ import altline.foodspo.ui.placeholder.PlaceholderImages
 import altline.foodspo.ui.theme.AppTheme
 import altline.foodspo.util.ProvideContentColor
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -24,7 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 data class MealUi(
-    val id: String,
+    val recipeId: String,
     val title: String,
     val image: ImageSrc,
     val onContentClick: (id: String) -> Unit,
@@ -33,7 +34,7 @@ data class MealUi(
     companion object {
         @Composable
         fun preview() = MealUi(
-            id = "",
+            recipeId = "",
             title = "Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs",
             image = PlaceholderImages.recipe,
             onContentClick = {},
@@ -44,7 +45,7 @@ data class MealUi(
 
 @Composable
 fun Meal(data: MealUi) {
-    Box {
+    Box(Modifier.clickable { data.onContentClick(data.recipeId) }) {
         GeneralImage(
             data.image,
             contentDescription = null,
@@ -69,7 +70,7 @@ fun Meal(data: MealUi) {
                         .padding(AppTheme.spaces.large),
                     style = AppTheme.typography.body2
                 )
-                IconButton(onClick = { data.onRemoveClick(data.id) }) {
+                IconButton(onClick = { data.onRemoveClick(data.recipeId) }) {
                     Icon(
                         Icons.Outlined.RemoveCircleOutline,
                         contentDescription = stringResource(R.string.content_desc_remove_recipe_from_plan)
