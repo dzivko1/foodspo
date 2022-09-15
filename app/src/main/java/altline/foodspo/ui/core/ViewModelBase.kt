@@ -50,10 +50,14 @@ abstract class ViewModelBase<UI> : ViewModel() {
         uiState = uiState.copy(snackbar = snackbarData)
     }
 
+    fun onSnackbarConsumed() {
+        uiState = uiState.copy(snackbar = null)
+    }
+
     protected fun navigateTo(navEvent: NavigationEvent) {
         uiState = uiState.copy(navEvent = navEvent)
     }
-    
+
     protected fun navigateUp() {
         uiState = uiState.copy(navEvent = NavigationEvent.NavigateUp)
     }
@@ -62,12 +66,16 @@ abstract class ViewModelBase<UI> : ViewModel() {
         uiState = uiState.copy(navEvent = NavigationEvent.NavigateBack)
     }
 
-    fun onSnackbarConsumed() {
-        uiState = uiState.copy(snackbar = null)
-    }
-
     fun onNavEventConsumed() {
         uiState = uiState.copy(navEvent = null)
+    }
+
+    protected fun <R : Any> finishWithResult(resultKey: String, value: R) {
+        uiState = uiState.copy(screenResult = Pair(resultKey, value))
+    }
+
+    fun onScreenResultSent() {
+        uiState = uiState.copy(screenResult = null)
     }
 
     open fun onFabClick() {

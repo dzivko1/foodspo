@@ -9,5 +9,6 @@ data class UiState<UiData>(
     val error: AppException? = null,
     val snackbar: SnackbarModel? = null,
     val navEvent: NavigationEvent? = null,
+    val screenResult: Pair<String, Any>? = null,
     val data: UiData? = null
 )

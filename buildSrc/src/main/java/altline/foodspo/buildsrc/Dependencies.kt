@@ -36,6 +36,7 @@ object Libs {
             const val uiToolingPreview = "androidx.compose.ui:ui-tooling-preview:$version"
             const val uiTestJunit4 = "androidx.compose.ui:ui-test-junit4:$version"
             const val uiTestManifest = "androidx.compose.ui:ui-test-manifest:$version"
+            const val livedata = "androidx.compose.runtime:runtime-livedata:$version"
             const val material = "androidx.compose.material:material:$version"
             const val materialIconsExtended =
                 "androidx.compose.material:material-icons-extended:$version"

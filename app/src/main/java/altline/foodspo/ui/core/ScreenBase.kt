@@ -62,6 +62,13 @@ fun <UiData> ScreenBase(
             }
         }
 
+        if (screenResult != null) {
+            navController.previousBackStackEntry?.savedStateHandle
+                ?.set(screenResult.first, screenResult.second)
+            navController.popBackStack()
+            viewModel.onScreenResultSent()
+        }
+
         if (error != null) errorScreen(error)
         else if (data != null) content(data)
     }
