@@ -2,6 +2,7 @@ package altline.foodspo.data.recipe
 
 import altline.foodspo.data.core.paging.PageLoadTrigger
 import altline.foodspo.data.core.paging.PagingAccessor
+import altline.foodspo.data.meal.model.Meal
 import altline.foodspo.data.recipe.model.Instruction
 import altline.foodspo.data.recipe.model.Recipe
 import kotlinx.coroutines.CoroutineScope
@@ -34,4 +35,6 @@ interface RecipeRepository {
     suspend fun saveRecipe(recipeId: String, save: Boolean)
 
     suspend fun analyzeInstructions(instructions: String): List<Instruction>
+
+    suspend fun createMeal(recipeId: String): Meal?
 }

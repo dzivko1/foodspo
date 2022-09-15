@@ -6,6 +6,7 @@ import altline.foodspo.data.util.toLocalDate
 import altline.foodspo.ui.core.SHORT_DAY_MONTH_FORMATTER
 import altline.foodspo.ui.meal.component.MealPlanUi
 import altline.foodspo.ui.meal.component.MealUi
+import altline.foodspo.ui.placeholder.PlaceholderImages
 import altline.foodspo.ui.screen.mealPlanner.MealPlannerScreenUi
 import com.google.firebase.Timestamp
 import javax.inject.Inject
@@ -18,7 +19,7 @@ class MealUiMapper @Inject constructor() {
         onNextWeekClicked: () -> Unit,
         onPrevWeekClicked: () -> Unit,
         onCurrentWeekClicked: () -> Unit,
-        onAddMealClicked: () -> Unit,
+        onAddMealClicked: (day: Timestamp) -> Unit,
         onMealClicked: (id: String) -> Unit,
         onMealRemoveClicked: (id: String) -> Unit,
         onBackFromWeekPlan: () -> Unit
@@ -44,16 +45,19 @@ class MealUiMapper @Inject constructor() {
         onNextWeekClicked: () -> Unit,
         onPrevWeekClicked: () -> Unit,
         onCurrentWeekClicked: () -> Unit,
-        onAddMealClicked: () -> Unit,
+        onAddMealClicked: (day: Timestamp) -> Unit,
         onMealClicked: (id: String) -> Unit,
         onMealRemoveClicked: (id: String) -> Unit
     ): MealPlanUi {
         val fromDate = raw.weekTimestamp.toLocalDate().format(SHORT_DAY_MONTH_FORMATTER)
         val toDate = raw.weekTimestamp.toLocalDate().plusDays(6).format(SHORT_DAY_MONTH_FORMATTER)
+        val timestampToDateString = raw.mealsByDay.mapValues { (timestamp, _) ->
+            timestamp.toLocalDate().format(SHORT_DAY_MONTH_FORMATTER)
+        }
         return MealPlanUi(
             week = "$fromDate - $toDate",
             mealsByDay = raw.mealsByDay.entries.associate { (timestamp, meals) ->
-                timestamp.toLocalDate().format(SHORT_DAY_MONTH_FORMATTER) to
+                timestampToDateString[timestamp]!! to
                     meals.map { meal ->
                         toMealUi(
                             meal,
@@ -65,7 +69,10 @@ class MealUiMapper @Inject constructor() {
             onNextWeekClick = onNextWeekClicked,
             onPrevWeekClick = onPrevWeekClicked,
             onCurrentWeekClick = onCurrentWeekClicked,
-            onAddMealClick = onAddMealClicked
+            onAddMealClick = { dateString ->
+                val timestamp = timestampToDateString.filterValues { it == dateString }.keys.first()
+                onAddMealClicked(timestamp)
+            }
         )
     }
 
@@ -77,7 +84,7 @@ class MealUiMapper @Inject constructor() {
         return MealUi(
             id = raw.id,
             title = raw.recipeTitle,
-            image = raw.recipeImage,
+            image = raw.recipeImage ?: PlaceholderImages.recipe,
             onContentClick = onContentClicked,
             onRemoveClick = onRemoveClicked
         )

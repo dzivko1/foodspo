@@ -24,7 +24,7 @@ data class MealPlanUi(
     val onNextWeekClick: () -> Unit,
     val onPrevWeekClick: () -> Unit,
     val onCurrentWeekClick: () -> Unit,
-    val onAddMealClick: () -> Unit
+    val onAddMealClick: (day: String) -> Unit
 ) {
     companion object {
         @Composable
@@ -117,10 +117,10 @@ private fun WeekSelector(data: MealPlanUi) {
 private fun DayPlan(
     date: String,
     meals: List<MealUi>,
-    onAddMealClick: () -> Unit
+    onAddMealClick: (day: String) -> Unit
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spaces.medium),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spaces.xl),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
@@ -145,7 +145,7 @@ private fun DayPlan(
         }
 
         TextButton(
-            onClick = onAddMealClick,
+            onClick = { onAddMealClick(date) },
             colors = ButtonDefaults.outlinedButtonColors(
                 contentColor = AppTheme.colors.secondary
             )

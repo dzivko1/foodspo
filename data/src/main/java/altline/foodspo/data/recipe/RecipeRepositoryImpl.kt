@@ -6,12 +6,14 @@ import altline.foodspo.data.core.RecipeApiDataSource
 import altline.foodspo.data.core.paging.PageLoadTrigger
 import altline.foodspo.data.core.paging.PagingAccessor
 import altline.foodspo.data.error.ExceptionMapper
+import altline.foodspo.data.meal.model.Meal
 import altline.foodspo.data.recipe.mapper.InstructionMapper
 import altline.foodspo.data.recipe.mapper.RecipeMapper
 import altline.foodspo.data.recipe.model.Instruction
 import altline.foodspo.data.recipe.model.Recipe
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.map
+import java.util.*
 import javax.inject.Inject
 
 internal class RecipeRepositoryImpl @Inject constructor(
@@ -111,6 +113,17 @@ internal class RecipeRepositoryImpl @Inject constructor(
                     ?.steps?.map(mapInstruction::invoke)
                     ?: emptyList()
             } else emptyList()
+        }
+    }
+
+    override suspend fun createMeal(recipeId: String): Meal? {
+        return getRecipeDetails(recipeId)?.let { recipe ->
+            Meal(
+                id = UUID.randomUUID().toString(),
+                recipeId = recipeId,
+                recipeTitle = recipe.title,
+                recipeImage = recipe.image
+            )
         }
     }
 }

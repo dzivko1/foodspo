@@ -20,15 +20,19 @@ internal class MealRepositoryImpl @Inject constructor(
         return mapException.forFlow(
             firebaseDataSource.getMealPlan(weekTimestamp).map { mealPlan ->
                 mealPlan ?: MealPlan(
-                        weekTimestamp,
-                        buildMap {
-                            val start = weekTimestamp.toLocalDate().atStartOfWeek()
-                            for (weekday in 0..6) {
-                                put(start.plusDays(weekday.toLong()).toTimestamp(), emptyList())
-                            }
+                    weekTimestamp,
+                    buildMap {
+                        val start = weekTimestamp.toLocalDate().atStartOfWeek()
+                        for (weekday in 0..6) {
+                            put(start.plusDays(weekday.toLong()).toTimestamp(), emptyList())
                         }
-                    )
+                    }
+                )
             }
         )
+    }
+
+    override suspend fun storeMealPlan(mealPlan: MealPlan) {
+        firebaseDataSource.storeMealPlan(mealPlan)
     }
 }

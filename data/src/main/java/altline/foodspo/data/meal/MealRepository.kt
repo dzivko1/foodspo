@@ -7,4 +7,6 @@ import kotlinx.coroutines.flow.Flow
 interface MealRepository {
 
     fun getMealPlan(weekTimestamp: Timestamp): Flow<MealPlan>
+
+    suspend fun storeMealPlan(mealPlan: MealPlan)
 }

@@ -13,6 +13,7 @@ import altline.foodspo.data.ingredient.model.ShoppingItem
 import altline.foodspo.data.ingredient.model.network.ShoppingListFirestore
 import altline.foodspo.data.ingredient.model.network.ShoppingListNetwork
 import altline.foodspo.data.meal.model.MealPlan
+import altline.foodspo.data.meal.model.MealPlanFirestore
 import altline.foodspo.data.recipe.model.Recipe
 import altline.foodspo.data.recipe.model.RecipeFirestore
 import altline.foodspo.data.user.model.User
@@ -214,7 +215,16 @@ internal class FirebaseDataSource @Inject constructor(
     fun getMealPlan(weekTimestamp: Timestamp): Flow<MealPlan?> {
         return mealPlanCollection.document(weekTimestamp.toString())
             .asSnapshotFlow()
-            .map { it.toObject() }
+            .map {
+                it.toObject<MealPlanFirestore>()?.toDomainModel()?.run {
+                    copy(mealsByDay = mealsByDay.toSortedMap())
+                }
+            }
+    }
+
+    suspend fun storeMealPlan(mealPlan: MealPlan) {
+        mealPlanCollection.document(mealPlan.weekTimestamp.toString())
+            .set(mealPlan.toFirestoreModel()).await()
     }
 
     companion object {
