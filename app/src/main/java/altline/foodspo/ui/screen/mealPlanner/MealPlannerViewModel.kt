@@ -5,6 +5,7 @@ import altline.foodspo.data.core.paging.IndexedPagingSource
 import altline.foodspo.data.util.*
 import altline.foodspo.domain.meal.AddMealToPlanUseCase
 import altline.foodspo.domain.meal.GetMealPlanUseCase
+import altline.foodspo.domain.meal.RemoveMealFromPlanUseCase
 import altline.foodspo.ui.core.ViewModelBase
 import altline.foodspo.ui.core.navigation.NavigationEvent
 import altline.foodspo.ui.meal.MealUiMapper
@@ -23,6 +24,7 @@ import javax.inject.Inject
 class MealPlannerViewModel @Inject constructor(
     private val getMealPlanUseCase: GetMealPlanUseCase,
     private val addMealToPlanUseCase: AddMealToPlanUseCase,
+    private val removeMealFromPlanUseCase: RemoveMealFromPlanUseCase,
     private val mealUiMapper: MealUiMapper
 ) : ViewModelBase<MealPlannerScreenUi>() {
 
@@ -124,8 +126,12 @@ class MealPlannerViewModel @Inject constructor(
         navigateTo(NavigationEvent.Recipes(isPickMode = true))
     }
 
-    private fun removeMeal(recipeId: String) {
-
+    private fun removeMeal(mealId: String, day: Timestamp) {
+        viewModelScope.launch {
+            runAction {
+                removeMealFromPlanUseCase(mealId, day)
+            }
+        }
     }
 
     fun onRecipePicked(recipeId: String?) {

@@ -25,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 data class MealUi(
+    val mealId: String,
     val recipeId: String,
     val title: String,
     val image: ImageSrc,
@@ -34,6 +35,7 @@ data class MealUi(
     companion object {
         @Composable
         fun preview() = MealUi(
+            mealId = "",
             recipeId = "",
             title = "Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs",
             image = PlaceholderImages.recipe,
@@ -70,7 +72,7 @@ fun Meal(data: MealUi) {
                         .padding(AppTheme.spaces.large),
                     style = AppTheme.typography.body2
                 )
-                IconButton(onClick = { data.onRemoveClick(data.recipeId) }) {
+                IconButton(onClick = { data.onRemoveClick(data.mealId) }) {
                     Icon(
                         Icons.Outlined.RemoveCircleOutline,
                         contentDescription = stringResource(R.string.content_desc_remove_recipe_from_plan)

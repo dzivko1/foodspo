@@ -21,7 +21,7 @@ class MealUiMapper @Inject constructor() {
         onCurrentWeekClicked: () -> Unit,
         onAddMealClicked: (day: Timestamp) -> Unit,
         onMealClicked: (id: String) -> Unit,
-        onMealRemoveClicked: (id: String) -> Unit,
+        onMealRemoveClicked: (id: String, day: Timestamp) -> Unit,
         onBackFromWeekPlan: () -> Unit
     ) = MealPlannerScreenUi(
         selectedWeekPlan = raw?.let {
@@ -47,7 +47,7 @@ class MealUiMapper @Inject constructor() {
         onCurrentWeekClicked: () -> Unit,
         onAddMealClicked: (day: Timestamp) -> Unit,
         onMealClicked: (id: String) -> Unit,
-        onMealRemoveClicked: (id: String) -> Unit
+        onMealRemoveClicked: (id: String, day: Timestamp) -> Unit
     ): MealPlanUi {
         val fromDate = raw.weekTimestamp.toLocalDate().format(SHORT_DAY_MONTH_FORMATTER)
         val toDate = raw.weekTimestamp.toLocalDate().plusDays(6).format(SHORT_DAY_MONTH_FORMATTER)
@@ -62,7 +62,7 @@ class MealUiMapper @Inject constructor() {
                         toMealUi(
                             meal,
                             onContentClicked = onMealClicked,
-                            onRemoveClicked = onMealRemoveClicked
+                            onRemoveClicked = { onMealRemoveClicked(it, timestamp) }
                         )
                     }
             },
@@ -82,6 +82,7 @@ class MealUiMapper @Inject constructor() {
         onRemoveClicked: (id: String) -> Unit
     ): MealUi {
         return MealUi(
+            mealId = raw.id,
             recipeId = raw.recipeId,
             title = raw.recipeTitle,
             image = raw.recipeImage ?: PlaceholderImages.recipe,
