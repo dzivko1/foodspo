@@ -44,14 +44,14 @@ fun UiBase() {
                     AppBottomNavigation(
                         destinations = AppDestination.topDestinations,
                         currentDestination = currentDestination,
-                        onDestinationSelected = {
-                            navController.navigate(it.route) {
+                        onDestinationSelected = { destination ->
+                            destination.defaultNavEvent?.withNavOptions {
                                 launchSingleTop = true
                                 restoreState = true
                                 popUpTo(navController.graph.findStartDestination().id) {
                                     saveState = true
                                 }
-                            }
+                            }?.navigate(navController)
                         }
                     )
                 }

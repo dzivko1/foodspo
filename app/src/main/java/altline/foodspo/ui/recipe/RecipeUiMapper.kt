@@ -22,7 +22,8 @@ class RecipeUiMapper @Inject constructor(
         enableSaveChange: Boolean,
         onContentClick: () -> Unit,
         onAddToShoppingList: () -> Unit,
-        onSavedChange: (Boolean) -> Unit = {}
+        onSavedChange: (Boolean) -> Unit = {},
+        onPick: (() -> Unit)? = null
     ) = RecipeCardUi(
         id = raw.id,
         title = raw.title,
@@ -31,7 +32,8 @@ class RecipeUiMapper @Inject constructor(
         isSaved = if (enableSaveChange) raw.isSaved else null,
         onContentClick = onContentClick,
         onAddToShoppingList = onAddToShoppingList,
-        onSavedChange = onSavedChange
+        onSavedChange = onSavedChange,
+        onPick = onPick
     )
 
     fun toRecipeDetailsUi(

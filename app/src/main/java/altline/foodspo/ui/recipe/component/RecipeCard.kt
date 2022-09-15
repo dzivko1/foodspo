@@ -13,6 +13,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddShoppingCart
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.End
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -29,7 +30,8 @@ data class RecipeCardUi(
     val isSaved: Boolean?,
     val onContentClick: () -> Unit,
     val onAddToShoppingList: () -> Unit,
-    val onSavedChange: (Boolean) -> Unit = {}
+    val onSavedChange: (Boolean) -> Unit = {},
+    val onPick: (() -> Unit)?
 ) {
     companion object {
         val PREVIEW = RecipeCardUi(
@@ -40,7 +42,8 @@ data class RecipeCardUi(
             isSaved = false,
             onContentClick = {},
             onAddToShoppingList = {},
-            onSavedChange = {}
+            onSavedChange = {},
+            onPick = null
         )
     }
 }
@@ -50,9 +53,11 @@ fun RecipeCard(
     data: RecipeCardUi
 ) {
     Card(
-        Modifier.clickable(onClick = data.onContentClick)
+        Modifier.clickable(onClick = data.onPick ?: data.onContentClick)
     ) {
-        Column {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             GeneralImage(
                 image = data.image,
                 contentDescription = null,
@@ -63,7 +68,9 @@ fun RecipeCard(
                 placeholder = painterResource(R.drawable.placeholder_recipe)
             )
             Column(
-                Modifier.padding(AppTheme.spaces.xl)
+                Modifier
+                    .fillMaxWidth()
+                    .padding(AppTheme.spaces.xl)
             ) {
                 Text(
                     text = data.title,
@@ -77,16 +84,25 @@ fun RecipeCard(
                     )
                 }
             }
-            Row(Modifier.align(End)) {
-                IconButton(onClick = data.onAddToShoppingList) {
-                    Icon(
-                        imageVector = Icons.Default.AddShoppingCart,
-                        contentDescription = stringResource(R.string.content_desc_add_ingredients_to_shopping_list),
-                        tint = modifiedColor(alpha = ContentAlpha.medium)
-                    )
-                }
-                if (data.isSaved != null) {
-                    SaveButton(data.isSaved, data.onSavedChange)
+            if (data.onPick != null) {
+                Text(
+                    text = stringResource(R.string.action_pick).uppercase(),
+                    Modifier.padding(AppTheme.spaces.large),
+                    color = AppTheme.colors.secondary,
+                    style = AppTheme.typography.button
+                )
+            } else {
+                Row(Modifier.align(End)) {
+                    IconButton(onClick = data.onAddToShoppingList) {
+                        Icon(
+                            imageVector = Icons.Default.AddShoppingCart,
+                            contentDescription = stringResource(R.string.content_desc_add_ingredients_to_shopping_list),
+                            tint = modifiedColor(alpha = ContentAlpha.medium)
+                        )
+                    }
+                    if (data.isSaved != null) {
+                        SaveButton(data.isSaved, data.onSavedChange)
+                    }
                 }
             }
         }
@@ -99,6 +115,16 @@ private fun PreviewRecipeCard() {
     AppTheme {
         RecipeCard(
             data = RecipeCardUi.PREVIEW
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewRecipeCard_PickMode() {
+    AppTheme {
+        RecipeCard(
+            data = RecipeCardUi.PREVIEW.copy(onPick = {})
         )
     }
 }

@@ -3,6 +3,7 @@ package altline.foodspo.ui.screen.mealPlanner
 import altline.foodspo.data.WEEK_PAGE_SIZE
 import altline.foodspo.data.util.toLocalDate
 import altline.foodspo.ui.core.ScreenBase
+import altline.foodspo.ui.core.navigation.ExpectNavResult
 import altline.foodspo.ui.meal.component.MealPlan
 import altline.foodspo.ui.meal.component.MealPlanUi
 import altline.foodspo.ui.screen.mealPlanner.component.WeekListItem
@@ -57,6 +58,10 @@ data class MealPlannerScreenUi(
 fun MealPlannerScreen(viewModel: MealPlannerViewModel = hiltViewModel()) {
     ScreenBase(viewModel) {
         Content(it)
+    }
+
+    ExpectNavResult<String?>(MealPlannerViewModel.PICKED_RECIPE_ID_RESULT_KEY) { pickedRecipeId ->
+        viewModel.onRecipePicked(pickedRecipeId)
     }
 }
 

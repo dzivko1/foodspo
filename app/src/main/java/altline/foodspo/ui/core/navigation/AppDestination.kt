@@ -8,6 +8,7 @@ import altline.foodspo.ui.screen.recipeDetails.RecipeDetailsViewModel
 import altline.foodspo.ui.screen.recipeEditor.RecipeEditorScreen
 import altline.foodspo.ui.screen.recipeEditor.RecipeEditorViewModel
 import altline.foodspo.ui.screen.recipes.RecipesScreen
+import altline.foodspo.ui.screen.recipes.RecipesViewModel
 import altline.foodspo.ui.screen.shopping.ShoppingScreen
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
@@ -36,9 +37,12 @@ enum class AppDestination(
         content = { ExploreScreen() }
     ),
     Recipes(
-        route = "recipes",
+        route = "recipes/{${RecipesViewModel.IS_PICK_MODE_NAV_ARG}}",
         title = R.string.destination_title_recipes,
         icon = Icons.Filled.MenuBook,
+        arguments = listOf(
+            navArgument(RecipesViewModel.IS_PICK_MODE_NAV_ARG) { type = NavType.BoolType }
+        ),
         content = { RecipesScreen() }
     ),
     Shopping(
@@ -79,6 +83,15 @@ enum class AppDestination(
         }
         return argumentedRoute
     }
+
+    val defaultNavEvent: NavigationEvent?
+        get() = when (this) {
+            Explore -> NavigationEvent.Explore
+            Recipes -> NavigationEvent.Recipes(isPickMode = false)
+            Shopping -> NavigationEvent.Shopping
+            MealPlanner -> NavigationEvent.MealPlanner
+            else -> null
+        }
 
     companion object {
         val topDestinations = listOf(

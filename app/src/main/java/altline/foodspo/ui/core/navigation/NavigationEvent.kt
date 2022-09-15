@@ -1,5 +1,8 @@
 package altline.foodspo.ui.core.navigation
 
+import altline.foodspo.ui.screen.recipeDetails.RecipeDetailsViewModel
+import altline.foodspo.ui.screen.recipeEditor.RecipeEditorViewModel
+import altline.foodspo.ui.screen.recipes.RecipesViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.NavOptionsBuilder
@@ -17,23 +20,30 @@ sealed class NavigationEvent(
     private var popCount: Int = 0
 
     object Explore : NavigationEvent(AppDestination.Explore)
-    object Recipes : NavigationEvent(AppDestination.Recipes)
-    object Shopping : NavigationEvent(AppDestination.Shopping)
-    object MealPlanner : NavigationEvent(AppDestination.MealPlanner)
 
-    // Special events, the specified destination is ignored here
-    object NavigateUp : NavigationEvent(AppDestination.Explore)
-    object NavigateBack : NavigationEvent(AppDestination.Explore)
+    data class Recipes(val isPickMode: Boolean = false) : NavigationEvent(
+        destination = AppDestination.Recipes,
+        args = mapOf(RecipesViewModel.IS_PICK_MODE_NAV_ARG to isPickMode)
+    )
+
+    object Shopping : NavigationEvent(AppDestination.Shopping)
+
+    object MealPlanner : NavigationEvent(AppDestination.MealPlanner)
 
     data class RecipeDetails(val recipeId: String) : NavigationEvent(
         destination = AppDestination.RecipeDetails,
-        args = mapOf("recipeId" to recipeId)
+        args = mapOf(RecipeDetailsViewModel.RECIPE_ID_NAV_ARG to recipeId)
     )
 
     data class RecipeEditor(val recipeId: String?) : NavigationEvent(
         destination = AppDestination.RecipeEditor,
-        args = recipeId?.let { mapOf("recipeId" to recipeId) } ?: emptyMap()
+        args = recipeId?.let { mapOf(RecipeEditorViewModel.RECIPE_ID_NAV_ARG to recipeId) }
+            ?: emptyMap()
     )
+
+    // Special events, the specified destination is ignored here
+    object NavigateUp : NavigationEvent(AppDestination.Explore)
+    object NavigateBack : NavigationEvent(AppDestination.Explore)
 
     /**
      * Overrides the default nav options for this event.

@@ -106,10 +106,17 @@ class MealPlannerViewModel @Inject constructor(
     }
 
     private fun addMeal() {
-
+        navigateTo(NavigationEvent.Recipes(isPickMode = true))
     }
 
     private fun removeMeal(recipeId: String) {
 
+    }
+
+    fun onRecipePicked(recipeId: String?) {
+    }
+
+    companion object {
+        const val PICKED_RECIPE_ID_RESULT_KEY = "recipeId"
     }
 }

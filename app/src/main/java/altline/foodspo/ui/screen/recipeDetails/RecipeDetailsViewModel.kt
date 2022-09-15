@@ -86,7 +86,7 @@ class RecipeDetailsViewModel @Inject constructor(
             runAction {
                 deleteRecipeUseCase(recipeId)
             }.onSuccess {
-                navigateTo(NavigationEvent.Recipes)
+                navigateTo(NavigationEvent.Recipes())
             }
         }
     }

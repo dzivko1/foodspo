@@ -30,6 +30,7 @@ import kotlinx.coroutines.flow.flowOf
 data class RecipesScreenUi(
     val myRecipes: Flow<PagingData<RecipeCardUi>>,
     val savedRecipes: Flow<PagingData<RecipeCardUi>>,
+    val isPickMode: Boolean,
     val onCreateRecipeClick: () -> Unit,
     val onExploreRecipesClick: () -> Unit
 ) {
@@ -51,6 +52,7 @@ data class RecipesScreenUi(
                     )
                 )
             ),
+            isPickMode = false,
             onCreateRecipeClick = {},
             onExploreRecipesClick = {}
         )
@@ -59,15 +61,20 @@ data class RecipesScreenUi(
 
 @Composable
 fun RecipesScreen(viewModel: RecipesViewModel = hiltViewModel()) {
+    val fab: @Composable (() -> Unit)? =
+        if (viewModel.uiState.data?.isPickMode == false) {
+            @Composable {
+                ExtendedFloatingActionButton(
+                    text = { Text(stringResource(R.string.fab_new_recipe)) },
+                    onClick = viewModel::onFabClick,
+                    icon = { Icon(Icons.Default.Add, contentDescription = null) }
+                )
+            }
+        } else null
+
     ScreenBase(
         viewModel,
-        fab = {
-            ExtendedFloatingActionButton(
-                text = { Text(stringResource(R.string.fab_new_recipe)) },
-                onClick = viewModel::onFabClick,
-                icon = { Icon(Icons.Default.Add, contentDescription = null) }
-            )
-        },
+        fab = fab,
         reloadOnResume = true
     ) {
         Content(it)

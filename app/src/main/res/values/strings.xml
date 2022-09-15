@@ -9,6 +9,7 @@
     <string name="action_copy_and_edit">Copy and edit</string>
     <string name="action_delete">Delete</string>
     <string name="action_retry">Retry</string>
+    <string name="action_pick">Pick</string>
 
     <!-- Destination titles -->
     <string name="destination_title_explore">Explore</string>

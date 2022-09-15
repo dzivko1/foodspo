@@ -10,6 +10,8 @@ import altline.foodspo.ui.core.ViewModelBase
 import altline.foodspo.ui.core.navigation.NavigationEvent
 import altline.foodspo.ui.recipe.RecipeUiMapper
 import altline.foodspo.ui.recipe.component.RecipeCardUi
+import altline.foodspo.ui.screen.mealPlanner.MealPlannerViewModel
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,8 +23,11 @@ import javax.inject.Inject
 class RecipesViewModel @Inject constructor(
     private val getMyRecipesUseCase: GetMyRecipesUseCase,
     private val getSavedRecipesUseCase: GetSavedRecipesUseCase,
-    private val recipeUiMapper: RecipeUiMapper
+    private val recipeUiMapper: RecipeUiMapper,
+    savedStateHandle: SavedStateHandle
 ) : ViewModelBase<RecipesScreenUi>() {
+
+    private val isPickMode: Boolean = savedStateHandle.get(IS_PICK_MODE_NAV_ARG)!!
 
     override fun loadData() {
         setUiData(
@@ -33,6 +38,7 @@ class RecipesViewModel @Inject constructor(
                 savedRecipes = constructPagedFlow(
                     getSavedRecipesUseCase(viewModelScope)
                 ),
+                isPickMode = isPickMode,
                 onCreateRecipeClick = this::navigateToNewRecipe,
                 onExploreRecipesClick = this::navigateToExplore
             )
@@ -53,7 +59,10 @@ class RecipesViewModel @Inject constructor(
                     recipe,
                     enableSaveChange = false,
                     onContentClick = { navigateToRecipeDetails(recipe.id) },
-                    onAddToShoppingList = { addIngredientsToShoppingList(recipe.id) }
+                    onAddToShoppingList = { addIngredientsToShoppingList(recipe.id) },
+                    onPick = if (isPickMode) {
+                        { sendPickResult(recipe.id) }
+                    } else null
                 )
             }
         }.cachedIn(viewModelScope)
@@ -77,5 +86,13 @@ class RecipesViewModel @Inject constructor(
 
     private fun navigateToRecipeDetails(recipeId: String) {
         navigateTo(NavigationEvent.RecipeDetails(recipeId))
+    }
+
+    private fun sendPickResult(recipeId: String) {
+        finishWithResult(MealPlannerViewModel.PICKED_RECIPE_ID_RESULT_KEY, recipeId)
+    }
+
+    companion object {
+        const val IS_PICK_MODE_NAV_ARG = "isPickMode"
     }
 }
