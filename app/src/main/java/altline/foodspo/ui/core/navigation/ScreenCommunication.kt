@@ -18,15 +18,18 @@ fun <T> ExpectNavResult(
     resultKey: String,
     onReceive: (T) -> Unit
 ) {
-    val lifecycleOwner =  LocalLifecycleOwner.current
+    val lifecycleOwner = LocalLifecycleOwner.current
     val navController = LocalNavController.current
 
-    val savedStateHandle = navController.currentBackStackEntry
-        ?.savedStateHandle?.getLiveData<T>(resultKey)
+    val savedStateHandle = navController.currentBackStackEntry?.savedStateHandle
+    val savedState = savedStateHandle?.getLiveData<T>(resultKey)
 
     DisposableEffect(resultKey) {
-        val observer = Observer<T> { onReceive(it) }
-        savedStateHandle?.observe(lifecycleOwner, observer)
-        onDispose { savedStateHandle?.removeObserver(observer) }
+        val observer = Observer<T> {
+            onReceive(it)
+            savedStateHandle?.remove<T>(resultKey)
+        }
+        savedState?.observe(lifecycleOwner, observer)
+        onDispose { savedState?.removeObserver(observer) }
     }
 }
