@@ -7,6 +7,8 @@ import altline.foodspo.data.util.atStartOfWeek
 import altline.foodspo.data.util.toLocalDate
 import altline.foodspo.data.util.toTimestamp
 import com.google.firebase.Timestamp
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 internal class MealRepositoryImpl @Inject constructor(
@@ -14,18 +16,19 @@ internal class MealRepositoryImpl @Inject constructor(
     private val mapException: ExceptionMapper
 ) : MealRepository {
 
-    override suspend fun getMealPlan(weekTimestamp: Timestamp): MealPlan {
-        return mapException {
-            firebaseDataSource.getMealPlan(weekTimestamp)
-                ?: MealPlan(
-                    weekTimestamp,
-                    buildMap {
-                        val start = weekTimestamp.toLocalDate().atStartOfWeek()
-                        for (weekday in 0..6) {
-                            put(start.plusDays(weekday.toLong()).toTimestamp(), emptyList())
+    override fun getMealPlan(weekTimestamp: Timestamp): Flow<MealPlan> {
+        return mapException.forFlow(
+            firebaseDataSource.getMealPlan(weekTimestamp).map { mealPlan ->
+                mealPlan ?: MealPlan(
+                        weekTimestamp,
+                        buildMap {
+                            val start = weekTimestamp.toLocalDate().atStartOfWeek()
+                            for (weekday in 0..6) {
+                                put(start.plusDays(weekday.toLong()).toTimestamp(), emptyList())
+                            }
                         }
-                    }
-                )
-        }
+                    )
+            }
+        )
     }
 }

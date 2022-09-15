@@ -13,6 +13,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.google.firebase.Timestamp
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -24,6 +25,7 @@ class MealPlannerViewModel @Inject constructor(
 ) : ViewModelBase<MealPlannerScreenUi>() {
 
     private var selectedWeek: Timestamp? = null
+    private var selectedWeekListenerJob: Job? = null
 
     init {
         loadData()
@@ -63,10 +65,13 @@ class MealPlannerViewModel @Inject constructor(
     }
 
     private fun selectWeek(timestamp: Timestamp) {
-        viewModelScope.launch {
-            runAction {
-                getMealPlanUseCase(timestamp).also { selectedWeek = it.weekTimestamp }
-            }.onSuccess { mealPlan ->
+        setLoading(true)
+        selectedWeekListenerJob?.cancel()
+        selectedWeekListenerJob = viewModelScope.launch {
+            getMealPlanUseCase(timestamp).collect { mealPlan ->
+                setLoading(false)
+                selectedWeek = mealPlan.weekTimestamp
+
                 setUiData(
                     mealUiMapper.toMealPlannerScreenUi(
                         mealPlan,

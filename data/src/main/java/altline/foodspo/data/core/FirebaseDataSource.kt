@@ -215,10 +215,10 @@ internal class FirebaseDataSource @Inject constructor(
     }
 
 
-    suspend fun getMealPlan(weekTimestamp: Timestamp): MealPlan? {
+    fun getMealPlan(weekTimestamp: Timestamp): Flow<MealPlan?> {
         return mealPlanCollection.document(weekTimestamp.toString())
-            .get().await()
-            .toObject()
+            .asSnapshotFlow()
+            .map { it.toObject() }
     }
 
     companion object {

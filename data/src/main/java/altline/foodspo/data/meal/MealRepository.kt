@@ -2,8 +2,9 @@ package altline.foodspo.data.meal
 
 import altline.foodspo.data.meal.model.MealPlan
 import com.google.firebase.Timestamp
+import kotlinx.coroutines.flow.Flow
 
 interface MealRepository {
 
-    suspend fun getMealPlan(weekTimestamp: Timestamp): MealPlan
+    fun getMealPlan(weekTimestamp: Timestamp): Flow<MealPlan>
 }
