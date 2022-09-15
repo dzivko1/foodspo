@@ -25,7 +25,7 @@ class RecipeEditorViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModelBase<RecipeEditorScreenUi>() {
 
-    private val recipeId: String = savedStateHandle["recipeId"]!!
+    private val recipeId: String = savedStateHandle[RECIPE_ID_NAV_ARG]!!
 
     init {
         loadData()
@@ -114,5 +114,9 @@ class RecipeEditorViewModel @Inject constructor(
                 )
             )
         )
+    }
+
+    companion object {
+        const val RECIPE_ID_NAV_ARG = "recipeId"
     }
 }

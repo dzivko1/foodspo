@@ -26,7 +26,7 @@ class RecipeDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModelBase<RecipeDetailsScreenUi>() {
 
-    private val recipeId: String = savedStateHandle["recipeId"]!!
+    private val recipeId: String = savedStateHandle[RECIPE_ID_NAV_ARG]!!
 
     private var recipe: Recipe? = null
 
@@ -89,5 +89,9 @@ class RecipeDetailsViewModel @Inject constructor(
                 navigateTo(NavigationEvent.Recipes)
             }
         }
+    }
+
+    companion object {
+        const val RECIPE_ID_NAV_ARG = "recipeId"
     }
 }

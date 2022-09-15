@@ -4,7 +4,9 @@ import altline.foodspo.R
 import altline.foodspo.ui.screen.explore.ExploreScreen
 import altline.foodspo.ui.screen.mealPlanner.MealPlannerScreen
 import altline.foodspo.ui.screen.recipeDetails.RecipeDetailsScreen
+import altline.foodspo.ui.screen.recipeDetails.RecipeDetailsViewModel
 import altline.foodspo.ui.screen.recipeEditor.RecipeEditorScreen
+import altline.foodspo.ui.screen.recipeEditor.RecipeEditorViewModel
 import altline.foodspo.ui.screen.recipes.RecipesScreen
 import altline.foodspo.ui.screen.shopping.ShoppingScreen
 import androidx.annotation.StringRes
@@ -52,17 +54,21 @@ enum class AppDestination(
         content = { MealPlannerScreen() }
     ),
     RecipeDetails(
-        route = "recipes/{recipeId}",
+        route = "recipeDetails/{${RecipeDetailsViewModel.RECIPE_ID_NAV_ARG}}",
         title = R.string.destination_title_recipe_details,
         icon = null,
-        arguments = listOf(navArgument("recipeId") { type = NavType.StringType }),
+        arguments = listOf(
+            navArgument(RecipeDetailsViewModel.RECIPE_ID_NAV_ARG) { type = NavType.StringType }
+        ),
         content = { RecipeDetailsScreen() }
     ),
     RecipeEditor(
-        route = "recipes/{recipeId}/edit",
+        route = "recipeEditor/{${RecipeEditorViewModel.RECIPE_ID_NAV_ARG}}",
         title = R.string.destination_title_new_recipe,
         icon = null,
-        arguments = listOf(navArgument("recipeId") { type = NavType.StringType }),
+        arguments = listOf(
+            navArgument(RecipeEditorViewModel.RECIPE_ID_NAV_ARG) { type = NavType.StringType }
+        ),
         content = { RecipeEditorScreen() }
     );
 
