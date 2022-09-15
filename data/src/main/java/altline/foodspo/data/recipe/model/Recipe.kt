@@ -44,7 +44,7 @@ data class Instruction(
 internal data class RecipeFirestore(
     var id: String = "",
     var title: String = "",
-    var image: Map<String, Any> = emptyMap(),
+    var image: Map<String, Any>? = null,
     var sourceName: String? = null,
     var creditsText: String? = null,
     var sourceUrl: String? = null,
@@ -60,12 +60,9 @@ internal data class RecipeFirestore(
     fun toDomainModel() = Recipe(
         id,
         title,
-        image["path"]?.let {
-            when (it) {
-                is String -> ImageSrc(path = it)
-                is Long -> ImageSrc(drawableRes = it.toInt())
-                else -> null
-            }
+        image?.get("path")?.let {
+            if (it is String) ImageSrc(path = it)
+            else null
         },
         sourceName,
         creditsText,

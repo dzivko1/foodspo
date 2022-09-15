@@ -4,6 +4,7 @@ import altline.foodspo.data.CUSTOM_RECIPE_ID_PREFIX
 import altline.foodspo.data.SHOPPING_ITEM_ID_PREFIX
 import altline.foodspo.data.UNCATEGORIZED_SHOPPING_LIST_ID
 import altline.foodspo.data.core.model.BitmapImageSrc
+import altline.foodspo.data.core.model.DrawableImageSrc
 import altline.foodspo.data.core.model.ImageSrc
 import altline.foodspo.data.core.model.PathImageSrc
 import altline.foodspo.data.core.paging.PageLoadTrigger
@@ -103,19 +104,14 @@ internal class FirebaseDataSource @Inject constructor(
             if (recipe.isOwnedByUser) recipe.id
             else CUSTOM_RECIPE_ID_PREFIX + UUID.randomUUID()
 
-        val modelToStore = if (recipe.image is BitmapImageSrc || recipe.image is PathImageSrc) {
-            val firebaseFileUri = storeRecipeImage(recipeId, recipe.image)
-            recipe.copy(
-                id = recipeId,
-                additionTime = Timestamp.now(),
-                image = firebaseFileUri?.let { ImageSrc(it.toString()) } ?: recipe.image
-            )
-        } else {
-            recipe.copy(
-                id = recipeId,
-                additionTime = Timestamp.now()
-            )
-        }
+        val modelToStore = recipe.copy(
+            id = recipeId,
+            additionTime = Timestamp.now(),
+            image = recipe.image?.let { image ->
+                storeRecipeImage(recipeId, image)?.let { ImageSrc(it.toString()) }
+                    ?: if (recipe.image !is DrawableImageSrc) recipe.image else null
+            }
+        )
 
         myRecipesCollection.document(recipeId)
             .set(modelToStore).await()
@@ -157,7 +153,7 @@ internal class FirebaseDataSource @Inject constructor(
         val docDeleteTask = myRecipesCollection.document(recipeId).delete()
         val imgDeleteTask = recipeImageStore.child(recipeId).delete()
         docDeleteTask.await()
-        imgDeleteTask.await()
+        kotlin.runCatching { imgDeleteTask.await() } // catch error that happens if the image doesn't exist
     }
 
     suspend fun saveRecipe(recipeId: String, save: Boolean) {
