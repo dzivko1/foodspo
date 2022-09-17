@@ -4,6 +4,10 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import timber.log.Timber
 
+/**
+ * An implementation of [PagingSource] that works with page indices and load sizes. It obtains data
+ * from the specified [dataProvider] function.
+ */
 class IndexedPagingSource<T : Any>(
     private val configPageSize: Int,
     private val dataProvider: suspend (page: Int, loadSize: Int) -> List<T>,

@@ -7,6 +7,13 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
 
+/**
+ * Returns a new flow that emits values based on the specified [loadTrigger] and [dataSource].
+ * The load trigger triggers the load and the data source provides the actual values based on
+ * [PageLoadParams] and all previously loaded items.
+ *
+ * NOTE: The current version might have issues when page loading doesn't start at the first index.
+ */
 fun <T> pagedFlow(
     loadTrigger: PageLoadTrigger,
     dataSource: suspend (PageLoadParams, loadedItems: List<T>) -> List<T>
@@ -29,6 +36,10 @@ fun <T> pagedFlow(
     }
 }
 
+/**
+ * Paginates a query of [DocumentSnapshot]s. Internally creates a [pagedFlow] with the specified
+ * [loadTrigger] and this query as the source of data.
+ */
 fun Query.paginate(loadTrigger: PageLoadTrigger): Flow<List<DocumentSnapshot>> {
     return pagedFlow(loadTrigger) { loadParams, loadedItems ->
         this.run {

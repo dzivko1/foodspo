@@ -5,6 +5,9 @@ import androidx.paging.PagingState
 import timber.log.Timber
 import java.lang.Integer.max
 
+/**
+ * An implementation of [PagingSource] that obtains data from a [PagingAccessor].
+ */
 class FlowPagingSource<T : Any>(
     private val pagingAccessor: PagingAccessor<T>,
     private val configPageSize: Int
@@ -21,7 +24,7 @@ class FlowPagingSource<T : Any>(
         val startIndex = pageIndex * configPageSize
 
         return try {
-            val data = pagingAccessor.load(startIndex, loadSize)
+            val data = pagingAccessor.load(PageLoadParams(startIndex, loadSize))
 
             val nextKey =
                 if (data.size < configPageSize) null
