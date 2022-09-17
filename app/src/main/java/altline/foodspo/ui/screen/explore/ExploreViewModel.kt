@@ -46,10 +46,11 @@ class ExploreViewModel @Inject constructor(
     }
 
     private fun randomRecipesPagedFlow(): Flow<PagingData<RecipeCardUi>> {
+        val pagingAccessor = getRandomRecipesUseCase(viewModelScope)
         return constructPagedFlow {
             FlowPagingSource(
-                pagingAccessor = getRandomRecipesUseCase(viewModelScope),
-                configPageSize = RECIPE_PAGE_SIZE
+                pagingAccessor,
+                RECIPE_PAGE_SIZE
             ).also { activePagingSource = it }
         }
     }
