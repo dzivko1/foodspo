@@ -20,7 +20,8 @@ class IndexedPagingSource<T : Any>(
         var loadSize = configPageSize
         if (params is LoadParams.Refresh) {
             loadSize *= 3
-            pageIndex -= 1
+            if (allowNegativePages) pageIndex -= 1
+            else pageIndex = (pageIndex - 1).coerceAtLeast(0)
         }
         val startIndex = pageIndex * configPageSize
 
