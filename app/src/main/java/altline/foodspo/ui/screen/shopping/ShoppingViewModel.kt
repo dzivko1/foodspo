@@ -29,8 +29,10 @@ class ShoppingViewModel @Inject constructor(
     }
 
     override fun loadData() {
+        setLoading(true)
         viewModelScope.launch {
             getShoppingListUseCase().collect { result ->
+                setLoading(false)
 
                 // If there is a new (unsaved) item before refresh, create one afterwards
                 val hasUnsaved = uiState.data?.shoppingItems?.get(null)
