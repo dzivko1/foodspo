@@ -21,10 +21,10 @@ internal class RecipeMapper @Inject constructor(
             spoonacularSourceUrl = raw.spoonacularSourceUrl,
             servings = raw.servings,
             readyInMinutes = raw.readyInMinutes,
-            instructions = raw.instructions.firstOrNull()?.steps?.map(mapInstruction::invoke)
+            instructions = raw.instructions?.firstOrNull()?.steps?.map(mapInstruction::invoke)
                 ?: emptyList(),
             summary = raw.summary ?: "",
-            ingredients = raw.extendedIngredients.map(mapIngredient::invoke),
+            ingredients = raw.extendedIngredients?.map(mapIngredient::invoke) ?: emptyList(),
             additionTime = null,
             isSaved = saved
         )

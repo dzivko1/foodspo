@@ -12,6 +12,11 @@ import javax.inject.Inject
 internal class RecipeApiDataSource @Inject constructor(
     private val recipeApi: RecipeApi
 ) {
+
+    suspend fun searchRecipes(query: String, offset: Int, amount: Int): List<RecipeResponse> {
+        return recipeApi.searchRecipes(query, offset, amount).results
+    }
+
     fun getRandomRecipesPaged(loadTrigger: PageLoadTrigger): Flow<List<RecipeResponse>> {
         return pagedFlow(loadTrigger) { loadParams, _ ->
             recipeApi.getRandomRecipes(loadParams.pageSize).recipes

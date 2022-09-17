@@ -2,12 +2,14 @@ package altline.foodspo.ui.screen.explore
 
 import altline.foodspo.data.RECIPE_PAGE_SIZE
 import altline.foodspo.data.core.paging.FlowPagingSource
-import altline.foodspo.data.core.paging.PagingAccessor
+import altline.foodspo.data.core.paging.IndexedPagingSource
 import altline.foodspo.data.recipe.model.Recipe
 import altline.foodspo.domain.ingredient.AddRecipeToShoppingListUseCase
 import altline.foodspo.domain.recipe.GetRandomRecipesUseCase
 import altline.foodspo.domain.recipe.SaveRecipeUseCase
+import altline.foodspo.domain.recipe.SearchRecipesUseCase
 import altline.foodspo.ui.core.ViewModelBase
+import altline.foodspo.ui.core.component.SearchBarUi
 import altline.foodspo.ui.core.navigation.NavigationEvent
 import altline.foodspo.ui.recipe.RecipeUiMapper
 import altline.foodspo.ui.recipe.component.RecipeCardUi
@@ -21,13 +23,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ExploreViewModel @Inject constructor(
+    private val searchRecipesUseCase: SearchRecipesUseCase,
     private val getRandomRecipesUseCase: GetRandomRecipesUseCase,
     private val saveRecipeUseCase: SaveRecipeUseCase,
     private val addRecipeToShoppingListUseCase: AddRecipeToShoppingListUseCase,
     private val recipeUiMapper: RecipeUiMapper
 ) : ViewModelBase<ExploreScreenUi>() {
 
-    private lateinit var pagingSource: FlowPagingSource<Recipe>
+    private lateinit var activePagingSource: PagingSource<Int, Recipe>
 
     init {
         loadData()
@@ -36,21 +39,36 @@ class ExploreViewModel @Inject constructor(
     override fun loadData() {
         setUiData(
             ExploreScreenUi(
-                recipes = constructPagedFlow(
-                    getRandomRecipesUseCase(viewModelScope)
-                )
+                searchBarUi = null,
+                recipes = randomRecipesPagedFlow()
             )
         )
     }
 
+    private fun randomRecipesPagedFlow(): Flow<PagingData<RecipeCardUi>> {
+        return constructPagedFlow {
+            FlowPagingSource(
+                pagingAccessor = getRandomRecipesUseCase(viewModelScope),
+                configPageSize = RECIPE_PAGE_SIZE
+            ).also { activePagingSource = it }
+        }
+    }
+
+    private fun recipeSearchPagedFlow(query: String): Flow<PagingData<RecipeCardUi>> {
+        return constructPagedFlow {
+            IndexedPagingSource(
+                RECIPE_PAGE_SIZE,
+                dataProvider = { page, loadSize -> searchRecipesUseCase(query, page, loadSize) }
+            ).also { activePagingSource = it }
+        }
+    }
+
     private fun constructPagedFlow(
-        pagingAccessor: PagingAccessor<Recipe>
+        pagingSourceFactory: () -> PagingSource<Int, Recipe>
     ): Flow<PagingData<RecipeCardUi>> {
         return Pager(
             PagingConfig(RECIPE_PAGE_SIZE),
-            pagingSourceFactory = {
-                FlowPagingSource(pagingAccessor, RECIPE_PAGE_SIZE).also { pagingSource = it }
-            }
+            pagingSourceFactory = pagingSourceFactory
         ).flow.map { pagingData ->
             pagingData.map { recipe ->
                 recipeUiMapper.toRecipeCard(
@@ -64,12 +82,30 @@ class ExploreViewModel @Inject constructor(
         }.cachedIn(viewModelScope)
     }
 
+    private fun updateSearchQuery(query: String) {
+        setUiData(
+            uiState.data?.copy(
+                searchBarUi = uiState.data!!.searchBarUi?.copy(
+                    query = query
+                )
+            )
+        )
+    }
+
+    private fun performRecipeSearch(query: String) {
+        setUiData(
+            uiState.data?.copy(
+                recipes = recipeSearchPagedFlow(query)
+            )
+        )
+    }
+
     private fun saveRecipe(recipeId: String, save: Boolean) {
         viewModelScope.launch {
             runAction {
                 saveRecipeUseCase(recipeId, save)
             }.onSuccess {
-                pagingSource.invalidate()
+                activePagingSource.invalidate()
             }
         }
     }
@@ -84,5 +120,20 @@ class ExploreViewModel @Inject constructor(
 
     private fun navigateToRecipeDetails(recipeId: String) {
         navigateTo(NavigationEvent.RecipeDetails(recipeId))
+    }
+
+    fun onToggleSearch() {
+        setUiData(
+            uiState.data?.copy(
+                searchBarUi =
+                if (uiState.data?.searchBarUi == null) {
+                    SearchBarUi(
+                        query = "",
+                        onQueryChange = this::updateSearchQuery,
+                        onSearch = this::performRecipeSearch
+                    )
+                } else null
+            )
+        )
     }
 }

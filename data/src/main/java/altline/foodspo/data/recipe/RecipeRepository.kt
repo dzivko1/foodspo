@@ -9,6 +9,8 @@ import kotlinx.coroutines.CoroutineScope
 
 interface RecipeRepository {
 
+    suspend fun searchRecipes(query: String, page: Int, loadSize: Int): List<Recipe>
+
     fun getRandomRecipesPaged(
         loadTrigger: PageLoadTrigger,
         coroutineScope: CoroutineScope

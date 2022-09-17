@@ -24,6 +24,15 @@ internal class RecipeRepositoryImpl @Inject constructor(
     private val mapException: ExceptionMapper
 ) : RecipeRepository {
 
+    override suspend fun searchRecipes(query: String, page: Int, loadSize: Int): List<Recipe> {
+        return mapException {
+            apiDataSource.searchRecipes(query, page * loadSize, loadSize).map {
+                val saved = firebaseDataSource.isRecipeSaved(it.id)
+                mapRecipe(it, saved)
+            }
+        }
+    }
+
     override fun getRandomRecipesPaged(
         loadTrigger: PageLoadTrigger,
         coroutineScope: CoroutineScope
