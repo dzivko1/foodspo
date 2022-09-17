@@ -2,6 +2,7 @@ package altline.foodspo.ui.core
 
 import altline.foodspo.R
 import altline.foodspo.ui.core.navigation.AppDestination
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
@@ -12,7 +13,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 
 @Composable
-fun DefaultTopBar() {
+fun DefaultTopBar(
+    actions: @Composable RowScope.() -> Unit = {}
+) {
     val navController = LocalNavController.current
     val currentDestination = navController.getCurrentAppDestination()
 
@@ -27,6 +30,7 @@ fun DefaultTopBar() {
                     )
                 }
             }
-        } else null
+        } else null,
+        actions = actions
     )
 }

@@ -3,7 +3,7 @@ package altline.foodspo.ui.screen.recipeDetails
 import altline.foodspo.R
 import altline.foodspo.data.core.model.ImageSrc
 import altline.foodspo.data.recipe.model.Instruction
-import altline.foodspo.ui.core.LocalNavController
+import altline.foodspo.ui.core.DefaultTopBar
 import altline.foodspo.ui.core.ScreenBase
 import altline.foodspo.ui.core.component.AppDropdownMenuItem
 import altline.foodspo.ui.core.component.BarDropdownMenu
@@ -21,7 +21,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddShoppingCart
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.DeleteOutline
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.runtime.*
@@ -109,19 +108,9 @@ private fun TopBar(
     onEdit: () -> Unit,
     onDelete: () -> Unit
 ) {
-    val navController = LocalNavController.current
     var menuExpanded by remember { mutableStateOf(false) }
 
-    TopAppBar(
-        title = { Text(stringResource(R.string.destination_title_recipe_details)) },
-        navigationIcon = {
-            IconButton(onClick = navController::navigateUp) {
-                Icon(
-                    Icons.Default.ArrowBack,
-                    contentDescription = stringResource(R.string.content_desc_navigate_up)
-                )
-            }
-        },
+    DefaultTopBar(
         actions = {
             IconButton(onClick = onAddToShoppingList) {
                 Icon(
@@ -312,7 +301,7 @@ private fun LowerSection(
         if (data.spoonacularSourceUrl != null) {
             val spoonacularSourceText =
                 stringResource(R.string.recipe_details_visit_on_spoonacular) +
-                        "\n${data.spoonacularSourceUrl.toHtmlAnchor()}"
+                    "\n${data.spoonacularSourceUrl.toHtmlAnchor()}"
 
             HtmlText(
                 text = spoonacularSourceText,
