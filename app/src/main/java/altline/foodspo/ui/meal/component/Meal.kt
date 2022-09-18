@@ -60,7 +60,7 @@ fun Meal(data: MealUi) {
             Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
-                .background(AppTheme.colors.onSurface.copy(alpha = 0.7f)),
+                .background(Color.Black.copy(alpha = 0.7f)),
             horizontalArrangement = Arrangement.spacedBy(AppTheme.spaces.medium),
             verticalAlignment = Alignment.CenterVertically
         ) {
