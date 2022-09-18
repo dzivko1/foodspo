@@ -2,13 +2,13 @@ package altline.foodspo.ui.screen.recipeEditor
 
 import altline.foodspo.R
 import altline.foodspo.data.core.model.ImageSrc
-import altline.foodspo.ui.core.LocalNavController
 import altline.foodspo.ui.core.ScreenBase
 import altline.foodspo.ui.core.component.GeneralImage
 import altline.foodspo.ui.core.component.ListEditor
 import altline.foodspo.ui.core.component.ListEditorUi
 import altline.foodspo.ui.placeholder.PlaceholderImages
 import altline.foodspo.ui.theme.AppTheme
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
@@ -81,17 +81,26 @@ data class RecipeEditorScreenUi(
 fun RecipeEditorScreen(viewModel: RecipeEditorViewModel = hiltViewModel()) {
     ScreenBase(
         viewModel,
-        topBar = { TopBar(isNewRecipe = viewModel.uiState.data?.recipeId == null) }
+        topBar = {
+            TopBar(
+                isNewRecipe = viewModel.uiState.data?.recipeId == null,
+                onExitClick = viewModel::onNavigateBack
+            )
+        }
     ) {
         Content(it)
+    }
+
+    BackHandler {
+        viewModel.onNavigateBack()
     }
 }
 
 @Composable
 private fun TopBar(
-    isNewRecipe: Boolean
+    isNewRecipe: Boolean,
+    onExitClick: () -> Unit
 ) {
-    val navController = LocalNavController.current
     TopAppBar(
         title = {
             Text(
@@ -102,7 +111,7 @@ private fun TopBar(
             )
         },
         navigationIcon = {
-            IconButton(onClick = navController::navigateUp) {
+            IconButton(onClick = onExitClick) {
                 Icon(
                     Icons.Default.Close,
                     contentDescription = stringResource(R.string.content_desc_cancel)

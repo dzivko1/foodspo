@@ -2,6 +2,8 @@
     <string name="app_name">Foodspo</string>
 
     <!-- Actions -->
+    <string name="action_yes">Yes</string>
+    <string name="action_no">No</string>
     <string name="action_add">Add</string>
     <string name="action_edit">Edit</string>
     <string name="action_copy_and_edit">Copy and edit</string>
@@ -96,6 +98,8 @@
     <string name="recipe_editor_instructions_label">Instructions</string>
     <string name="recipe_editor_summary_label">Summary</string>
     <string name="recipe_editor_save_button">Save recipe</string>
+    <string name="recipe_editor_confirm_exit_dialog_title">Are you sure you want to exit the editor?</string>
+    <string name="recipe_editor_confirm_exit_dialog_message">Your changes will be lost.</string>
 
     <!-- Shopping List screen -->
     <string name="shopping_general_category_title">General</string>

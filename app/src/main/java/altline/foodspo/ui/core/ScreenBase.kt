@@ -2,6 +2,7 @@ package altline.foodspo.ui.core
 
 import altline.foodspo.ui.core.component.InfoPanel
 import altline.foodspo.ui.core.component.PageLoadingIndicator
+import altline.foodspo.ui.core.dialog.GenericDialog
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -57,6 +58,8 @@ fun <UiData> ScreenBase(
                 viewModel.onSnackbarConsumed()
             }
         }
+
+        if (dialog != null) GenericDialog(dialog)
 
         if (screenResult != null) {
             navController.previousBackStackEntry?.savedStateHandle

@@ -1,15 +1,18 @@
 package altline.foodspo.ui.screen.recipeEditor
 
-import altline.foodspo.domain.ingredient.ParseIngredientsUseCase
-import altline.foodspo.domain.recipe.AnalyzeInstructionsUseCase
-import altline.foodspo.domain.recipe.StoreCustomRecipeUseCase
-import altline.foodspo.domain.recipe.GetRecipeDetailsUseCase
-import altline.foodspo.ui.core.ViewModelBase
-import altline.foodspo.ui.core.navigation.NavigationEvent
-import altline.foodspo.ui.recipe.RecipeUiMapper
+import altline.foodspo.R
 import altline.foodspo.data.util.minusAt
 import altline.foodspo.data.util.replaceAt
+import altline.foodspo.domain.ingredient.ParseIngredientsUseCase
+import altline.foodspo.domain.recipe.AnalyzeInstructionsUseCase
+import altline.foodspo.domain.recipe.GetRecipeDetailsUseCase
+import altline.foodspo.domain.recipe.StoreCustomRecipeUseCase
 import altline.foodspo.error.onError
+import altline.foodspo.ui.core.Dictionary
+import altline.foodspo.ui.core.ViewModelBase
+import altline.foodspo.ui.core.dialog.DialogUi
+import altline.foodspo.ui.core.navigation.NavigationEvent
+import altline.foodspo.ui.recipe.RecipeUiMapper
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,6 +26,7 @@ class RecipeEditorViewModel @Inject constructor(
     private val analyzeInstructionsUseCase: AnalyzeInstructionsUseCase,
     private val parseIngredientsUseCase: ParseIngredientsUseCase,
     private val recipeUiMapper: RecipeUiMapper,
+    private val dictionary: Dictionary,
     savedStateHandle: SavedStateHandle
 ) : ViewModelBase<RecipeEditorScreenUi>() {
 
@@ -115,6 +119,17 @@ class RecipeEditorViewModel @Inject constructor(
                 ingredientEditorUi = uiState.data!!.ingredientEditorUi.copy(
                     items = ingredients
                 )
+            )
+        )
+    }
+
+    fun onNavigateBack() {
+        showDialog(
+            DialogUi.Confirmation(
+                title = dictionary.getString(R.string.recipe_editor_confirm_exit_dialog_title),
+                message = dictionary.getString(R.string.recipe_editor_confirm_exit_dialog_message),
+                onConfirm = this::navigateBack,
+                onDismiss = this::onDialogDismissed
             )
         )
     }

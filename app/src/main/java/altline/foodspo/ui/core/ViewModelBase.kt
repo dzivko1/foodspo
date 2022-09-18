@@ -2,6 +2,7 @@ package altline.foodspo.ui.core
 
 import altline.foodspo.data.error.AppException
 import altline.foodspo.error.AppErrorUiMapper
+import altline.foodspo.ui.core.dialog.DialogUi
 import altline.foodspo.ui.core.navigation.NavigationEvent
 import altline.foodspo.ui.core.snackbar.SnackbarModel
 import androidx.compose.runtime.getValue
@@ -64,6 +65,14 @@ abstract class ViewModelBase<UI> : ViewModel() {
         uiState = uiState.copy(snackbar = null)
     }
 
+    protected fun showDialog(dialog: DialogUi) {
+        uiState = uiState.copy(dialog = dialog)
+    }
+
+    fun onDialogDismissed() {
+        uiState = uiState.copy(dialog = null)
+    }
+
     protected fun navigateTo(navEvent: NavigationEvent) {
         uiState = uiState.copy(navEvent = navEvent)
     }
@@ -73,6 +82,7 @@ abstract class ViewModelBase<UI> : ViewModel() {
     }
 
     protected fun navigateBack() {
+        println("BAK")
         uiState = uiState.copy(navEvent = NavigationEvent.NavigateBack)
     }
 
