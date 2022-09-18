@@ -14,7 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val viewModel: MainActivityViewModel by viewModels()
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -24,7 +24,7 @@ class MainActivity : ComponentActivity() {
             AppTheme {
                 val systemUiController = rememberSystemUiController()
                 systemUiController.setSystemBarsColor(AppTheme.colors.primarySurface)
-                
+
                 UiBase()
             }
         }

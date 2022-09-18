@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="altline.foodspo">
 
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -28,6 +30,14 @@
             android:name=".MainActivity"
             android:theme="@style/Theme.Foodspo">
         </activity>
+
+        <receiver android:name=".BootNotificationScheduler"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

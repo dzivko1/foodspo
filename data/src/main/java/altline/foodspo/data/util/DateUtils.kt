@@ -17,3 +17,5 @@ fun Timestamp.minusWeeks(weeksToSubtract: Long) = toLocalDate().minusWeeks(weeks
 
 fun LocalDate.atStartOfWeek(): LocalDate = with(WeekFields.of(Locale.getDefault()).dayOfWeek(), 1)
 fun Timestamp.atStartOfWeek(): Timestamp = toLocalDate().atStartOfWeek().toTimestamp()
+
+fun Timestamp.atStartOfDay(): Timestamp = toLocalDate().toTimestamp()
