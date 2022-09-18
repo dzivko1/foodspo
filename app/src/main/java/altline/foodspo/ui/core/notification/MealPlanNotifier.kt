@@ -43,18 +43,20 @@ class MealPlanNotifier @Inject constructor(
                             .mealsByDay[Timestamp.now().atStartOfDay()]
                             ?.joinToString(",\n") { it.recipeTitle }
 
-                    val notification = Notification.Builder(
-                        context,
-                        AppNotificationManager.MEAL_PLANNER_CHANNEL_ID
-                    )
-                        .setSmallIcon(R.drawable.ic_launcher_foreground)
-                        .setContentTitle(context.getString(R.string.notification_title_today_plan))
-                        .setContentText(notificationText)
-                        .setAutoCancel(true)
-                        .build()
+                    if (!notificationText.isNullOrBlank()) {
+                        val notification = Notification.Builder(
+                            context,
+                            AppNotificationManager.MEAL_PLANNER_CHANNEL_ID
+                        )
+                            .setSmallIcon(R.drawable.ic_launcher_foreground)
+                            .setContentTitle(context.getString(R.string.notification_title_today_plan))
+                            .setContentText(notificationText)
+                            .setAutoCancel(true)
+                            .build()
 
-                    notificationManager.sendNotification(0, notification)
-                    scheduleMealPlannerNotifications()
+                        notificationManager.sendNotification(0, notification)
+                        scheduleMealPlannerNotifications()
+                    }
                 }
             }
 
