@@ -232,7 +232,8 @@ private fun Content(
         )
         Button(
             onClick = data.onSaveRecipe,
-            Modifier.fillMaxWidth()
+            Modifier.fillMaxWidth(),
+            enabled = data.title.isNotBlank()
         ) {
             Icon(Icons.Default.Check, contentDescription = null)
             Text(
