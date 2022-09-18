@@ -12,7 +12,7 @@ class RemoveMealFromPlanUseCase @Inject constructor(
     private val mealRepository: MealRepository
 ) {
     suspend operator fun invoke(mealId: String, day: Timestamp) {
-        val weekTimestamp = day.toLocalDate().atStartOfWeek().toTimestamp()
+        val weekTimestamp = day.atStartOfWeek()
         val mealPlan = mealRepository.getMealPlan(weekTimestamp)
         val newMealPlan = mealPlan.first().run {
             copy(

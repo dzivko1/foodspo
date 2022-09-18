@@ -15,7 +15,7 @@ class AddMealToPlanUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(recipeId: String, day: Timestamp) {
         val newMeal = recipeRepository.createMeal(recipeId) ?: return
-        val weekTimestamp = day.toLocalDate().atStartOfWeek().toTimestamp()
+        val weekTimestamp = day.atStartOfWeek()
         val mealPlan = mealRepository.getMealPlan(weekTimestamp)
         val newMealPlan = mealPlan.first().run {
             copy(
