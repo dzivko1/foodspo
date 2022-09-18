@@ -1,11 +1,14 @@
 package altline.foodspo.ui.screen.recipeDetails
 
+import altline.foodspo.R
 import altline.foodspo.data.recipe.model.Recipe
 import altline.foodspo.domain.ingredient.AddRecipeToShoppingListUseCase
 import altline.foodspo.domain.ingredient.AddToShoppingListUseCase
 import altline.foodspo.domain.recipe.DeleteRecipeUseCase
 import altline.foodspo.domain.recipe.GetRecipeDetailsUseCase
 import altline.foodspo.domain.recipe.SaveRecipeUseCase
+import altline.foodspo.error.onError
+import altline.foodspo.ui.core.Dictionary
 import altline.foodspo.ui.core.ViewModelBase
 import altline.foodspo.ui.core.navigation.NavigationEvent
 import altline.foodspo.ui.recipe.RecipeUiMapper
@@ -23,6 +26,7 @@ class RecipeDetailsViewModel @Inject constructor(
     private val addRecipeToShoppingListUseCase: AddRecipeToShoppingListUseCase,
     private val addToShoppingListUseCase: AddToShoppingListUseCase,
     private val recipeUiMapper: RecipeUiMapper,
+    private val dictionary: Dictionary,
     savedStateHandle: SavedStateHandle
 ) : ViewModelBase<RecipeDetailsScreenUi>() {
 
@@ -44,6 +48,8 @@ class RecipeDetailsViewModel @Inject constructor(
                         onAddIngredientToShoppingList = this@RecipeDetailsViewModel::addIngredientToShoppingList
                     )
                 })
+            }.onError {
+                showErrorScreen(it, retryAction = ::loadData)
             }
         }
     }
@@ -54,7 +60,10 @@ class RecipeDetailsViewModel @Inject constructor(
                 val item = recipe?.ingredients?.find { it.id == ingredientId }?.toShoppingItem()
                 if (item != null) {
                     addToShoppingListUseCase(recipe!!.title, item)
+                    showSnackbar(dictionary.getString(R.string.added_to_shopping_list_snackbar))
                 }
+            }.onError {
+                showErrorSnackbar(it)
             }
         }
     }
@@ -63,6 +72,10 @@ class RecipeDetailsViewModel @Inject constructor(
         viewModelScope.launch {
             runAction {
                 addRecipeToShoppingListUseCase(recipeId)
+            }.onSuccess {
+                showSnackbar(dictionary.getString(R.string.added_to_shopping_list_snackbar))
+            }.onError {
+                showErrorSnackbar(it)
             }
         }
     }
@@ -73,6 +86,12 @@ class RecipeDetailsViewModel @Inject constructor(
                 saveRecipeUseCase(recipeId, save)
             }.onSuccess {
                 setUiData(uiState.data?.copy(isSaved = save))
+                showSnackbar(
+                    if (save) dictionary.getString(R.string.recipe_saved_snackbar)
+                    else dictionary.getString(R.string.recipe_unsaved_snackbar)
+                )
+            }.onError {
+                showErrorSnackbar(it)
             }
         }
     }
@@ -87,6 +106,8 @@ class RecipeDetailsViewModel @Inject constructor(
                 deleteRecipeUseCase(recipeId)
             }.onSuccess {
                 navigateTo(NavigationEvent.Recipes())
+            }.onError {
+                showErrorSnackbar(it)
             }
         }
     }

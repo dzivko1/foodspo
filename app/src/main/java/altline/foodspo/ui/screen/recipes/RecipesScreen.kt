@@ -3,6 +3,7 @@ package altline.foodspo.ui.screen.recipes
 import altline.foodspo.R
 import altline.foodspo.ui.core.ScreenBase
 import altline.foodspo.ui.core.component.InfoPanel
+import altline.foodspo.ui.core.component.InfoPanelUi
 import altline.foodspo.ui.core.component.PagedListStatus
 import altline.foodspo.ui.recipe.component.RecipeCard
 import altline.foodspo.ui.recipe.component.RecipeCardUi
@@ -111,9 +112,11 @@ private fun Content(
                 items = myRecipesPaged,
                 emptyContent = {
                     InfoPanel(
-                        message = stringResource(R.string.recipes_my_recipes_empty_message),
-                        actionLabel = stringResource(R.string.recipes_my_recipes_empty_create_button),
-                        action = data.onCreateRecipeClick
+                        InfoPanelUi(
+                            message = stringResource(R.string.recipes_my_recipes_empty_message),
+                            actionLabel = stringResource(R.string.recipes_my_recipes_empty_create_button),
+                            action = data.onCreateRecipeClick
+                        )
                     )
                 }
             )
@@ -138,9 +141,11 @@ private fun Content(
                 items = savedRecipesPaged,
                 emptyContent = {
                     InfoPanel(
-                        message = stringResource(R.string.recipes_saved_recipes_empty_message),
-                        actionLabel = stringResource(R.string.recipes_saved_recipes_explore_button),
-                        action = data.onExploreRecipesClick
+                        InfoPanelUi(
+                            message = stringResource(R.string.recipes_saved_recipes_empty_message),
+                            actionLabel = stringResource(R.string.recipes_saved_recipes_explore_button),
+                            action = data.onExploreRecipesClick
+                        )
                     )
                 }
             )

@@ -26,6 +26,7 @@
     <string name="fab_new_recipe">New recipe</string>
     <string name="search_recipes_placeholder">Search recipes</string>
     <string name="ingredient_placeholder">e.g. 500g potatoes</string>
+    <string name="page_loading_error_format">Error %s</string>
 
     <!-- Content descriptions -->
     <string name="content_desc_navigate_up">Go back</string>
@@ -47,6 +48,12 @@
     <string name="content_desc_drag_reorder">Drag to reorder</string>
     <string name="content_desc_expand_shrink">Expand/Shrink</string>
     <string name="content_desc_item_deleted">Item deleted</string>
+
+    <!-- General snackbars -->
+    <string name="recipe_saved_snackbar">Recipe saved</string>
+    <string name="recipe_unsaved_snackbar">Recipe unsaved</string>
+    <string name="added_ingredients_to_shopping_list_snackbar">Added ingredients to shopping list</string>
+    <string name="added_to_shopping_list_snackbar">Added to shopping list</string>
 
     <!-- Error titles and messages -->
     <string name="error_not_connected_title">No internet connection</string>

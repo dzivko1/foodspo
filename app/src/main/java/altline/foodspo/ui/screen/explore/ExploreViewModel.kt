@@ -1,5 +1,6 @@
 package altline.foodspo.ui.screen.explore
 
+import altline.foodspo.R
 import altline.foodspo.data.RECIPE_PAGE_SIZE
 import altline.foodspo.data.core.paging.FlowPagingSource
 import altline.foodspo.data.core.paging.IndexedPagingSource
@@ -8,6 +9,8 @@ import altline.foodspo.domain.ingredient.AddRecipeToShoppingListUseCase
 import altline.foodspo.domain.recipe.GetRandomRecipesUseCase
 import altline.foodspo.domain.recipe.SaveRecipeUseCase
 import altline.foodspo.domain.recipe.SearchRecipesUseCase
+import altline.foodspo.error.onError
+import altline.foodspo.ui.core.Dictionary
 import altline.foodspo.ui.core.ViewModelBase
 import altline.foodspo.ui.core.component.SearchBarUi
 import altline.foodspo.ui.core.navigation.NavigationEvent
@@ -27,7 +30,8 @@ class ExploreViewModel @Inject constructor(
     private val getRandomRecipesUseCase: GetRandomRecipesUseCase,
     private val saveRecipeUseCase: SaveRecipeUseCase,
     private val addRecipeToShoppingListUseCase: AddRecipeToShoppingListUseCase,
-    private val recipeUiMapper: RecipeUiMapper
+    private val recipeUiMapper: RecipeUiMapper,
+    private val dictionary: Dictionary
 ) : ViewModelBase<ExploreScreenUi>() {
 
     private lateinit var activePagingSource: PagingSource<Int, Recipe>
@@ -107,6 +111,12 @@ class ExploreViewModel @Inject constructor(
                 saveRecipeUseCase(recipeId, save)
             }.onSuccess {
                 activePagingSource.invalidate()
+                showSnackbar(
+                    if (save) dictionary.getString(R.string.recipe_saved_snackbar)
+                    else dictionary.getString(R.string.recipe_unsaved_snackbar)
+                )
+            }.onError {
+                showErrorSnackbar(it)
             }
         }
     }
@@ -115,6 +125,10 @@ class ExploreViewModel @Inject constructor(
         viewModelScope.launch {
             runAction {
                 addRecipeToShoppingListUseCase(recipeId)
+            }.onSuccess {
+                showSnackbar(dictionary.getString(R.string.added_ingredients_to_shopping_list_snackbar))
+            }.onError {
+                showErrorSnackbar(it)
             }
         }
     }

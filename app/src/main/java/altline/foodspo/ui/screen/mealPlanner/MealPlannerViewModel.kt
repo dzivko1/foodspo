@@ -6,6 +6,7 @@ import altline.foodspo.data.util.*
 import altline.foodspo.domain.meal.AddMealToPlanUseCase
 import altline.foodspo.domain.meal.GetMealPlanUseCase
 import altline.foodspo.domain.meal.RemoveMealFromPlanUseCase
+import altline.foodspo.error.onError
 import altline.foodspo.ui.core.ViewModelBase
 import altline.foodspo.ui.core.navigation.NavigationEvent
 import altline.foodspo.ui.meal.MealUiMapper
@@ -130,6 +131,8 @@ class MealPlannerViewModel @Inject constructor(
         viewModelScope.launch {
             runAction {
                 removeMealFromPlanUseCase(mealId, day)
+            }.onError {
+                showErrorSnackbar(it)
             }
         }
     }
@@ -139,6 +142,8 @@ class MealPlannerViewModel @Inject constructor(
             viewModelScope.launch {
                 runAction {
                     addMealToPlanUseCase(recipeId, pickingForDay!!)
+                }.onError {
+                    showErrorSnackbar(it)
                 }
             }
         }

@@ -1,6 +1,5 @@
 package altline.foodspo.ui.core
 
-import altline.foodspo.data.error.AppException
 import altline.foodspo.ui.core.component.InfoPanel
 import altline.foodspo.ui.core.component.PageLoadingIndicator
 import androidx.compose.runtime.Composable
@@ -15,9 +14,6 @@ fun <UiData> ScreenBase(
     viewModel: ViewModelBase<UiData>,
     topBar: @Composable () -> Unit = { DefaultTopBar() },
     fab: (@Composable () -> Unit)? = null,
-    errorScreen: @Composable (AppException) -> Unit = { error ->
-        InfoPanel(error, retryAction = viewModel::loadData)
-    },
     reloadOnResume: Boolean = false,
     content: @Composable (UiData) -> Unit
 ) {
@@ -69,7 +65,7 @@ fun <UiData> ScreenBase(
             viewModel.onScreenResultSent()
         }
 
-        if (error != null) errorScreen(error)
+        if (infoScreen != null) InfoPanel(infoScreen)
         else if (data != null) content(data)
     }
 }

@@ -1,15 +1,19 @@
 package altline.foodspo.ui.core
 
 import altline.foodspo.data.error.AppException
-import altline.foodspo.error.onError
+import altline.foodspo.error.AppErrorUiMapper
 import altline.foodspo.ui.core.navigation.NavigationEvent
 import altline.foodspo.ui.core.snackbar.SnackbarModel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import javax.inject.Inject
 
 abstract class ViewModelBase<UI> : ViewModel() {
+
+    @Inject
+    protected lateinit var errorUiMapper: AppErrorUiMapper
 
     var uiState by mutableStateOf<UiState<UI>>(UiState())
         protected set
@@ -21,14 +25,12 @@ abstract class ViewModelBase<UI> : ViewModel() {
     abstract fun loadData()
 
     /**
-     * Executes the given suspending code with a loading indicator and error handling.
+     * Executes the given suspending code with a loading indicator.
      */
     protected suspend fun <T> runAction(block: suspend () -> T): Result<T> {
         setLoading(true)
         return kotlin.runCatching {
             block()
-        }.onError {
-            setError(it)
         }.also {
             setLoading(false)
         }
@@ -42,12 +44,20 @@ abstract class ViewModelBase<UI> : ViewModel() {
         uiState = uiState.copy(loading = loading)
     }
 
-    protected fun setError(error: AppException?) {
-        uiState = uiState.copy(error = error)
+    protected fun showErrorScreen(error: AppException, retryAction: (() -> Unit)? = null) {
+        uiState = uiState.copy(infoScreen = errorUiMapper.toInfoPanel(error, retryAction))
     }
 
     protected fun showSnackbar(snackbarData: SnackbarModel) {
         uiState = uiState.copy(snackbar = snackbarData)
+    }
+
+    protected fun showSnackbar(message: String) {
+        uiState = uiState.copy(snackbar = SnackbarModel(message))
+    }
+
+    protected fun showErrorSnackbar(error: AppException) {
+        showSnackbar(errorUiMapper.toSnackbarMessage(error))
     }
 
     fun onSnackbarConsumed() {

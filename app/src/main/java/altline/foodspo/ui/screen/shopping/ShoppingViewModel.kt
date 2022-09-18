@@ -6,6 +6,7 @@ import altline.foodspo.domain.ingredient.AddToShoppingListUseCase
 import altline.foodspo.domain.ingredient.EditShoppingListUseCase
 import altline.foodspo.domain.ingredient.GetShoppingListUseCase
 import altline.foodspo.domain.ingredient.RemoveFromShoppingListUseCase
+import altline.foodspo.error.onError
 import altline.foodspo.ui.core.ViewModelBase
 import altline.foodspo.ui.ingredient.IngredientUiMapper
 import altline.foodspo.ui.ingredient.component.ShoppingListItemUi
@@ -104,6 +105,8 @@ class ShoppingViewModel @Inject constructor(
                         checked = item.checked
                     )
                 )
+            }.onError {
+                showErrorSnackbar(it)
             }
         }
     }
@@ -113,6 +116,8 @@ class ShoppingViewModel @Inject constructor(
             runAction {
                 val item = findItem(recipeTitle, itemId)!!.copy(checked = checked)
                 editShoppingListUseCase(recipeTitle, item)
+            }.onError {
+                showErrorSnackbar(it)
             }
         }
     }
@@ -124,6 +129,8 @@ class ShoppingViewModel @Inject constructor(
                 runAction {
                     val item = findItem(recipeTitle, itemId)!!
                     editShoppingListUseCase(recipeTitle, item)
+                }.onError {
+                    showErrorSnackbar(it)
                 }
             }
         }
@@ -148,6 +155,8 @@ class ShoppingViewModel @Inject constructor(
             viewModelScope.launch {
                 runAction {
                     removeFromShoppingListUseCase(recipeTitle, findItem(recipeTitle, itemId)!!)
+                }.onError {
+                    showErrorSnackbar(it)
                 }
             }
         }

@@ -1,5 +1,6 @@
 package altline.foodspo.ui.screen.recipes
 
+import altline.foodspo.R
 import altline.foodspo.data.RECIPE_PAGE_SIZE
 import altline.foodspo.data.core.paging.FlowPagingSource
 import altline.foodspo.data.core.paging.PagingAccessor
@@ -7,6 +8,8 @@ import altline.foodspo.data.recipe.model.Recipe
 import altline.foodspo.domain.ingredient.AddRecipeToShoppingListUseCase
 import altline.foodspo.domain.recipe.GetMyRecipesUseCase
 import altline.foodspo.domain.recipe.GetSavedRecipesUseCase
+import altline.foodspo.error.onError
+import altline.foodspo.ui.core.Dictionary
 import altline.foodspo.ui.core.ViewModelBase
 import altline.foodspo.ui.core.navigation.NavigationEvent
 import altline.foodspo.ui.recipe.RecipeUiMapper
@@ -27,6 +30,7 @@ class RecipesViewModel @Inject constructor(
     private val getSavedRecipesUseCase: GetSavedRecipesUseCase,
     private val addRecipeToShoppingListUseCase: AddRecipeToShoppingListUseCase,
     private val recipeUiMapper: RecipeUiMapper,
+    private val dictionary: Dictionary,
     savedStateHandle: SavedStateHandle
 ) : ViewModelBase<RecipesScreenUi>() {
 
@@ -79,6 +83,10 @@ class RecipesViewModel @Inject constructor(
         viewModelScope.launch {
             runAction {
                 addRecipeToShoppingListUseCase(recipeId)
+            }.onSuccess {
+                showSnackbar(dictionary.getString(R.string.added_ingredients_to_shopping_list_snackbar))
+            }.onError {
+                showErrorSnackbar(it)
             }
         }
     }

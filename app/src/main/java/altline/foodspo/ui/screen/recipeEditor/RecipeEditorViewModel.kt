@@ -9,6 +9,7 @@ import altline.foodspo.ui.core.navigation.NavigationEvent
 import altline.foodspo.ui.recipe.RecipeUiMapper
 import altline.foodspo.data.util.minusAt
 import altline.foodspo.data.util.replaceAt
+import altline.foodspo.error.onError
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -53,6 +54,8 @@ class RecipeEditorViewModel @Inject constructor(
                         onSaveRecipe = this@RecipeEditorViewModel::saveRecipe
                     )
                 )
+            }.onError {
+                showErrorScreen(it, retryAction = ::loadData)
             }
         }
     }
