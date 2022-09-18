@@ -1,6 +1,7 @@
 package altline.foodspo.ui.screen.recipeEditor
 
 import altline.foodspo.R
+import altline.foodspo.data.core.files.AppFileProvider
 import altline.foodspo.data.core.model.ImageSrc
 import altline.foodspo.ui.core.ScreenBase
 import altline.foodspo.ui.core.component.GeneralImage
@@ -11,7 +12,6 @@ import altline.foodspo.ui.theme.AppTheme
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.result.launch
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -25,9 +25,11 @@ import androidx.compose.material.icons.outlined.AddAPhoto
 import androidx.compose.material.icons.outlined.InsertPhoto
 import androidx.compose.material.icons.outlined.LocalPizza
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
@@ -125,11 +127,14 @@ private fun TopBar(
 private fun Content(
     data: RecipeEditorScreenUi
 ) {
+    val context = LocalContext.current
+    val cameraPictureFileUri = remember { AppFileProvider.getImageUri(context) }
+
     val cameraLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.TakePicturePreview()
-    ) { bitmap ->
-        if (bitmap != null) {
-            data.onNewImage(ImageSrc(bitmap))
+        ActivityResultContracts.TakePicture()
+    ) { success ->
+        if (success) {
+            data.onNewImage(ImageSrc(cameraPictureFileUri.toString()))
         }
     }
 
@@ -170,7 +175,7 @@ private fun Content(
                 Modifier.weight(1f),
                 style = AppTheme.typography.subtitle1
             )
-            Button(onClick = { cameraLauncher.launch() }) {
+            Button(onClick = { cameraLauncher.launch(cameraPictureFileUri) }) {
                 Icon(
                     Icons.Outlined.AddAPhoto,
                     contentDescription = stringResource(R.string.content_desc_take_photo)
