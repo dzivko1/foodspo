@@ -28,7 +28,8 @@
     <string name="fab_new_recipe">New recipe</string>
     <string name="search_recipes_placeholder">Search recipes</string>
     <string name="ingredient_placeholder">e.g. 500g potatoes</string>
-    <string name="page_loading_error_format">Error %s</string>
+    <string name="page_loading_error_format">Error: %s</string>
+    <string name="sign_out_confirmation_dialog_title">Sign out?</string>
 
     <!-- Content descriptions -->
     <string name="content_desc_navigate_up">Go back</string>
@@ -50,6 +51,7 @@
     <string name="content_desc_drag_reorder">Drag to reorder</string>
     <string name="content_desc_expand_shrink">Expand/Shrink</string>
     <string name="content_desc_item_deleted">Item deleted</string>
+    <string name="content_desc_sign_out">Sign out</string>
 
     <!-- General snackbars -->
     <string name="recipe_saved_snackbar">Recipe saved</string>

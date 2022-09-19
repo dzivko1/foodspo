@@ -22,6 +22,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import androidx.core.net.toUri
+import com.firebase.ui.auth.AuthUI
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FieldValue
@@ -42,6 +43,7 @@ import javax.inject.Singleton
 
 @Singleton
 internal class FirebaseDataSource @Inject constructor(
+    private val authUi: AuthUI,
     private val db: FirebaseFirestore,
     private val storage: FirebaseStorage,
     @ApplicationContext private val context: Context
@@ -69,6 +71,10 @@ internal class FirebaseDataSource @Inject constructor(
 
     fun setCurrentUser(user: User) {
         this.user = user
+    }
+
+    fun signOut() {
+        authUi.signOut(context)
     }
 
     fun getMyRecipesPaged(loadTrigger: PageLoadTrigger): Flow<List<Recipe>> {

@@ -17,6 +17,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Logout
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
@@ -57,6 +58,7 @@ fun ExploreScreen(viewModel: ExploreViewModel = hiltViewModel()) {
             TopBar(
                 searchBarUi = viewModel.uiState.data?.searchBarUi,
                 onToggleSearch = viewModel::onToggleSearch,
+                onSignOut = viewModel::onSignOut
             )
         }
     ) {
@@ -68,6 +70,7 @@ fun ExploreScreen(viewModel: ExploreViewModel = hiltViewModel()) {
 private fun TopBar(
     searchBarUi: SearchBarUi?,
     onToggleSearch: () -> Unit,
+    onSignOut: () -> Unit
 ) {
     if (searchBarUi != null) {
         TopAppBar {
@@ -83,6 +86,12 @@ private fun TopBar(
                     Icon(
                         Icons.Outlined.Search,
                         contentDescription = stringResource(R.string.content_desc_search_recipes)
+                    )
+                }
+                IconButton(onClick = onSignOut) {
+                    Icon(
+                        Icons.Outlined.Logout,
+                        contentDescription = stringResource(R.string.content_desc_sign_out)
                     )
                 }
             }

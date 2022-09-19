@@ -17,4 +17,8 @@ internal class UserRepositoryImpl @Inject constructor(
         user = mapUser(FirebaseAuth.getInstance().currentUser!!)
         firebaseDataSource.setCurrentUser(user)
     }
+
+    override fun signOut() {
+        firebaseDataSource.signOut()
+    }
 }

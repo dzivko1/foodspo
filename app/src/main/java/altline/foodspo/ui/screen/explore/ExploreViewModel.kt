@@ -9,10 +9,12 @@ import altline.foodspo.domain.ingredient.AddRecipeToShoppingListUseCase
 import altline.foodspo.domain.recipe.GetRandomRecipesUseCase
 import altline.foodspo.domain.recipe.SaveRecipeUseCase
 import altline.foodspo.domain.recipe.SearchRecipesUseCase
+import altline.foodspo.domain.user.SignOutUseCase
 import altline.foodspo.error.onError
 import altline.foodspo.ui.core.Dictionary
 import altline.foodspo.ui.core.ViewModelBase
 import altline.foodspo.ui.core.component.SearchBarUi
+import altline.foodspo.ui.core.dialog.DialogUi
 import altline.foodspo.ui.core.navigation.NavigationEvent
 import altline.foodspo.ui.recipe.RecipeUiMapper
 import altline.foodspo.ui.recipe.component.RecipeCardUi
@@ -26,6 +28,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ExploreViewModel @Inject constructor(
+    private val signOutUseCase: SignOutUseCase,
     private val searchRecipesUseCase: SearchRecipesUseCase,
     private val getRandomRecipesUseCase: GetRandomRecipesUseCase,
     private val saveRecipeUseCase: SaveRecipeUseCase,
@@ -148,6 +151,16 @@ class ExploreViewModel @Inject constructor(
                         onSearch = this::performRecipeSearch
                     )
                 } else null
+            )
+        )
+    }
+
+    fun onSignOut() {
+        showDialog(
+            DialogUi.Confirmation(
+                title = dictionary.getString(R.string.sign_out_confirmation_dialog_title),
+                onConfirm = signOutUseCase::invoke,
+                onDismiss = this::onDialogDismissed
             )
         )
     }

@@ -14,7 +14,7 @@ dependencies {
     implementation Libs.KotlinX.Coroutines.core
     implementation Libs.KotlinX.Coroutines.android
     implementation Libs.KotlinX.Coroutines.playServices
-    implementation Libs.Firebase.auth
+    implementation Libs.Firebase.uiAuth
     implementation Libs.Firebase.firestore
     implementation Libs.Firebase.storage
     implementation Libs.AndroidX.coreKtx
